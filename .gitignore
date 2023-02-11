@@ -1,4 +1,9 @@
 /.metadata/
+/bin
 /.settings
 /.classpath
+<<<<<<< HEAD
 /.vscode
+=======
+/.project
+>>>>>>> 38070ad3a9b4b8dc41139cb0a41d68a119a898d1
