@@ -1,1 +1,1 @@
-# Affordabe-Region-House-Finder
+# Affordable-Region-House-Finder
