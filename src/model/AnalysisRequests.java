@@ -1,5 +1,5 @@
 package model;
 
-public class AnalysisRequests implements Requests{
+public class AnalysisRequests implements Requests {
     
 }
