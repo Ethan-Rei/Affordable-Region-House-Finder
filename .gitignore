@@ -6,3 +6,4 @@
 /lib
 .classpath
 *.class
+.project
