@@ -1,5 +1,4 @@
 package model;
-<<<<<<< HEAD
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,8 +6,6 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-=======
->>>>>>> c65dd4df9a036d0966d3b354be98a6ffa464eb5d
 public class MySQLDatabase implements Database {
     private Connection connection;
     private Statement statement;
