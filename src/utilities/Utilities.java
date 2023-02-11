@@ -8,7 +8,7 @@ public class Utilities {
 	public static void main(String[] args) {
 		Database mySQL = new MySQLDatabase();
 		
-		String myQuery = "SELECT * FROM table";
+		String myQuery = "SELECT * FROM HOUSE";
 		System.out.println(mySQL.query(myQuery));
 	}
 

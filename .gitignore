@@ -1,7 +1,8 @@
-/.metadata/
+/.metadata
 /bin
 /.settings
 /.classpath
 /.vscode
 /lib
 .classpath
+*.class

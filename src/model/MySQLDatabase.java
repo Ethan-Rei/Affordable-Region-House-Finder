@@ -40,7 +40,7 @@ public class MySQLDatabase implements Database {
 			ResultSet eventSet = statement.executeQuery(query);
 			
 			while(eventSet.next()) {
-				output += eventSet.getString("Name") + "\n";
+				output += eventSet.getString("GEO") + "\n";
 			}
 			
 		} catch (SQLException e) {
