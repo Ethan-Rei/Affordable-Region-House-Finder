@@ -27,7 +27,6 @@ public class MySQLDatabase implements Database {
 		}
 	}
 
-	@Override
 	public String query(String query) {
 		// This method will change to whatever type we need when we use it in our views.
 		// I left an example for reference, we can delete it later.

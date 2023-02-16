@@ -11,5 +11,16 @@ public class Utilities {
 		String myQuery = "SELECT * FROM table";
 		System.out.println(mySQL.query(myQuery));
 	}
+	
+	
+	public boolean tTest() {
+		
+		
+		
+		
+		return true;
+	}
+	
+	
 
 }
