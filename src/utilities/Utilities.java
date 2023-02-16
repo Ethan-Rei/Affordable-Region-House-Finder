@@ -10,8 +10,8 @@ public class Utilities {
 	public static void main(String[] args) {
 		Database mySQL = new MySQLDatabase();
 		
-		String myQuery = "SELECT * FROM DATA";
-		ResultSet query = mySQL.query(myQuery);
+		mySQL.removeData("data"); // test purposes, remove later
+		mySQL.importData("18100205.csv", "data");
 	}
 	
 	
