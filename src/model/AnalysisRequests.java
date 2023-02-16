@@ -9,12 +9,11 @@ public class AnalysisRequests implements Requests
 	
 	
 	
-	public double tTest() {
-		
+	public double tTest(double[] timeSeries1, double[] timeSeries2) {	
 		// Extract a double (type) array from each input time series
 		TTest tTest = new TTest();
-		double[] arr1 = new double[10];
-		double[] arr2 = new double[10];
-		return tTest.tTest(arr1, arr2);
+		return tTest.tTest(timeSeries1, timeSeries2);
 	}
+	
+	
 }
