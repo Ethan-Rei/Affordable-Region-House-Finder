@@ -13,13 +13,6 @@ public class Utilities {
 	}
 	
 	
-	public boolean tTest() {
-		
-		
-		
-		
-		return true;
-	}
 	
 	
 
