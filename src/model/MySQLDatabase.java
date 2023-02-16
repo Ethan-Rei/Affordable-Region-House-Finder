@@ -27,26 +27,20 @@ public class MySQLDatabase implements Database {
 		}
 	}
 
-	public String query(String query) {
-		// This method will change to whatever type we need when we use it in our views.
-		// I left an example for reference, we can delete it later.
-		// The below example simply queries the database, then executes the query.
-		// I made it print out only the "Name" column for my own schema.
-		
-		String output = "";
-		
+	public ResultSet query(String query) {
 		try {
-			ResultSet eventSet = statement.executeQuery(query);
-			
-			while(eventSet.next()) {
-				output += eventSet.getString("GEO") + "\n";
-			}
-			
+			return statement.executeQuery(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return output;
+		return null;
+	}
+
+	@Override
+	public void importData(String path) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
