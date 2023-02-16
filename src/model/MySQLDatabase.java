@@ -27,6 +27,7 @@ public class MySQLDatabase implements Database {
 		}
 	}
 
+	@Override
 	public ResultSet query(String query) {
 		try {
 			return statement.executeQuery(query);
