@@ -7,14 +7,14 @@ public class AnalysisRequests implements Requests
 {
 	
 	private TTest tTest = new TTest();
-	private AnalysisRequests singleton;
+	private static AnalysisRequests singleton = null;
 	
 	private AnalysisRequests() {
 		// Train the data on creation of object for now
 		
 	}
 	
-	public AnalysisRequests getAnalysisRequests( ) {
+	public static AnalysisRequests getAnalysisRequests( ) {
 		if (singleton != null) { return new AnalysisRequests(); }
 		return singleton;
 	}
