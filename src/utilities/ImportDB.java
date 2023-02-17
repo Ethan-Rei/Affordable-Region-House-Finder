@@ -32,15 +32,25 @@ public class ImportDB {
 			statement = connection.createStatement();
 			removeData("data");
 			importData("18100205.csv", "data");
+			connection.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	private static String determineType(String GEO) {
+		if (GEO.contains("Region"))
+			return "Region";
+		if (GEO.contains(","))
+			return "City";
+		if (GEO.contains("Canada"))
+			return "Country";
+		return "Province";
+	}
+	
 	private static boolean importData(String path, String table) {
 		if (tableExists(table.toLowerCase()))
 			return true;
-		int counter = 1;
 		createTable("data");
 		String insert = "INSERT INTO " + table 
 				+ "(refdate, location_name, location_level, property_value)"
@@ -51,12 +61,19 @@ public class ImportDB {
 			String[] data = lineReader.readNext();
 			
 			while ((data = lineReader.readNext()) != null) {
+				if (!data[3].equals("House only"))
+					continue;
+				
+				// REF_DATE
 				pStatement.setDate(1, Date.valueOf(data[0] + "-01"));
 				
-				// we need to do something for these 2
-				// the first is the province but the second is city, etc
+				// GEO
 				pStatement.setString(2, data[1]);
-				pStatement.setString(3, data[1]);
+				
+				// LOCATION TYPE
+				pStatement.setString(3, determineType(data[1]));
+				
+				// VALUE
 				if(!data[10].isEmpty()) {
 					pStatement.setDouble(4, Double.parseDouble(data[10]));
 				}
@@ -65,7 +82,6 @@ public class ImportDB {
 					pStatement.setDouble(4, 0.0);
 				
 				pStatement.addBatch();
-				counter++;
 			}
 			pStatement.executeBatch();
 			
