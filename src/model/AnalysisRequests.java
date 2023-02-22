@@ -15,6 +15,7 @@ import weka.classifiers.functions.LinearRegression;
 
 public class AnalysisRequests implements Requests 
 {
+	// Better to put monthConverter in a date converter class
 	private HashMap<String, Integer> monthConverter;
 	private TTest tTest = new TTest();
 	private Instances testData;
@@ -63,6 +64,7 @@ public class AnalysisRequests implements Requests
 		return singleton;
 	}
 	
+	// We can remove this and put this in its own class
 	private void monthConverterSetup() {
 		monthConverter = new HashMap<String, Integer>();
 		monthConverter.put("Jan", 1);
@@ -79,6 +81,7 @@ public class AnalysisRequests implements Requests
 		monthConverter.put("Dec", 12);
 	}
 	
+	// Similarly with this
 	private Date convertDate(String strDate) {
 		String[] values = strDate.split(",", 0);
 		int year = Integer.parseInt(values[1]);
