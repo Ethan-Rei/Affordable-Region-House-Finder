@@ -4,5 +4,7 @@
 /.classpath
 /.vscode
 /lib
-.classpath
+/.classpath
 *.class
+.classpath
+.classpath
