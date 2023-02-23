@@ -1,7 +1,6 @@
 package analysis;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ResultSetToArray {
 	public static double[] getDoubleArray(ResultSet values) {		

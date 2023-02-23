@@ -14,7 +14,7 @@ import weka.classifiers.functions.LinearRegression;
 public class Analysis
 {
 	// Better to put monthConverter in a date converter class
-	private static TTest ttest;
+	private TTest ttest;
 	private static Analysis singleton = null;
 	
 	private Analysis() {
@@ -27,20 +27,20 @@ public class Analysis
 	}
 	
 
-	public static double tTest(double[] timeSeries1, double[] timeSeries2) {	
+	public double tTest(double[] timeSeries1, double[] timeSeries2) {	
 		// Returns the p value of the TTest
 		return ttest.tTest(timeSeries1, timeSeries2);
 	}
 	
 	public static void main(String[] args) {
-		new Analysis();
+		Analysis analysis = new Analysis();
 		DatabaseConnection mysqlconnection = new MySQLConnection();
 		DatabaseQuery mysqlquery = new MySQLQuery(mysqlconnection);
 		ResultSet torontoSet = mysqlquery.query("Toronto, Ontario", "2000-01", "2020-01");
-		ResultSet hamiltonSet = mysqlquery.query("Hamilton, Ontario", "2000-01", "2020-01");
 		double[] torontoArr = ResultSetToArray.getDoubleArray(torontoSet);
+		ResultSet hamiltonSet = mysqlquery.query("Hamilton, Ontario", "2000-01", "2020-01");
 		double[] hamiltonArr = ResultSetToArray.getDoubleArray(hamiltonSet);
-		double ttestResult = tTest(torontoArr, hamiltonArr);
+		double ttestResult = analysis.tTest(torontoArr, hamiltonArr);
 		
 		System.out.println("Comparison between Toronto and Hamilton");
 		if (ttestResult < 0.5) {
