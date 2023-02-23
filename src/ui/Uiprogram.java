@@ -15,11 +15,17 @@ public class Uiprogram {
 		
 		ResultSet values = mysqlquery.query("select refdate, location_name, property_value from data where location_name='Toronto, Ontario'");
 		JFreeChart lineChart = ResultSetTimeSeriesLineChart.getChart("Toronto, Ontario", values);
-		mysqlconnection.closeConnection();
 		ChartPanel lineChartPanel = new ChartPanel(lineChart);
 		
 		userView.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) { userView.dispose(); }
+            public void windowClosing(WindowEvent e) { 
+            	userView.dispose(); 
+            	try {
+					mysqlconnection.getConnection().close();
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+            }
         });
 		
 		userView.add(lineChartPanel);
