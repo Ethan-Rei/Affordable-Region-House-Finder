@@ -13,7 +13,7 @@ public class Uiprogram {
 		DatabaseConnection mysqlconnection = new MySQLConnection();
 		DatabaseQuery mysqlquery = new MySQLQuery(mysqlconnection);
 		
-		ResultSet values = mysqlquery.query("Toronto, Ontario", "2020-01");
+		ResultSet values = mysqlquery.query("Toronto, Ontario", "2000-01", "2020-01");
 		JFreeChart lineChart = ResultSetTimeSeriesLineChart.getChart("Toronto, Ontario", values);
 		ChartPanel lineChartPanel = new ChartPanel(lineChart);
 		
