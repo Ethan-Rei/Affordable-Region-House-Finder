@@ -2,10 +2,6 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class MySQLDatabase implements DatabaseConnection {
     private Connection connection;
     
@@ -14,7 +10,7 @@ public class MySQLDatabase implements DatabaseConnection {
     private final String port = "3306";
     private final String schema = "nhpi";
     private final String username = "root";
-    private final String password = "root1234";
+    private final String password = "gaMc*m%u8n3g%5";
     private final String address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
 	
 	public MySQLDatabase () {

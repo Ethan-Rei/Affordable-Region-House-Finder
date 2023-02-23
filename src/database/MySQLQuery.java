@@ -8,8 +8,8 @@ import java.sql.Statement;
 public class MySQLQuery implements DatabaseQuery {
 	private Statement statement;
 	
-	public MySQLQuery(Connection connection) {
-		setConnection(connection);
+	public MySQLQuery(DatabaseConnection connection) {
+		setConnection(connection.getConnection());
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ImportDB {
     private final static String port = "3306";
     private final static String schema = "nhpi";
     private final static String username = "root";
-    private final static String password = "root1234";
+    private final static String password = "gaMc*m%u8n3g%5";
     private final static String address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
     
     private ImportDB() {}
