@@ -1,7 +1,7 @@
 package database;
 
-import java.sql.ResultSet;
+import java.sql.Connection;
 
 public interface DatabaseConnection {
-	public ResultSet query(String query);
+	public Connection getConnection();
 }
