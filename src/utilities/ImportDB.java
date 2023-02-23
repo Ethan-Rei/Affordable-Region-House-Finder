@@ -31,7 +31,7 @@ public class ImportDB {
     
 	public static void main(String[] args) {
 		try {
-			// get login.txt
+			// get sql login details from login.txt
 			File login = new File(loginFile);
 			Scanner fileReader = new Scanner(login);
 			ip = fileReader.nextLine();
