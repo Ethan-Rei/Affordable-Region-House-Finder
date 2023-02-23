@@ -3,10 +3,7 @@ package database;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.Scanner;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class MySQLConnection implements DatabaseConnection {
     private Connection connection;

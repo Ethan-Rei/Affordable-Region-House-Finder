@@ -1,5 +1,5 @@
 127.0.0.1
 nhpi
-port
-username
-password
+3306
+root
+gaMc*m%u8n3g%5

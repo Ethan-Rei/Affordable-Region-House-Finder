@@ -3,6 +3,7 @@ import database.*;
 import java.sql.*;
 import javax.swing.*;
 import org.jfree.chart.*;
+import java.awt.event.*;
 
 public class Uiprogram {
 	
@@ -16,6 +17,12 @@ public class Uiprogram {
 		JFreeChart lineChart = ResultSetTimeSeriesLineChart.getChart("Toronto, Ontario", values);
 		ChartPanel lineChartPanel = new ChartPanel(lineChart);
 		
+		userView.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                // Dispose the JFrame
+                userView.dispose();
+            }
+        });
 		
 		userView.add(lineChartPanel);
 		userView.setSize(400, 400);
