@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MySQLDatabase implements DatabaseConnection {
+public class MySQLConnection implements DatabaseConnection {
     private Connection connection;
     
     // Change these as needed
@@ -17,7 +17,7 @@ public class MySQLDatabase implements DatabaseConnection {
     private final String password = "root1234";
     private final String address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
 	
-	public MySQLDatabase () {
+	public MySQLConnection () {
 		try {
 			connection = DriverManager.getConnection(address, username, password);
 		} catch (Exception e) {
