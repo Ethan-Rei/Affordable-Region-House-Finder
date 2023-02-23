@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class MySQLDatabase implements DatabaseConnection {
     private Connection connection;
-    private Statement statement;
     
     // Change these as needed
     private final String ip = "127.0.0.1";
@@ -21,21 +20,15 @@ public class MySQLDatabase implements DatabaseConnection {
 	public MySQLDatabase () {
 		try {
 			connection = DriverManager.getConnection(address, username, password);
-			statement = connection.createStatement();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
-	public ResultSet query(String query) {
-		try {
-			return statement.executeQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+	public Connection getConnection() {
+		return connection;
 	}
+
 	
 }
