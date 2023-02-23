@@ -44,5 +44,14 @@ public class MySQLConnection implements DatabaseConnection {
 		return connection;
 	}
 
+	@Override
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 }
