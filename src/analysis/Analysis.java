@@ -1,19 +1,20 @@
 package analysis;
 
 import database.Database;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.sql.*;
-import org.apache.commons.math3.stat.inference.TTest;
-
 
 public class Analysis
 {
 	// Better to put monthConverter in a date converter class
-	private TTest ttest;
+	private TimeSeriesTTest ttest;
+	private TimeSeriesPrediction prediction;
 	private static Analysis singleton = null;
 	
 	private Analysis() {
-		ttest = new TTest();
+		ttest = new ApacheTTest();
+		prediction = new WekaPrediction();
 	}
 	
 	public static Analysis getAnalysisRequests() {
@@ -23,8 +24,11 @@ public class Analysis
 	
 
 	public double tTest(double[] timeSeries1, double[] timeSeries2) {	
-		// Returns the p value of the TTest
 		return ttest.tTest(timeSeries1, timeSeries2);
+	}
+	
+	public MutablePair<Double, Date>[] predict(double[] values1, Date[] dates1, double[] values2, Date[] dates2) {	
+		return prediction.predict(values1, dates1, values2, dates2);
 	}
 	
 	public static void main(String[] args) {
