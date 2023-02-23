@@ -1,9 +1,6 @@
 package ui;
-
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -12,21 +9,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
 // THIS IS CODE FROM THE INTERNET, USE FOR REFERENCE
 
 
-public class TimeSeriesLineChart extends ApplicationFrame {
-	
-	private static final long serialVersionUID = 1L;
+public class TimeSeriesLineChart{
 
-	public TimeSeriesLineChart(String applicationTitle, String chartTitle) {
-		super(applicationTitle);
-		JFreeChart lineChart = ChartFactory.createLineChart(chartTitle, "Years", "Number of Schools", createDataset(),
-				PlotOrientation.VERTICAL, true, true, false);
-
-		ChartPanel chartPanel = new ChartPanel(lineChart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
-		setContentPane(chartPanel);
+	public static JFreeChart getChart(String locationName) {
+		JFreeChart linechart = ChartFactory.createLineChart(locationName, "Years", "NHPI", createDataset(), PlotOrientation.VERTICAL, true, true, false);
+		return linechart;
 	}
 
-	private DefaultCategoryDataset createDataset() {
+	private static DefaultCategoryDataset createDataset() {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(15, "schools", "1970");
 		dataset.addValue(30, "schools", "1980");
@@ -35,11 +25,5 @@ public class TimeSeriesLineChart extends ApplicationFrame {
 		dataset.addValue(240, "schools", "2010");
 		dataset.addValue(300, "schools", "2014");
 		return dataset;
-	}
-
-	public static void main(String[] args) {
-		TimeSeriesLineChart chart = new TimeSeriesLineChart("School Vs Years", "Numer of Schools vs years");
-		chart.pack();
-		chart.setVisible(true);
 	}
 }
