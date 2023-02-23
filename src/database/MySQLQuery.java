@@ -23,7 +23,7 @@ public class MySQLQuery implements DatabaseQuery {
 
 	@Override
 	public ResultSet query(String locationName, String fromDate, String toDate) {
-		String queryString = String.format("SELECT refdate, location_name, property_value FROM data WHERE location_name='%s' BETWEEN '%s-01' AND '%s-01'", locationName, fromDate, toDate);  
+		String queryString = String.format("SELECT refdate, location_name, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locationName, fromDate, toDate);  
 		try {
 			return statement.executeQuery(queryString);
 		} catch (SQLException e) {
