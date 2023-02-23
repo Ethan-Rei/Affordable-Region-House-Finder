@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MySQLQuery implements DatabaseQuery {
+class MySQLQuery implements DatabaseQuery {
 	private Statement statement;
 	
 	public MySQLQuery(DatabaseConnection connection) {

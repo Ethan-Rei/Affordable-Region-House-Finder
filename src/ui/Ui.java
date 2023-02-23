@@ -16,12 +16,14 @@ public class Ui {
 		JFreeChart lineChart = ResultSetTimeSeriesLineChart.getChart("Toronto, Ontario", values);
 		ChartPanel lineChartPanel = new ChartPanel(lineChart);
 		
-		userView.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) { 
-            	userView.dispose(); 
-            	database.closeConnection();
-            }
-        });
+		userView.addWindowListener(
+				new WindowAdapter() {
+					public void windowClosing(WindowEvent e) { 
+						userView.dispose(); 
+						database.closeConnection();
+					}
+				}
+			);
 		
 		userView.add(lineChartPanel);
 		userView.setSize(400, 400);
