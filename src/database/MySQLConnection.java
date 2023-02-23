@@ -1,7 +1,6 @@
 package database;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Scanner;

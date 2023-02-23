@@ -1,10 +1,5 @@
 package analysis;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-
 import org.apache.commons.math3.stat.inference.TTest;
 import weka.core.Instances;
 import weka.classifiers.functions.LinearRegression;
@@ -17,7 +12,7 @@ public class Analysis
 	private static Analysis singleton = null;
 	
 	private Analysis() {
-		
+		ttest = new TTest();
 	}
 	
 	public static Analysis getAnalysisRequests() {
@@ -27,13 +22,11 @@ public class Analysis
 	
 
 	public double tTest(double[] timeSeries1, double[] timeSeries2) {	
-		// Extract a double (type) array from each input time series
-		
 		// Returns the p value of the TTest
-		return tTest.tTest(timeSeries1, timeSeries2);
+		return ttest.tTest(timeSeries1, timeSeries2);
 	}
 	
 	public static void main(String[] args) {
-		
+		new Analysis();
 	}
 }
