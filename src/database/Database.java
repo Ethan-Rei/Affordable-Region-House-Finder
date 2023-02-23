@@ -6,11 +6,34 @@ import java.util.Date;
 
 public class Database {
 	private static Database singleton;
+	private DatabaseConnection connection;
+	private DatabaseQuery query;
+	
+	private Database() {
+		connection = new MySQLConnection();
+		query = new MySQLQuery(connection);
+	}
+	
+	public static Database getInstance() {
+		return singleton;
+	}
+	
+	public ResultSet query(String locationName, String fromDate, String toDate) {
+		return query.query(locationName, fromDate, toDate);
+	}
+	
+	public void closeConnection() {
+		try {
+			connection.getConnection().close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public static void main(String[] args) {
-		DatabaseConnection mysqlconnection = new MySQLConnection();
-		DatabaseQuery mysqlquery = new MySQLQuery(mysqlconnection);
-		ResultSet torontoSet = mysqlquery.query("Toronto, Ontario", "2000-01", "2020-01");
+		Database database = Database.getInstance();
+		ResultSet torontoSet = database.query("Toronto, Ontario", "2000-01", "2020-01");
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/yyyy");
 		Date date;
 		String locationName, currentDate;

@@ -1,14 +1,9 @@
 package analysis;
 
-import database.DatabaseConnection;
-import database.DatabaseQuery;
-import database.MySQLConnection;
-import database.MySQLQuery;
+import database.Database;
 
 import java.sql.*;
 import org.apache.commons.math3.stat.inference.TTest;
-import weka.core.Instances;
-import weka.classifiers.functions.LinearRegression;
 
 
 public class Analysis
@@ -34,11 +29,10 @@ public class Analysis
 	
 	public static void main(String[] args) {
 		Analysis analysis = new Analysis();
-		DatabaseConnection mysqlconnection = new MySQLConnection();
-		DatabaseQuery mysqlquery = new MySQLQuery(mysqlconnection);
-		ResultSet torontoSet = mysqlquery.query("Toronto, Ontario", "2000-01", "2020-01");
+		Database database = Database.getInstance();
+		ResultSet torontoSet = database.query("Toronto, Ontario", "2000-01", "2020-01");
 		double[] torontoArr = ResultSetToArray.getDoubleArray(torontoSet);
-		ResultSet hamiltonSet = mysqlquery.query("Hamilton, Ontario", "2000-01", "2020-01");
+		ResultSet hamiltonSet = database.query("Hamilton, Ontario", "2000-01", "2020-01");
 		double[] hamiltonArr = ResultSetToArray.getDoubleArray(hamiltonSet);
 		double ttestResult = analysis.tTest(torontoArr, hamiltonArr);
 		
