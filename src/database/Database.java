@@ -15,6 +15,7 @@ public class Database {
 	}
 	
 	public static Database getInstance() {
+		if (singleton == null) { new Database(); }
 		return singleton;
 	}
 	
