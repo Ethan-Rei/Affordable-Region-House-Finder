@@ -15,7 +15,7 @@ public class MySQLQuery implements DatabaseQuery {
 	@Override
 	public void setConnection(Connection connection) {
 		try {
-			statement = connection.createStatement();
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
