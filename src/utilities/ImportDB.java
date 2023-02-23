@@ -1,5 +1,6 @@
 package utilities;
 
+import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.Date;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 
@@ -15,19 +17,32 @@ public class ImportDB {
     private static Connection connection;
     private static Statement statement;
     private static PreparedStatement pStatement;
+    private final static String loginFile = "login.txt";
     
     // Change these as needed
-    private final static String ip = "127.0.0.1";
-    private final static String port = "3306";
-    private final static String schema = "nhpi";
-    private final static String username = "root";
-    private final static String password = "root1234";
-    private final static String address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
+    private static String ip;
+    private static String schema;
+    private static String port;
+    private static String username;
+    private static String password;
+    private static String address;
     
     private ImportDB() {}
     
 	public static void main(String[] args) {
 		try {
+			// get login.txt
+			File login = new File(loginFile);
+			Scanner fileReader = new Scanner(login);
+			ip = fileReader.nextLine();
+			schema = fileReader.nextLine();
+			port = fileReader.nextLine();
+			username = fileReader.nextLine();
+			password = fileReader.nextLine();
+			address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
+			fileReader.close();
+			
+			// begin connection to database
 			connection = DriverManager.getConnection(address, username, password);
 			statement = connection.createStatement();
 			removeData("data");
