@@ -4,7 +4,6 @@
 /.classpath
 /.vscode
 /lib
-/.classpath
 *.class
 .classpath
-.classpath
+login.txt
