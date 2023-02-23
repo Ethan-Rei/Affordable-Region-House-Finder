@@ -9,7 +9,7 @@ public class Uiprogram {
 	public static void main(String[] args) {
 		JFrame userView = new JFrame();
 		
-		DatabaseConnection mysqlconnection = new MySQLDatabase();
+		DatabaseConnection mysqlconnection = new MySQLConnection();
 		DatabaseQuery mysqlquery = new MySQLQuery(mysqlconnection);
 		
 		ResultSet values = mysqlquery.query("select refdate, location_name, property_value from data where location_name='Toronto, Ontario'");

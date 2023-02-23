@@ -20,12 +20,6 @@ public class ImportDB {
     private final static String loginFile = "login.txt";
     
     // Change these as needed
-    private final static String ip = "127.0.0.1";
-    private final static String port = "3306";
-    private final static String schema = "nhpi";
-    private final static String username = "root";
-    private final static String password = "root1234";
-    private final static String address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
     private static String ip;
     private static String schema;
     private static String port;
