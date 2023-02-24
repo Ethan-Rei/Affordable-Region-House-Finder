@@ -9,9 +9,7 @@ public class Ui {
 	
 	public static void main(String[] args) {
 		JFrame userView = new JFrame();
-		
 		Database database = Database.getInstance();
-		
 		ResultSet values = database.query("Toronto, Ontario", "2000-01", "2020-01");
 		JFreeChart lineChart = ResultSetTimeSeriesLineChart.getChart("Toronto, Ontario", values);
 		ChartPanel lineChartPanel = new ChartPanel(lineChart);

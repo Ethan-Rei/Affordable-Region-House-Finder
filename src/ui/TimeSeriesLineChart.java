@@ -4,8 +4,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-
-
 public class TimeSeriesLineChart{
 
 	public static JFreeChart getChart(String locationName, DefaultCategoryDataset data) {

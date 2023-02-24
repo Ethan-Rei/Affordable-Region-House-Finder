@@ -1,7 +1,6 @@
 package analysis;
 
-import java.sql.Date;
-
+import java.util.Date;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 interface TimeSeriesPrediction {
