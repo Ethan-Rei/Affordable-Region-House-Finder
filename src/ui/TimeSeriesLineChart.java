@@ -11,7 +11,6 @@ public class TimeSeriesLineChart{
 		JFreeChart linechart = ChartFactory.createLineChart(locationName, "Year", "NHPI", data, PlotOrientation.VERTICAL, true, true, false);
 		CategoryLabelPositions positions = CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 5.0);
 		linechart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(positions);
-		
 		return linechart;
 	}
 }

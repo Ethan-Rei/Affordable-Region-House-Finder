@@ -17,7 +17,7 @@ public class Analysis
 		prediction = new WekaPrediction();
 	}
 	
-	public static Analysis getAnalysisRequests() {
+	public static Analysis getInstance() {
 		if (singleton != null) { return new Analysis(); }
 		return singleton;
 	}

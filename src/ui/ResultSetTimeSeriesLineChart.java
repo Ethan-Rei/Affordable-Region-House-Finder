@@ -4,7 +4,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.*;
 import java.sql.*;
 
-public class ResultSetTimeSeriesLineChart {
+public class ResultSetTimeSeriesLineChart{
 
 	public static JFreeChart getChart(String locationName, ResultSet values) {
 		DefaultCategoryDataset data = createDatasetFromResultSet(values);
