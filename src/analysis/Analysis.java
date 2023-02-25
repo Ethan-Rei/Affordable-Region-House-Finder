@@ -23,12 +23,12 @@ public class Analysis
 	}
 	
 
-	public double tTest(double[] timeSeries1, double[] timeSeries2) {	
-		return ttest.tTest(timeSeries1, timeSeries2);
+	public MutablePair<Double, Date>[] predict(double[] values, Date[] dates) {	
+		return prediction.predict(values, dates);
 	}
 	
-	public MutablePair<Double, Date>[] predict(double[] values1, Date[] dates1, double[] values2, Date[] dates2) {	
-		return prediction.predict(values1, dates1, values2, dates2);
+	public double tTest(double[] values1, double[] values2) {	
+		return ttest.tTest(values1, values2);
 	}
 	
 	public static void main(String[] args) {
