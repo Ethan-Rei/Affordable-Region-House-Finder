@@ -1,4 +1,4 @@
-package ui;
+package graphs;
 
 import database.*;
 import java.sql.*;

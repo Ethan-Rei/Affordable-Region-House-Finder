@@ -1,4 +1,4 @@
-package ui;
+package graphs;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.*;
