@@ -23,8 +23,8 @@ public class Analysis
 	}
 	
 
-	public MutablePair<Double, Date>[] predict(double[] values, Date[] dates) {	
-		return prediction.predict(values, dates);
+	public double[] predict(double[] values, Date[] dates, int predictMonths) {	
+		return prediction.predict(values, dates, predictMonths);
 	}
 	
 	public double tTest(double[] values1, double[] values2) {	
