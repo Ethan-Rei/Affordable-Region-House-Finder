@@ -18,9 +18,13 @@ public class wekaTester {
 		}
 		
 	
-		MutablePair<Double, Date>[] prediction;
+		double[] prediction;
 		WekaPrediction predictor = new WekaPrediction();
-		prediction = predictor.predict(testNHPIs, testDates);
+		prediction = predictor.predict(testNHPIs, testDates, 4);
+		
+		for (int i = 0; i < prediction.length; i++) {
+			System.out.println(prediction[i]);
+		}
 		
 		
 	}

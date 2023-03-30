@@ -12,10 +12,13 @@ import org.apache.commons.lang3.tuple.MutablePair;
 class WekaPrediction implements TimeSeriesPrediction{
 	
 	
-	
-	public MutablePair<Double, Date>[] predict(double[] values, Date[] dates) {
+	@Override
+	public double[] predict(double[] values, Date[] dates, int predictMonths) {
 		
+		// Setup attributes, instances object, and calendar (to get integer values for dates)
 		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dates[dates.length - 1]);
+		int lastMonth = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 2;
 		Attribute dateVals = new Attribute("Date");
 		Attribute nhpiVals = new Attribute("NHPI");
 		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
@@ -23,41 +26,46 @@ class WekaPrediction implements TimeSeriesPrediction{
 		attributes.add(nhpiVals);
 		Instances data = new Instances("time series data", attributes, values.length);
 		
-		System.out.println(data);
-		System.out.println(dateVals.isString());
-		
+		// Turn input data into an instance object and put them into the instances object
 		for (int i = 0; i < values.length; i++) {
 			Instance dataPoint = new DenseInstance(2);
 			calendar.setTime(dates[i]);
-			int numOfMonths = calendar.get(Calendar.YEAR) + calendar.get(Calendar.MONTH);
+			int numOfMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
 			
-			dataPoint.setValue(dateVals, numOfMonths);
-			dataPoint.setValue(nhpiVals, values[i]);
+			dataPoint.setValue(0, numOfMonths);
+			dataPoint.setValue(1, values[i]);
+			System.out.println(numOfMonths);
+			System.out.println(values[i]);
 			data.add(dataPoint);
 		}
-		data.setClassIndex(0);
 		
-		LinearRegression regressionModel = new LinearRegression();
+		// Set the object to predicted to the nhpi
+		data.setClassIndex(1);
 		
+		// Create a regression model and train it on the new data
+		LinearRegression regressionModel = new LinearRegression();	
 		try {
 			regressionModel.buildClassifier(data);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-		Instance predicationDataSet = data.get(0);
-		System.out.println(predicationDataSet);
-		try {
-			double value = regressionModel.classifyInstance(predicationDataSet);
-			System.out.println(value);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		// Predict the desired amount of months
+		double[] predictionArray = new double[predictMonths];
+		for (int i = 0; i < predictMonths; i++) {
+			Instance newPoint = new DenseInstance(2);
+			int numOfMonths = lastMonth + i;
+			newPoint.setValue(0, numOfMonths);
+			newPoint.setMissing(1);
+			try {
+				predictionArray[i] = regressionModel.classifyInstance(newPoint);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
-		return null; // To implement
+		return predictionArray;
 	}
+
 }
