@@ -24,7 +24,6 @@ public class MainWindow {
 	private final JLabel locationLabel = new JLabel("Location");
 	private final JComboBox btnLocation1 = new JComboBox();
 	private final JComboBox btnLocation2 = new JComboBox();
-
 	private final JButton loadData = new JButton("loadData");
 	private final JLabel timesLabel = new JLabel("Times");
 	private final JComboBox btnLocation1_1 = new JComboBox();
@@ -69,10 +68,6 @@ public class MainWindow {
 			  System.exit(0);
 			 }
 			});
-		
-		
-		
-		
 	}
 
 	/**
