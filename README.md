@@ -12,6 +12,6 @@ Clone the repository.
 
 If you are using your own IDE, configure the buildpath appropriately.
 
-If you are using Eclipse:
-Make a new Java project called "Affordable-Region-House-Finder" in the same folder you cloned in.
+If you are using Eclipse:\
+Make a new Java project called "Affordable-Region-House-Finder" in the same folder you cloned in.\
 Import all the libraries required in Java Build Path.
