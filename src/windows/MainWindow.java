@@ -1,26 +1,16 @@
 package windows;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.Panel;
 import javax.swing.JRadioButton;
 import javax.swing.JPanel;
-import javax.swing.JFormattedTextField;
 import java.awt.ScrollPane;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JSplitPane;
-import javax.swing.JLayeredPane;
 
 public class MainWindow extends WindowFrame {
 
-	private JFrame frame;
 	private final JLabel locationLabel = new JLabel("Location");
 	private final JComboBox btnLocation1 = new JComboBox();
 	private final JComboBox btnLocation2 = new JComboBox();

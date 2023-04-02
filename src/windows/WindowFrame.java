@@ -1,7 +1,6 @@
 package windows;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public abstract class WindowFrame {
 	protected JFrame frame;

@@ -13,7 +13,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import database.Database;
-import database.DatabaseLogin;
 
 public class LoginWindow extends WindowFrame {
 	private final String title = "Login";
