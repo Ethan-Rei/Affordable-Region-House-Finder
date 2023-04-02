@@ -14,7 +14,7 @@ public class Analysis
 	
 	private Analysis() {
 		ttest = new ApacheTTest();
-		prediction = new WekaPrediction();
+		prediction = new WekaLRPrediction();
 	}
 	
 	public static Analysis getInstance() {
