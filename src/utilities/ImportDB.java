@@ -1,6 +1,5 @@
 package utilities;
 
-import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,41 +12,45 @@ import java.util.Scanner;
 
 import com.opencsv.CSVReader;
 
+/**
+ * This class is only meant to be run if you need to import the database from the CSV.
+ * Edit the username, password, ip, port and schema as needed.
+ *
+ */
 public class ImportDB {
     private static Connection connection;
     private static Statement statement;
     private static PreparedStatement pStatement;
-    private final static String loginFile = "login.txt";
     
     // Change these as needed
-    private static String ip;
-    private static String schema;
-    private static String port;
-    private static String username;
-    private static String password;
+    private static String username = "";
+    private static String password = "";
+    private static String ip = "127.0.0.1";
+    private static String port = "3306";
+    private static String schema = "nhpi";
     private static String address;
     
     private ImportDB() {}
     
 	public static void main(String[] args) {
 		try {
-			// get sql login details from login.txt
-			File login = new File(loginFile);
-			Scanner fileReader = new Scanner(login);
-			ip = fileReader.nextLine();
-			schema = fileReader.nextLine();
-			port = fileReader.nextLine();
-			username = fileReader.nextLine();
-			password = fileReader.nextLine();
+			Scanner input = new Scanner(System.in);
+			System.out.println("Enter your username:");
+			username = input.nextLine();
+			System.out.println("Enter your password:");
+			password = input.nextLine();
+			
 			address = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
-			fileReader.close();
 			
 			// begin connection to database
 			connection = DriverManager.getConnection(address, username, password);
 			statement = connection.createStatement();
+			System.out.println("Removing table \"data\" if exists.");
 			removeData("data");
+			System.out.println("Importing the CSV to the database. Please wait this will take awhile.");
 			importData("18100205.csv", "data");
 			connection.close();
+			System.out.println("Finished importing the CSV to the database.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
