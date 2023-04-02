@@ -7,9 +7,9 @@ import weka.core.Attribute;
 import weka.core.*;
 import java.util.Calendar;
 import weka.classifiers.functions.LinearRegression;
-import org.apache.commons.lang3.tuple.MutablePair;
 
-class WekaPrediction implements TimeSeriesPrediction{
+
+class WekaLRPrediction implements TimeSeriesPrediction{
 	
 	
 	@Override
@@ -18,7 +18,7 @@ class WekaPrediction implements TimeSeriesPrediction{
 		// Setup attributes, instances object, and calendar (to get integer values for dates)
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dates[dates.length - 1]);
-		int lastMonth = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 2;
+		int firstMonth = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 2;
 		Attribute dateVals = new Attribute("Date");
 		Attribute nhpiVals = new Attribute("NHPI");
 		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
@@ -54,7 +54,7 @@ class WekaPrediction implements TimeSeriesPrediction{
 		double[] predictionArray = new double[predictMonths];
 		for (int i = 0; i < predictMonths; i++) {
 			Instance newPoint = new DenseInstance(2);
-			int numOfMonths = lastMonth + i;
+			int numOfMonths = firstMonth + i;
 			newPoint.setValue(0, numOfMonths);
 			newPoint.setMissing(1);
 			try {
