@@ -14,7 +14,7 @@ public class Analysis
 	
 	private Analysis() {
 		ttest = new ApacheTTest();
-		prediction = new WekaLRPrediction();
+		prediction = new WekaPrediction();
 	}
 	
 	public static Analysis getInstance() {
@@ -23,8 +23,8 @@ public class Analysis
 	}
 	
 
-	public double[] predict(double[] values, Date[] dates, int predictMonths) {	
-		return prediction.predict(values, dates, predictMonths);
+	public double[] predict(double[] values, Date[] dates, int predictMonths, int algorithm) {	
+		return prediction.predict(values, dates, predictMonths, algorithm);
 	}
 	
 	public double tTest(double[] values1, double[] values2) {	

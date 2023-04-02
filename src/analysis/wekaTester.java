@@ -20,20 +20,12 @@ public class wekaTester {
 		
 	
 		double[] prediction;
-		WekaLRPrediction predictor = new WekaLRPrediction();
-		prediction = predictor.predict(testNHPIs, testDates, 4);
+		WekaPrediction predictor = new WekaPrediction();
+		prediction = predictor.predict(testNHPIs, testDates, 4, WekaPrediction.LINEAR_REGRESSION);
 		
 		for (int i = 0; i < prediction.length; i++) {
 			System.out.println(prediction[i]);
 		}
-		
-		WekaTSFPrediction predictor2 = new WekaTSFPrediction();
-		prediction = predictor2.predict(testNHPIs, testDates, 4);
-		
-		for (int i = 0; i < prediction.length; i++) {
-			System.out.println(prediction[i]);
-		}
-		
 	}
 
 }

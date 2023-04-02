@@ -9,16 +9,16 @@ import java.util.Calendar;
 import weka.classifiers.evaluation.NumericPrediction;
 import weka.classifiers.functions.GaussianProcesses;
 import weka.classifiers.functions.LinearRegression;
-import weka.classifiers.functions.SMO;
-import weka.classifiers.timeseries.HoltWinters;
 import weka.classifiers.timeseries.WekaForecaster;
 
 
-class WekaLRPrediction implements TimeSeriesPrediction{
+class WekaPrediction implements TimeSeriesPrediction{
 	
+	public static final int LINEAR_REGRESSION = 0;
+	public static final int GAUSSIAN_PROCESS = 1;
 	
 	@Override
-	public double[] predict(double[] values, Date[] dates, int predictMonths) {
+	public double[] predict(double[] values, Date[] dates, int predictMonths, int algorithm) {
 		
 		// Setup the data set into attributes and instances
 		
@@ -45,7 +45,16 @@ class WekaLRPrediction implements TimeSeriesPrediction{
 		// Setup the forecaster on given data
 		
 		WekaForecaster forecastModel = new WekaForecaster();
-		forecastModel.setBaseForecaster(new HoltWinters());
+		
+		switch (algorithm) {
+		case LINEAR_REGRESSION:
+			forecastModel.setBaseForecaster(new LinearRegression());
+			break;
+		case GAUSSIAN_PROCESS:
+			forecastModel.setBaseForecaster(new GaussianProcesses());
+			break;
+		}
+		
 		
 		forecastModel.getTSLagMaker().setTimeStampField("Date");
 		forecastModel.getTSLagMaker().setMinLag(12);
