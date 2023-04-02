@@ -26,7 +26,7 @@ Input your username and password and it should automatically build the database.
 You may proceed to run Application.java to use the software.
 
 ### Note
-If you use a database other than MySQL, make sure to create 1 table with 4 columns:
+If you use a database other than MySQL, make sure to create 1 table called "data" with 4 columns:
 - refdate (of type Date, Month-Year in the CSV)
 - location_name (of type char, Provinces, etc. in the CSV)
 - location_level (of type char, Region, City, Country in the CSV)
