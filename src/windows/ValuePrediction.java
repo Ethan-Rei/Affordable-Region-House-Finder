@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 public class ValuePrediction {
@@ -17,10 +18,10 @@ public class ValuePrediction {
 	private final JLabel ValuePredictionLabel = new JLabel("Value Prediction");
 	private final JLabel algorithmlbl = new JLabel("Choose an algorithm:");
 	private final JRadioButton linearrd = new JRadioButton("Linear Regression");
-	private final JRadioButton arimard = new JRadioButton("ARIMA");
-	private final JRadioButton holtWinterrd = new JRadioButton("Holt-Winters");
+	private final JRadioButton gaussianrd = new JRadioButton("Gaussian Process");
+	private final ButtonGroup algoGrp = new ButtonGroup();
 	private final JLabel lblAmountOfMonths = new JLabel("Amount of months");
-	private final JComboBox monthbx = new JComboBox();
+	private final JComboBox<String> monthbx = new JComboBox<String>();
 	private final JLabel lblIterations = new JLabel("Iterations ");
 	private final JTextField iterationtxt = new JTextField();
 	private final JLabel lblEpochs = new JLabel("Epochs");
@@ -28,7 +29,7 @@ public class ValuePrediction {
 	private final JLabel lblConvergence = new JLabel("Convergence");
 	private final JTextField convergencetxt = new JTextField();
 	private final JButton btnPredict = new JButton("Predict");
-	private final JButton btnCancel = new JButton("Cancel");
+
 
 	/**
 	 * Launch the application.
@@ -51,11 +52,6 @@ public class ValuePrediction {
 	 */
 	public ValuePrediction() {
 		initialize();
-		btnCancel.addActionListener (new ActionListener (){
-			 public void actionPerformed (ActionEvent e) {
-			  System.exit(0);
-			 }
-			});
 	}
 
 	/**
@@ -65,55 +61,48 @@ public class ValuePrediction {
 		iterationtxt.setBounds(17, 262, 130, 26);
 		iterationtxt.setColumns(10);
 		ValuePrediction = new JFrame();
-		ValuePrediction.setBounds(100, 100, 550, 400);
+		ValuePrediction.setSize(450, 400);
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ValuePrediction.getContentPane().setLayout(null);
-		ValuePredictionLabel.setBounds(192, 21, 140, 16);
-		
+		ValuePredictionLabel.setBounds(168, 21, 140, 16);
 		ValuePrediction.getContentPane().add(ValuePredictionLabel);
-		algorithmlbl.setBounds(172, 49, 180, 16);
 		
+		algorithmlbl.setBounds(160, 49, 180, 16);
 		ValuePrediction.getContentPane().add(algorithmlbl);
-		linearrd.setBounds(19, 92, 169, 23);
 		
+		linearrd.setBounds(50, 92, 169, 23);
 		ValuePrediction.getContentPane().add(linearrd);
-		arimard.setBounds(211, 92, 141, 23);
 		
-		ValuePrediction.getContentPane().add(arimard);
-		holtWinterrd.setBounds(335, 92, 141, 23);
+		gaussianrd.setBounds(250, 92, 141, 23);
+		ValuePrediction.getContentPane().add(gaussianrd);
 		
-		ValuePrediction.getContentPane().add(holtWinterrd);
-		lblAmountOfMonths.setBounds(172, 152, 180, 16);
+		algoGrp.add(gaussianrd);
+		algoGrp.add(linearrd);
 		
+		lblAmountOfMonths.setBounds(165, 152, 180, 16);
 		ValuePrediction.getContentPane().add(lblAmountOfMonths);
-		monthbx.setBounds(172, 180, 138, 27);
 		
+		monthbx.setBounds(150, 180, 138, 27);
 		ValuePrediction.getContentPane().add(monthbx);
-		lblIterations.setBounds(23, 235, 140, 16);
+		String[] cmbBoxValues = getCmbBoxValues();
+		for (String month: cmbBoxValues) {
+			monthbx.addItem(month);
+		}
+		monthbx.setSelectedItem("1");
 		
-		ValuePrediction.getContentPane().add(lblIterations);
-		
-		ValuePrediction.getContentPane().add(iterationtxt);
-		lblEpochs.setBounds(172, 235, 140, 16);
-		
-		ValuePrediction.getContentPane().add(lblEpochs);
-		epochstxt.setColumns(10);
-		epochstxt.setBounds(180, 262, 130, 26);
-		
-		ValuePrediction.getContentPane().add(epochstxt);
-		lblConvergence.setBounds(367, 235, 140, 16);
-		
-		ValuePrediction.getContentPane().add(lblConvergence);
-		convergencetxt.setColumns(10);
-		convergencetxt.setBounds(361, 262, 130, 26);
-		
-		ValuePrediction.getContentPane().add(convergencetxt);
-		btnPredict.setBounds(190, 300, 117, 29);
-		
+		btnPredict.setBounds(160, 270, 117, 29);
 		ValuePrediction.getContentPane().add(btnPredict);
-		btnCancel.setBounds(192, 337, 117, 29);
 		
-		ValuePrediction.getContentPane().add(btnCancel);
+		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	private String[] getCmbBoxValues() {
+		String[] strValue = new String[12];
+		
+		for (int i = 1; i <= 12; i++) {
+			strValue[i-1] = Integer.toString(i);
+		}
+		return strValue;
 	}
 
 }
