@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
 
-public class MainWindow {
+public class MainWindow extends WindowFrame {
 
 	private JFrame frame;
 	private final JLabel locationLabel = new JLabel("Location");
@@ -43,37 +43,17 @@ public class MainWindow {
 	private final JComboBox comboBox = new JComboBox();
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public MainWindow() {
-		initialize();
-		btnCancel.addActionListener (new ActionListener (){
-			 public void actionPerformed (ActionEvent e) {
-			  System.exit(0);
-			 }
-			});
+		createWindow();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	@Override
+	public void createWindow() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 941, 957);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,14 +115,9 @@ public class MainWindow {
 		btnPredict.setBounds(323, 82, 127, 29);
 		
 		panel_1.add(btnPredict);
-		btnCancel.setBounds(218, 172, 117, 29);
-		
-		frame.getContentPane().add(btnCancel);
 		comboBox.setBounds(186, 41, 105, 27);
 		
 		frame.getContentPane().add(comboBox);
-		
-
 		frame.setVisible(true);
 	}
 }

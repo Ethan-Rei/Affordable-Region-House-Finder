@@ -10,7 +10,7 @@ public class VisualTester {
 		String endDate = "2020-01";
 		String type1 = "Area";
 		String type2 = "Bar";
-		JFrame chart1 = MainWindow.frameChart(locationName, startDate, endDate, type1);
-		JFrame chart2 = MainWindow.frameChart(locationName, startDate, endDate, type2);
+//		JFrame chart1 = MainWindow.frameChart(locationName, startDate, endDate, type1);
+//		JFrame chart2 = MainWindow.frameChart(locationName, startDate, endDate, type2);
 	}
 }
