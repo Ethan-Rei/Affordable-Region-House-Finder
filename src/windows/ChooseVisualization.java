@@ -15,7 +15,6 @@ public class ChooseVisualization extends InternalFrame{
 	private final JLabel chooselabel = new JLabel("Choose Visualization");
 	private final JCheckBox Graohchkbx = new JCheckBox("Graph ");
 	private final JCheckBox Tablechkbx = new JCheckBox("Table");
-	private final JCheckBox chckbxPieChart = new JCheckBox("Pie Chart");
 	private final JCheckBox chckbxPlotGraph = new JCheckBox("Plot Graph");
 	private final JButton btnUpdate = new JButton("Update Visualization ");
 	private final JButton btnCancel = new JButton("Cancel");
@@ -30,26 +29,22 @@ public class ChooseVisualization extends InternalFrame{
 	private void createFrame() {
 		frame.setBounds(100, 100, 450, 300);
 		chooselabel.setBounds(16, 24, 149, 16);
-		
 		frame.getContentPane().add(chooselabel);
+		
 		Graohchkbx.setBounds(16, 63, 128, 23);
-		
 		frame.getContentPane().add(Graohchkbx);
+		
 		Tablechkbx.setBounds(222, 63, 128, 23);
-		
 		frame.getContentPane().add(Tablechkbx);
-		chckbxPieChart.setBounds(16, 146, 128, 23);
 		
-		frame.getContentPane().add(chckbxPieChart);
 		chckbxPlotGraph.setActionCommand("");
 		chckbxPlotGraph.setBounds(222, 146, 128, 23);
-		
 		frame.getContentPane().add(chckbxPlotGraph);
+		
 		btnUpdate.setBounds(16, 213, 177, 37);
-		
 		frame.getContentPane().add(btnUpdate);
-		btnCancel.setBounds(240, 213, 86, 37);
 		
+		btnCancel.setBounds(240, 213, 86, 37);
 		frame.getContentPane().add(btnCancel);
 		frame.setVisible(true);
 	}
