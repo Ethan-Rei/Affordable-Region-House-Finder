@@ -74,4 +74,7 @@ public class StatisticalTest extends InternalFrame {
 		frame.setVisible(true);
 	}
 	
+	public void close() {
+		
+	}
 }

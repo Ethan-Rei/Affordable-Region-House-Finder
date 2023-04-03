@@ -210,4 +210,16 @@ public class MainWindow extends WindowFrame {
 			btnPredict.setEnabled(true);
 		}
 	}
+
+	public JButton getBtnVisualize() {
+		return btnVisualize;
+	}
+
+	public JButton getBtnCompare() {
+		return btnCompare;
+	}
+
+	public JButton getBtnPredict() {
+		return btnPredict;
+	}
 }
