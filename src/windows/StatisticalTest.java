@@ -14,11 +14,15 @@ public class StatisticalTest {
 
 	private JFrame frame;
 	private final JLabel lblNewLabel = new JLabel("Statstical Test");
-	private final JLabel Time1label = new JLabel("Time 1");
-	private final JLabel Time2label = new JLabel("Time 2");
-	private final JComboBox comboBox = new JComboBox();
-	private final JComboBox comboBox_1 = new JComboBox();
-	private final JButton btnCancel = new JButton("Cancel");
+	private final JLabel loclabel = new JLabel("Location");
+	private final JLabel startlabel = new JLabel("Start Date");
+	private final JLabel endlabel = new JLabel("End Date");
+	private final JComboBox locBox1 = new JComboBox();
+	private final JComboBox locBox2 = new JComboBox();
+	private final JComboBox startBox1 = new JComboBox();
+	private final JComboBox startBox2 = new JComboBox();
+	private final JComboBox endBox1 = new JComboBox();
+	private final JComboBox endBox2 = new JComboBox();
 	private final JButton btnCompare = new JButton("Compare");
 
 	/**
@@ -49,29 +53,41 @@ public class StatisticalTest {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setSize(500, 320);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		lblNewLabel.setBounds(25, 43, 93, 23);
 		
+		lblNewLabel.setBounds(200, 20, 93, 23);
 		frame.getContentPane().add(lblNewLabel);
-		Time1label.setBounds(101, 90, 61, 16);
 		
-		frame.getContentPane().add(Time1label);
-		Time2label.setBounds(101, 158, 61, 16);
+		loclabel.setBounds(30, 70, 61, 16);
+		frame.getContentPane().add(loclabel);
 		
-		frame.getContentPane().add(Time2label);
-		comboBox.setBounds(267, 86, 101, 27);
+		locBox1.setBounds(30, 110, 101, 27);
+		frame.getContentPane().add(locBox1);
 		
-		frame.getContentPane().add(comboBox);
-		comboBox_1.setBounds(267, 154, 101, 27);
+		locBox2.setBounds(30, 160, 101, 27);
+		frame.getContentPane().add(locBox2);
 		
-		frame.getContentPane().add(comboBox_1);
-		btnCancel.setBounds(267, 224, 117, 29);
+		startlabel.setBounds(180, 70, 61, 16);
+		frame.getContentPane().add(startlabel);
 		
-		frame.getContentPane().add(btnCancel);
-		btnCompare.setBounds(45, 224, 117, 29);
+		startBox1.setBounds(180, 110, 101, 27);
+		frame.getContentPane().add(startBox1);
 		
+		startBox2.setBounds(180, 160, 101, 27);
+		frame.getContentPane().add(startBox2);
+		
+		endlabel.setBounds(330, 70, 61, 16);
+		frame.getContentPane().add(endlabel);
+		
+		endBox1.setBounds(330, 110, 101, 27);
+		frame.getContentPane().add(endBox1);
+		
+		endBox2.setBounds(330, 160, 101, 27);
+		frame.getContentPane().add(endBox2);
+
+		btnCompare.setBounds(180, 224, 117, 29);
 		frame.getContentPane().add(btnCompare);
 	}
 }
