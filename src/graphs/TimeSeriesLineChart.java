@@ -16,6 +16,8 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
+import windows.WindowHelper;
+
 public class TimeSeriesLineChart{
 	
 	public static final int SMALL = 12;
@@ -46,7 +48,6 @@ public class TimeSeriesLineChart{
 		JFreeChart timeSeriesChart = ChartFactory.createTimeSeriesChart(locationName, "Date", "NHPI", dataCollection);
 		dataCollection.addSeries(data);
         DateAxis dateAxis = (DateAxis) timeSeriesChart.getXYPlot().getDomainAxis();
-        timeSeriesChart.getXYPlot();
         setDateAxis(dateAxis, monthCount);
         
 		return new TimeSeriesLineChart(timeSeriesChart, dataCollection);
@@ -107,8 +108,9 @@ public class TimeSeriesLineChart{
         	dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.YEAR, 4));
         }
         else {
-        	dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.YEAR, 6));
+        	dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.YEAR, 12));
         }
+		dateAxis.setDateFormatOverride(WindowHelper.dateFormat);
 	}
 	
 	@SuppressWarnings("deprecation")
