@@ -52,6 +52,12 @@ public class ValuePrediction {
 	 */
 	public ValuePrediction() {
 		initialize();
+		btnPredict.addActionListener (new ActionListener (){
+			 public void actionPerformed (ActionEvent e) {
+				 // To implement
+				 System.exit(0);
+			 }
+			});
 	}
 
 	/**

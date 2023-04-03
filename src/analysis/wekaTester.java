@@ -2,6 +2,7 @@ package analysis;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -17,7 +18,6 @@ public class wekaTester {
 			testDates[i] = dateFormat.parse("2000-0" + Integer.toString(i+1));
 			testNHPIs[i] = i;
 		}
-		
 	
 		double[] prediction;
 		WekaPrediction predictor = new WekaPrediction();
