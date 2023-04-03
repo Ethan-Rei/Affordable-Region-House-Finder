@@ -12,8 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class ChooseVisualization extends InternalFrame{
-
-	private JFrame frame;
 	private final JLabel chooselabel = new JLabel("Choose Visualization");
 	private final JCheckBox Graohchkbx = new JCheckBox("Graph ");
 	private final JCheckBox Tablechkbx = new JCheckBox("Table");
@@ -30,10 +28,7 @@ public class ChooseVisualization extends InternalFrame{
 	}
 
 	private void createFrame() {
-		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		chooselabel.setBounds(16, 24, 149, 16);
 		
 		frame.getContentPane().add(chooselabel);
@@ -56,5 +51,6 @@ public class ChooseVisualization extends InternalFrame{
 		btnCancel.setBounds(240, 213, 86, 37);
 		
 		frame.getContentPane().add(btnCancel);
+		frame.setVisible(true);
 	}
 }
