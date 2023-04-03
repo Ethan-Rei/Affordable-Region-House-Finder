@@ -14,6 +14,8 @@ public class StatisticalTest extends InternalFrame {
 	private final JLabel loclabel = new JLabel("Location");
 	private final JLabel startlabel = new JLabel("Start Date");
 	private final JLabel endlabel = new JLabel("End Date");
+	private final JLabel plabel = new JLabel("P - Value");
+	private final JComboBox<String> pBox = new JComboBox<String>();
 	private final JComboBox<String> locBox1 = new JComboBox<String>();
 	private final JComboBox<String> locBox2 = new JComboBox<String>();
 	private final JComboBox<String> startBox1 = new JComboBox<String>();
@@ -33,7 +35,7 @@ public class StatisticalTest extends InternalFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void createFrame(HashMap<String, HashMap<Date, Double>> loadedData) {
-		frame.setSize(500, 320);
+		frame.setSize(500, 380);
 		frame.setTitle(title);
 		
 		lblNewLabel.setBounds(200, 20, 93, 23);
@@ -68,7 +70,14 @@ public class StatisticalTest extends InternalFrame {
 		endBox2.setBounds(330, 160, 101, 27);
 		frame.getContentPane().add(endBox2);
 
-		btnCompare.setBounds(180, 224, 117, 29);
+		plabel.setBounds(180, 204, 117, 29);
+		frame.getContentPane().add(plabel);
+		
+		pBox.setBounds(180, 244, 117, 29);
+		frame.getContentPane().add(pBox);
+		populatePValues();
+		
+		btnCompare.setBounds(180, 294, 117, 29);
 		frame.getContentPane().add(btnCompare);
 		
 		frame.setVisible(true);
@@ -76,5 +85,13 @@ public class StatisticalTest extends InternalFrame {
 	
 	public void close() {
 		
+	}
+	
+	private void populatePValues() {
+		double val = 0.05;
+		for (int i = 0; i <= 15; i++) {
+			pBox.addItem(String.format("%.2f", val));
+			val += 0.01;
+		}
 	}
 }
