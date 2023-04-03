@@ -38,6 +38,10 @@ public class Database {
 		return query.queryTimes();
 	}
 	
+	public ResultSet queryNHPI(String locationName, String fromDate, String toDate) {
+		return query.queryNHPI(locationName, fromDate, toDate);
+	}
+	
 	public static void testSQLConnection() throws SQLException {
 		new MySQLConnection();
 	}

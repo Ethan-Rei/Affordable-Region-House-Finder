@@ -79,7 +79,7 @@ public class ImportDB {
 			String[] data = lineReader.readNext();
 			
 			while ((data = lineReader.readNext()) != null) {
-				if (!data[3].equals("House only") || data[10].isEmpty())
+				if (!data[3].equals("House only"))
 					continue;
 				
 				// REF_DATE
@@ -92,7 +92,10 @@ public class ImportDB {
 				pStatement.setString(3, determineType(data[1]));
 				
 				// VALUE
-				pStatement.setDouble(4, Double.parseDouble(data[10]));
+				if(data[10].isEmpty())
+					pStatement.setDouble(4, 0.0);
+				else
+					pStatement.setDouble(4, Double.parseDouble(data[10]));
 				
 				pStatement.addBatch();
 			}

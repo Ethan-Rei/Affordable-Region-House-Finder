@@ -9,4 +9,5 @@ interface DatabaseQuery {
 	public ResultSet query(String locationName, String fromDate, String toDate);
 	public ArrayList<String> queryLocations();
 	public ArrayList<String> queryTimes();
+	public ResultSet queryNHPI(String locationName, String fromDate, String toDate);
 }

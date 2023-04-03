@@ -70,5 +70,17 @@ class MySQLQuery implements DatabaseQuery {
 		
 		return null;
 	}
+	
+	@Override
+	public ResultSet queryNHPI(String locationName, String fromDate, String toDate) {
+		String query = String.format("SELECT refdate, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locationName, fromDate, toDate);
+		try {
+			return statement.executeQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 }
