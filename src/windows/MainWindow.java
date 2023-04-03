@@ -107,13 +107,13 @@ public class MainWindow extends WindowFrame {
 		radbtnGraph.setBounds(248, 42, 131, 23);
 		radbtnGraph.setSelected(true);
 		btnVisualize.setBounds(162, 82, 137, 29);
-		btnVisualize.addActionListener(e -> openInternalWindow(new ChooseVisualization()));
+		btnVisualize.addActionListener(e -> openInternalWindow(new ChooseVisualization(), btnVisualize));
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
-		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalTest(loadedTimeSeries)));
+		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalTest(loadedTimeSeries), btnCompare));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
-		btnPredict.addActionListener(e -> openInternalWindow(new ValuePrediction(loadedTimeSeries)));
+		btnPredict.addActionListener(e -> openInternalWindow(new ValuePrediction(loadedTimeSeries), btnPredict));
 		visualGrp.add(radbtnGraph);
 		visualGrp.add(radbtnTable);
 		
@@ -122,7 +122,7 @@ public class MainWindow extends WindowFrame {
 		panLeftMenuOptions.add(lblCompareLoc);
 		panLeftMenuOptions.add(boxLocation);
 		//frame.getContentPane().add(lblAnd);
-		//.getContentPane().add(boxSecondLocation);
+		//.getContentPane().add(boxSecond	Location);
 		
 		panLeftMenuOptions.add(boxStartTime);
 		panLeftMenuOptions.add(lblTimes);
@@ -176,8 +176,9 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 	
-	private void openInternalWindow(InternalFrame iFrame) {
+	private void openInternalWindow(InternalFrame iFrame, JButton button) {
 		frame.getLayeredPane().add(iFrame.frame);
+		button.setEnabled(false);
 	}
 	
 	private void addTimeSeries() {

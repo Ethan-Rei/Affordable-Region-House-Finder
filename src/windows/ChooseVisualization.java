@@ -48,4 +48,8 @@ public class ChooseVisualization extends InternalFrame{
 		frame.getContentPane().add(btnCancel);
 		frame.setVisible(true);
 	}
+	
+	public void close() {
+		MainWindow.getInstance().getBtnVisualize().setEnabled(true);
+	}
 }

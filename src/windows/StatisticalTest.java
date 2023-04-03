@@ -84,7 +84,7 @@ public class StatisticalTest extends InternalFrame {
 	}
 	
 	public void close() {
-		
+		MainWindow.getInstance().getBtnCompare().setEnabled(true);
 	}
 	
 	private void populatePValues() {

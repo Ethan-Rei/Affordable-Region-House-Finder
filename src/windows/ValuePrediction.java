@@ -97,5 +97,9 @@ public class ValuePrediction extends InternalFrame {
 		}
 		monthbx.setSelectedItem("1");
 	}
+	
+	public void close() {
+		MainWindow.getInstance().getBtnPredict().setEnabled(true);
+	}
 
 }

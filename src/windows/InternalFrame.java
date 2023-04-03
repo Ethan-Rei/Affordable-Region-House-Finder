@@ -2,6 +2,8 @@ package windows;
 
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 public abstract class InternalFrame {
 	protected JInternalFrame frame;
@@ -12,6 +14,8 @@ public abstract class InternalFrame {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setClosable(true);
+		frame.addPropertyChangeListener("closed", e -> close());
 	}
 	
+	public abstract void close();
 }
