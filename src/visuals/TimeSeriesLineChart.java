@@ -1,4 +1,4 @@
-package graphs;
+package visuals;
 import java.util.Date;
 import java.util.HashMap;
 

@@ -1,7 +1,5 @@
 package windows;
 
-import graphs.TimeSeriesLineChart;
-
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -18,6 +16,7 @@ import javax.swing.SwingConstants;
 import org.jfree.chart.ChartPanel;
 
 import database.Database;
+import visuals.TimeSeriesLineChart;
 
 import javax.swing.JPanel;
 import java.awt.ScrollPane;
