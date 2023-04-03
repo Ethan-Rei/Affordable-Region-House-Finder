@@ -1,19 +1,14 @@
 package windows;
 
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.HashMap;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
-import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
-public class ValuePrediction extends InternalFrame {
+public class PredictionWindow extends InternalFrame {
 	private final String title = "Prediction";
 	private final JLabel ValuePredictionLabel = new JLabel("Timeseries Prediction");
 	private final JLabel algorithmlbl = new JLabel("Choose an algorithm:");
@@ -33,7 +28,7 @@ public class ValuePrediction extends InternalFrame {
 	/**
 	 * Create the application.
 	 */
-	public ValuePrediction(HashMap<String, HashMap<Date, Double>> data) {
+	public PredictionWindow(HashMap<String, HashMap<Date, Double>> data) {
 		createFrame(data);
 	}
 
@@ -64,6 +59,8 @@ public class ValuePrediction extends InternalFrame {
 		
 		locbx.setBounds(40, 180, 101, 27);
 		frame.getContentPane().add(locbx);
+		WindowHelper.populateLocBox(locbx, loadedData);
+		locbx.addActionListener(e -> WindowHelper.populateStartDate(locbx, startbx, e, loadedData));
 		
 		startlbl.setBounds(160, 150, 61, 16);
 		frame.getContentPane().add(startlbl);
@@ -101,5 +98,7 @@ public class ValuePrediction extends InternalFrame {
 	public void close() {
 		MainWindow.getInstance().getBtnPredict().setEnabled(true);
 	}
+	
+	
 
 }

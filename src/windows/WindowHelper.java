@@ -35,7 +35,7 @@ public class WindowHelper {
 		endbox.removeAllItems();
 		String pickedLocation = locbox.getSelectedItem().toString();
 		try {
-			System.out.println(startbox.getSelectedItem());
+			System.out.println(pickedLocation);
 			Date pickedDate = dateFormat.parse(startbox.getSelectedItem().toString());
 			ArrayList<Date> validDates = getLastViableDate(pickedLocation, pickedDate, loadedData);
 			for (Date validDate: validDates) {

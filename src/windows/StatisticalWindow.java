@@ -90,7 +90,6 @@ public class StatisticalWindow extends InternalFrame {
 	}
 	
 	
-	
 	private void populatePValues() {
 		double val = 0.05;
 		for (int i = 0; i <= 15; i++) {
@@ -98,4 +97,6 @@ public class StatisticalWindow extends InternalFrame {
 			val += 0.01;
 		}
 	}
+
+	
 }

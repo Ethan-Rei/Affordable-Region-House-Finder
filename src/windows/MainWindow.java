@@ -113,7 +113,7 @@ public class MainWindow extends WindowFrame {
 		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedTimeSeries), btnCompare));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
-		btnPredict.addActionListener(e -> openInternalWindow(new ValuePrediction(loadedTimeSeries), btnPredict));
+		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedTimeSeries), btnPredict));
 		visualGrp.add(radbtnGraph);
 		visualGrp.add(radbtnTable);
 		
