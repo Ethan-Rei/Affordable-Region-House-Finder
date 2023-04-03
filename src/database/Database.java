@@ -2,6 +2,7 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Database {
 	private static Database singleton;
@@ -27,6 +28,14 @@ public class Database {
 	
 	public ResultSet query(String locationName, String fromDate, String toDate) {
 		return query.query(locationName, fromDate, toDate);
+	}
+	
+	public ArrayList<String> queryLocations() {
+		return query.queryLocations();
+	}
+	
+	public ArrayList<String> queryTimes() {
+		return query.queryTimes();
 	}
 	
 	public static void testSQLConnection() throws SQLException {

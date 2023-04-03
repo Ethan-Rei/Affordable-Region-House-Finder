@@ -27,6 +27,8 @@ public class DatabaseLogin {
 	
 	public DatabaseLogin(String filename) {
 		loginFile = new File(filename);
+		checkLoginFile();
+		loadLoginDetails();
 	}
 
 	public void checkLoginFile() {
@@ -76,7 +78,7 @@ public class DatabaseLogin {
 			schema = fileReader.nextLine();
 			fileReader.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // shouldn't really be possible to get here
 		} catch (NoSuchElementException ex) {
 			saveLoginDetails("", "", defaultIP, defaultPort, defaultSchema); // remakes login.txt if it had less than 5 lines or some unknown error
 			loadLoginDetails(); // attempt to reload

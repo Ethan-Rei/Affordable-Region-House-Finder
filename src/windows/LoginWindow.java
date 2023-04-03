@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -16,92 +15,88 @@ import database.Database;
 
 public class LoginWindow extends WindowFrame {
 	private final String title = "Login";
-	private final JLabel appTitle = new JLabel("Affordable House Region Finder");
-	private final JLabel loginDesc = new JLabel("Login into the Database");
-	private final JLabel loginInfo = new JLabel("Login Information");
-	private final JLabel databaseInfo = new JLabel("Database Information");
-	private final JLabel user = new JLabel("Username:");
-	private final JLabel pass = new JLabel("Password:");
-	private final JLabel ip = new JLabel("IP");
-	private final JLabel port = new JLabel("Port");
-	private final JLabel schema = new JLabel("Schema");
+	private final JLabel lblAppTitle = new JLabel("Affordable House Region Finder");
+	private final JLabel lblLoginDesc = new JLabel("Login into the Database");
+	private final JLabel lblLoginInfo = new JLabel("Login Information");
+	private final JLabel lblDatabaseInfo = new JLabel("Database Information");
+	private final JLabel lblUser = new JLabel("Username:");
+	private final JLabel lblPass = new JLabel("Password:");
+	private final JLabel lblIP = new JLabel("IP");
+	private final JLabel lblPort = new JLabel("Port");
+	private final JLabel lblSchema = new JLabel("Schema");
 	private final JTextField userInput = new JTextField();
 	private final JPasswordField passInput = new JPasswordField();
 	private final JTextField ipInput = new JTextField();
 	private final JTextField portInput = new JTextField();
 	private final JTextField schemaInput = new JTextField();
 	private final JSeparator sep = new JSeparator();
-	private final JButton login = new JButton("Login");
+	private final JButton btnLogin = new JButton("Login");
 	
 	private final String loginError = "Error logging into database. Error given:\n";
 	private final String missingSchema = "Please input the schema.";
 	
 	public LoginWindow () {
-		Database.loginDetails.checkLoginFile();
-		Database.loginDetails.loadLoginDetails();
 		createWindow();
 	}
 	
 	@Override
 	public void createWindow() {
 		frame.setSize(320, 340);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		frame.setTitle(title);
 		Font normalText = new Font("Dialog", 0, 11);
 		
-		appTitle.setFont(new Font("Dialog", 1, 18));
-		appTitle.setBounds(12, 15, 300, 23);
-		loginDesc.setFont(new Font("Dialog", 0, 14));
-		loginDesc.setBounds(75, 45, 160, 18);
+		lblAppTitle.setFont(new Font("Dialog", 1, 18));
+		lblAppTitle.setBounds(12, 15, 300, 23);
+		lblLoginDesc.setFont(new Font("Dialog", 0, 14));
+		lblLoginDesc.setBounds(75, 45, 160, 18);
 		
-		loginInfo.setFont(normalText);
-		loginInfo.setBounds(16, 80, 160, 14);
-		user.setFont(normalText);
-		user.setBounds(16, 105, 80, 14);
+		lblLoginInfo.setFont(normalText);
+		lblLoginInfo.setBounds(16, 80, 160, 14);
+		lblUser.setFont(normalText);
+		lblUser.setBounds(16, 105, 80, 14);
 		userInput.setBounds(80, 105, 210, 18);
 		userInput.setText(Database.loginDetails.getUsername());
-		pass.setFont(normalText);
-		pass.setBounds(16, 130, 80, 14);
+		lblPass.setFont(normalText);
+		lblPass.setBounds(16, 130, 80, 14);
 		passInput.setBounds(80, 130, 210, 18);
 		passInput.setText(Database.loginDetails.getPassword());
 		
 		sep.setBounds(0, 165, 320, 18);
 		
-		databaseInfo.setFont(normalText);
-		databaseInfo.setBounds(16, 180, 160, 14);
-		ip.setFont(normalText);
-		ip.setBounds(16, 205, 20, 14);
+		lblDatabaseInfo.setFont(normalText);
+		lblDatabaseInfo.setBounds(16, 180, 160, 14);
+		lblIP.setFont(normalText);
+		lblIP.setBounds(16, 205, 20, 14);
 		ipInput.setBounds(65, 205, 80, 18);
 		ipInput.setText(Database.loginDetails.getIP());
-		schema.setFont(normalText);
-		schema.setBounds(16, 230, 50, 14);
+		lblSchema.setFont(normalText);
+		lblSchema.setBounds(16, 230, 50, 14);
 		schemaInput.setBounds(65, 230, 80, 18);
 		schemaInput.setText(Database.loginDetails.getSchema());
-		port.setFont(normalText);
-		port.setBounds(165, 205, 20, 14);
+		lblPort.setFont(normalText);
+		lblPort.setBounds(165, 205, 20, 14);
 		portInput.setBounds(195, 205, 95, 18);
 		portInput.setText(Database.loginDetails.getPort());
 		
-		login.setBounds(110, 260, 80, 27);
-		login.addActionListener(e -> login(e));
+		btnLogin.setBounds(110, 260, 80, 27);
+		btnLogin.addActionListener(e -> login(e));
 		
-		frame.getContentPane().add(appTitle);
-		frame.getContentPane().add(loginDesc);
-		frame.getContentPane().add(loginInfo);
-		frame.getContentPane().add(user);
+		frame.getContentPane().add(lblAppTitle);
+		frame.getContentPane().add(lblLoginDesc);
+		frame.getContentPane().add(lblLoginInfo);
+		frame.getContentPane().add(lblUser);
 		frame.getContentPane().add(userInput);
-		frame.getContentPane().add(pass);
+		frame.getContentPane().add(lblPass);
 		frame.getContentPane().add(passInput);
 		frame.getContentPane().add(sep);
-		frame.getContentPane().add(databaseInfo);
-		frame.getContentPane().add(ip);
+		frame.getContentPane().add(lblDatabaseInfo);
+		frame.getContentPane().add(lblIP);
 		frame.getContentPane().add(ipInput);
-		frame.getContentPane().add(port);
+		frame.getContentPane().add(lblPort);
 		frame.getContentPane().add(portInput);
-		frame.getContentPane().add(schema);
+		frame.getContentPane().add(lblSchema);
 		frame.getContentPane().add(schemaInput);
-		frame.getContentPane().add(login);
+		frame.getContentPane().add(btnLogin);
 		
 		frame.setVisible(true);
 	}
