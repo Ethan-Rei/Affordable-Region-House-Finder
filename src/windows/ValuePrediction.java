@@ -3,7 +3,8 @@ package windows;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.Date;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -15,19 +16,13 @@ import javax.swing.JButton;
 public class ValuePrediction {
 
 	private JFrame ValuePrediction;
-	private final JLabel ValuePredictionLabel = new JLabel("Value Prediction");
+	private final JLabel ValuePredictionLabel = new JLabel("Timeseries Prediction");
 	private final JLabel algorithmlbl = new JLabel("Choose an algorithm:");
 	private final JRadioButton linearrd = new JRadioButton("Linear Regression");
 	private final JRadioButton gaussianrd = new JRadioButton("Gaussian Process");
 	private final ButtonGroup algoGrp = new ButtonGroup();
 	private final JLabel lblAmountOfMonths = new JLabel("Amount of months");
 	private final JComboBox<String> monthbx = new JComboBox<String>();
-	private final JLabel lblIterations = new JLabel("Iterations ");
-	private final JTextField iterationtxt = new JTextField();
-	private final JLabel lblEpochs = new JLabel("Epochs");
-	private final JTextField epochstxt = new JTextField();
-	private final JLabel lblConvergence = new JLabel("Convergence");
-	private final JTextField convergencetxt = new JTextField();
 	private final JButton btnPredict = new JButton("Predict");
 
 
@@ -51,26 +46,20 @@ public class ValuePrediction {
 	 * Create the application.
 	 */
 	public ValuePrediction() {
-		initialize();
-		btnPredict.addActionListener (new ActionListener (){
-			 public void actionPerformed (ActionEvent e) {
-				 // To implement
-				 System.exit(0);
-			 }
-			});
+		HashMap<String, HashMap<Date, Double>> loadedTimeSeries = null;
+		initialize(loadedTimeSeries);
+		
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		iterationtxt.setBounds(17, 262, 130, 26);
-		iterationtxt.setColumns(10);
+	private void initialize(HashMap<String, HashMap<Date, Double>> loadedTimeSeries) {
 		ValuePrediction = new JFrame();
 		ValuePrediction.setSize(450, 400);
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ValuePrediction.getContentPane().setLayout(null);
-		ValuePredictionLabel.setBounds(168, 21, 140, 16);
+		ValuePredictionLabel.setBounds(158, 21, 140, 16);
 		ValuePrediction.getContentPane().add(ValuePredictionLabel);
 		
 		algorithmlbl.setBounds(160, 49, 180, 16);
@@ -98,8 +87,17 @@ public class ValuePrediction {
 		
 		btnPredict.setBounds(160, 270, 117, 29);
 		ValuePrediction.getContentPane().add(btnPredict);
+		btnPredict.addActionListener (new ActionListener (){
+			 public void actionPerformed (ActionEvent e) {
+				 // To implement
+				 System.exit(0);
+			 }
+			});
 		
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		
 	}
 	
 	private String[] getCmbBoxValues() {
