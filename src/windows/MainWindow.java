@@ -16,6 +16,7 @@ import database.Database;
 import javax.swing.JPanel;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,7 @@ public class MainWindow extends WindowFrame {
 	
 	private final JLabel lblTimes = new JLabel("Times");
 	private final JLabel lblTo = new JLabel("to");
-	private final JComboBox<String> boxBegTime = new JComboBox<>();
+	private final JComboBox<String> boxStartTime = new JComboBox<>();
 	private final JComboBox<String> boxEndTime = new JComboBox<>();
 	private final JButton btnTimeSeries = new JButton("Add Time-Series");
 	
@@ -80,7 +81,7 @@ public class MainWindow extends WindowFrame {
 		lblAnd.setBounds(100, 75, 27, 18);
 		
 		lblTimes.setBounds(325, 17, 43, 16);
-		boxBegTime.setBounds(240, 41, 90, 27);
+		boxStartTime.setBounds(240, 41, 90, 27);
 		lblTo.setBounds(340, 46, 27, 18);
 		boxEndTime.setBounds(360, 41, 90, 27);
 		btnTimeSeries.setBounds(170, 80, 140, 27);
@@ -112,7 +113,7 @@ public class MainWindow extends WindowFrame {
 		//frame.getContentPane().add(lblAnd);
 		//.getContentPane().add(boxSecondLocation);
 		
-		frame.getContentPane().add(boxBegTime);
+		frame.getContentPane().add(boxStartTime);
 		frame.getContentPane().add(lblTimes);
 		frame.getContentPane().add(lblTo);
 		frame.getContentPane().add(boxEndTime);
@@ -157,7 +158,7 @@ public class MainWindow extends WindowFrame {
 	private void setTimeBoxes() {
 		ArrayList<String> times = Database.getInstance().queryTimes();
 		for (int i = 0; i < times.size(); i++) {
-			boxBegTime.addItem(times.get(i));
+			boxStartTime.addItem(times.get(i));
 			boxEndTime.addItem(times.get(i));
 		}
 	}
@@ -175,19 +176,27 @@ public class MainWindow extends WindowFrame {
 	}
 	
 	private void addTimeSeries() {
+		HashMap<String, HashMap<Date, Double>> test = loadedTimeSeries;
+		String location = boxLocation.getSelectedItem().toString();
+		String startTime = boxStartTime.getSelectedItem().toString();
+		String endTime = boxEndTime.getSelectedItem().toString();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
-		HashMap<Date, Double> timeSeries = null;
-		Date beg = null;
-		Date end = null;
+		
+		if(loadedTimeSeries.get(location) == null)
+			loadedTimeSeries.put(location, new HashMap<Date, Double>());
+		
+		HashMap<Date, Double> timeSeries = loadedTimeSeries.get(location);
+
 		try {
-			beg = format.parse(boxBegTime.getSelectedItem().toString());
-			end = format.parse(boxEndTime.getSelectedItem().toString());
+			// query database for nhpi values
+			ResultSet NHPIQuery = Database.getInstance().queryNHPI(location, startTime, endTime);
+			while (NHPIQuery.next()) {
+				Date refdate = format.parse(NHPIQuery.getString(1).substring(0, NHPIQuery.getString(1).length()-3));
+				timeSeries.put(refdate, NHPIQuery.getDouble(2));
+			}
 			
-			
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		loadedTimeSeries.put(boxLocation.getSelectedItem().toString(), null);
 	}
 }
