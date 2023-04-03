@@ -196,5 +196,12 @@ public class MainWindow extends WindowFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		if (loadedTimeSeries.size() >= 2) {
+			btnCompare.setEnabled(true);
+		}
+		if (loadedTimeSeries.size() >= 1) {
+			btnPredict.setEnabled(true);
+		}
 	}
 }
