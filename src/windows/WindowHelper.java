@@ -16,13 +16,13 @@ public class WindowHelper {
 	private static ArrayList<Date> getLastViableDate(String location, Date startDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// Guaranteed that location is present within the loadedData hashmap
 		ArrayList<Date> viableDates = new ArrayList<Date>();
-		Date nextDate = startDate;
+		Date currentDate = startDate;
 		calendar.setTime(startDate);
 		do {
-			viableDates.add(nextDate);
+			viableDates.add(currentDate);
 			calendar.add(Calendar.MONTH, 1);
-			nextDate = calendar.getTime();
-		} while(loadedData.get(location).containsKey(nextDate));
+			currentDate = calendar.getTime();
+		} while(loadedData.get(location).containsKey(currentDate));
 		
 		return viableDates;
 		
