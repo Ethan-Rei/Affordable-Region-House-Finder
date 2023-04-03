@@ -79,11 +79,7 @@ public class ValuePrediction {
 		
 		monthbx.setBounds(150, 180, 138, 27);
 		ValuePrediction.getContentPane().add(monthbx);
-		String[] cmbBoxValues = getCmbBoxValues();
-		for (String month: cmbBoxValues) {
-			monthbx.addItem(month);
-		}
-		monthbx.setSelectedItem("1");
+		setMnthBoxValues();
 		
 		btnPredict.setBounds(160, 270, 117, 29);
 		ValuePrediction.getContentPane().add(btnPredict);
@@ -96,17 +92,13 @@ public class ValuePrediction {
 		
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
-		
 	}
 	
-	private String[] getCmbBoxValues() {
-		String[] strValue = new String[12];
-		
+	private void setMnthBoxValues() {
 		for (int i = 1; i <= 12; i++) {
-			strValue[i-1] = Integer.toString(i);
+			monthbx.addItem(Integer.toString(i));
 		}
-		return strValue;
+		monthbx.setSelectedItem("1");
 	}
 
 }

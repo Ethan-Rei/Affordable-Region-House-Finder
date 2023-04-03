@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class StatisticalTest {
-
 	private JFrame frame;
 	private final JLabel lblNewLabel = new JLabel("Statstical Test");
 	private final JLabel loclabel = new JLabel("Location");
@@ -29,7 +30,6 @@ public class StatisticalTest {
 	private final JComboBox<String> endBox2 = new JComboBox<String>();
 	private final JButton btnCompare = new JButton("Compare");
 	private HashMap<String, HashMap<Date, Double>> loadedData;
-	private Calendar calendar;
 
 	/**
 	 * Launch the application.
@@ -61,9 +61,6 @@ public class StatisticalTest {
 	private void initialize(HashMap<String, HashMap<Date, Double>> loadedData) {
 		
 		this.loadedData = loadedData;
-		this.calendar = Calendar.getInstance();
-		
-		startBox1.addActionListener(locBox1);
 		
 		frame = new JFrame();
 		frame.setSize(500, 320);
@@ -87,9 +84,11 @@ public class StatisticalTest {
 		
 		startBox1.setBounds(180, 110, 101, 27);
 		frame.getContentPane().add(startBox1);
+		startBox1.addActionListener(e -> WindowHelper.populateEndDate(locBox1, startBox1, endBox1, e, loadedData));
 		
 		startBox2.setBounds(180, 160, 101, 27);
 		frame.getContentPane().add(startBox2);
+		startBox2.addActionListener(e -> WindowHelper.populateEndDate(locBox2, startBox2, endBox2, e, loadedData));
 		
 		endlabel.setBounds(330, 70, 61, 16);
 		frame.getContentPane().add(endlabel);
@@ -102,26 +101,5 @@ public class StatisticalTest {
 
 		btnCompare.setBounds(180, 224, 117, 29);
 		frame.getContentPane().add(btnCompare);
-	}
-	
-	@SuppressWarnings("unused")
-	private ArrayList<Date> getLastViableDate(String location, Date startDate) {
-		// Guaranteed that location is present within the loadedData hashmap
-		ArrayList<Date> viableDates = new ArrayList<Date>();
-		Date nextDate = startDate;
-		calendar.setTime(startDate);
-		do {
-			viableDates.add(nextDate);
-			calendar.add(Calendar.MONTH, 1);
-			nextDate = calendar.getTime();
-		} while(loadedData.get(location).containsKey(nextDate));
-		
-		return viableDates;
-		
-	}
-	
-	private void populateEndDate(JComboBox<String> locbox, JComboBox<String> startbox, JComboBox<String> endbox, ActionEvent e) {
-		String pickedLocation = locbox.getSelectedItem().toString();
-//		Date pickedDate = startbox.getSelectedItem().toString().
 	}
 }

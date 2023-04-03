@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainWindow extends WindowFrame {
-	public static final String DATE_FORMAT = "yyyy-MM";
 	private final String title = "Affordable Region House Finder";
 	private final JLabel lblCompareLoc = new JLabel("Pick Location");
 	private final JLabel lblAnd = new JLabel("and");
