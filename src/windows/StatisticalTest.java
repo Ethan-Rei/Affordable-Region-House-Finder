@@ -42,11 +42,6 @@ public class StatisticalTest {
 	 */
 	public StatisticalTest() {
 		initialize();
-	btnCancel.addActionListener (new ActionListener (){
-			 public void actionPerformed (ActionEvent e) {
-			  System.exit(0);
-			 }
-			});
 	}
 	
 	/**
@@ -72,10 +67,6 @@ public class StatisticalTest {
 		comboBox_1.setBounds(267, 154, 101, 27);
 		
 		frame.getContentPane().add(comboBox_1);
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnCancel.setBounds(267, 224, 117, 29);
 		
 		frame.getContentPane().add(btnCancel);
