@@ -2,6 +2,7 @@ package windows;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -38,6 +39,7 @@ public class MainWindow extends WindowFrame {
 	
 	private final JPanel panRightMenuOptions = new JPanel();
 	private final JLabel tabularViews = new JLabel("Tabular Views");
+	private final ButtonGroup visualGrp = new ButtonGroup();
 	private final JRadioButton radbtnTable = new JRadioButton("Table Summary");
 	private final JRadioButton radbtnGraph = new JRadioButton("Graph Summary");
 	private final JButton btnVisualize = new JButton("Visualizations...");
@@ -96,10 +98,8 @@ public class MainWindow extends WindowFrame {
 		
 		tabularViews.setBounds(185, 17, 87, 16);
 		radbtnTable.setBounds(71, 42, 128, 23);
-		radbtnTable.addActionListener(e -> selectTableView(e));
 		radbtnGraph.setBounds(248, 42, 131, 23);
 		radbtnGraph.setSelected(true);
-		radbtnGraph.addActionListener(e -> selectGraphView(e));
 		btnVisualize.setBounds(162, 82, 137, 29);
 		btnCompare.setBounds(16, 82, 127, 29);
 		btnCompare.setEnabled(false);
@@ -107,6 +107,8 @@ public class MainWindow extends WindowFrame {
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
 		btnCompare.addActionListener(e -> openPredictWindow(e));
+		visualGrp.add(radbtnGraph);
+		visualGrp.add(radbtnTable);
 		
 		// left side menu adds
 		frame.getContentPane().add(lblCompareLoc);
@@ -161,18 +163,6 @@ public class MainWindow extends WindowFrame {
 		for (int i = 0; i < times.size(); i++) {
 			boxStartTime.addItem(times.get(i));
 			boxEndTime.addItem(times.get(i));
-		}
-	}
-	
-	private void selectGraphView(ActionEvent e) {
-		if (radbtnTable.isSelected()) {
-			radbtnTable.setSelected(false);
-		}
-	}
-	
-	private void selectTableView(ActionEvent e) {
-		if (radbtnGraph.isSelected()) {
-			radbtnGraph.setSelected(false);
 		}
 	}
 	
