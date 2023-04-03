@@ -30,7 +30,6 @@ public class ValuePrediction {
 	private final JComboBox<String> startbx = new JComboBox<String>();
 	private final JComboBox<String> endbx = new JComboBox<String>();
 	private final JButton btnPredict = new JButton("Predict");
-	private HashMap<String, HashMap<Date, Double>> loadedData;
 
 
 	/**
@@ -40,7 +39,8 @@ public class ValuePrediction {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ValuePrediction window = new ValuePrediction();
+					HashMap<String, HashMap<Date, Double>> loadedData = null;
+					ValuePrediction window = new ValuePrediction(loadedData);
 					window.ValuePrediction.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,18 +52,14 @@ public class ValuePrediction {
 	/**
 	 * Create the application.
 	 */
-	public ValuePrediction() {
-		HashMap<String, HashMap<Date, Double>> loadedData = null;
-		initialize(loadedData);
-		
+	public ValuePrediction(HashMap<String, HashMap<Date, Double>> data) {
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(HashMap<String, HashMap<Date, Double>> loadedData) {
-		
-		this.loadedData = loadedData;
 		
 		ValuePrediction = new JFrame();
 		ValuePrediction.setSize(450, 400);

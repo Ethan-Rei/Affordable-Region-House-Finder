@@ -103,8 +103,10 @@ public class MainWindow extends WindowFrame {
 		btnVisualize.setBounds(162, 82, 137, 29);
 		btnCompare.setBounds(16, 82, 127, 29);
 		btnCompare.setEnabled(false);
+		btnCompare.addActionListener(e -> openStatWindow(e));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
+		btnCompare.addActionListener(e -> openPredictWindow(e));
 		
 		// left side menu adds
 		frame.getContentPane().add(lblCompareLoc);
@@ -174,8 +176,15 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 	
+	private void openStatWindow(ActionEvent e) {
+		new StatisticalTest(loadedTimeSeries);
+	}
+	
+	private void openPredictWindow(ActionEvent e) {
+		new ValuePrediction(loadedTimeSeries);
+	}
+	
 	private void addTimeSeries() {
-		HashMap<String, HashMap<Date, Double>> test = loadedTimeSeries;
 		String location = boxLocation.getSelectedItem().toString();
 		String startTime = boxStartTime.getSelectedItem().toString();
 		String endTime = boxEndTime.getSelectedItem().toString();

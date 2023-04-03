@@ -29,7 +29,6 @@ public class StatisticalTest {
 	private final JComboBox<String> endBox1 = new JComboBox<String>();
 	private final JComboBox<String> endBox2 = new JComboBox<String>();
 	private final JButton btnCompare = new JButton("Compare");
-	private HashMap<String, HashMap<Date, Double>> loadedData;
 
 	/**
 	 * Launch the application.
@@ -38,7 +37,8 @@ public class StatisticalTest {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					StatisticalTest window = new StatisticalTest();
+					HashMap<String, HashMap<Date, Double>> data = null;
+					StatisticalTest window = new StatisticalTest(data);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,8 +50,7 @@ public class StatisticalTest {
 	/**
 	 * Create the application.
 	 */
-	public StatisticalTest() {
-		HashMap<String, HashMap<Date, Double>> data = null;
+	public StatisticalTest(HashMap<String, HashMap<Date, Double>> data) {
 		initialize(data);
 	}
 	
@@ -59,8 +58,6 @@ public class StatisticalTest {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(HashMap<String, HashMap<Date, Double>> loadedData) {
-		
-		this.loadedData = loadedData;
 		
 		frame = new JFrame();
 		frame.setSize(500, 320);
