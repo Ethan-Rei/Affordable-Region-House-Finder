@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ChooseVisualization {
+public class ChooseVisualization extends InternalFrame{
 
 	private JFrame frame;
 	private final JLabel chooselabel = new JLabel("Choose Visualization");
@@ -23,38 +23,13 @@ public class ChooseVisualization {
 	private final JButton btnCancel = new JButton("Cancel");
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChooseVisualization window = new ChooseVisualization();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public ChooseVisualization() {
-		initialize();
-		btnCancel.addActionListener (new ActionListener (){
-			 public void actionPerformed (ActionEvent e) {
-			  System.exit(0);
-			 }
-			});
+		createFrame();
 	}
 
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
+	private void createFrame() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

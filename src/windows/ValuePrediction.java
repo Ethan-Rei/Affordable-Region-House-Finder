@@ -14,8 +14,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 public class ValuePrediction extends InternalFrame {
-
-	private JFrame ValuePrediction;
+	private final String title = "Prediction";
 	private final JLabel ValuePredictionLabel = new JLabel("Timeseries Prediction");
 	private final JLabel algorithmlbl = new JLabel("Choose an algorithm:");
 	private final JLabel loclbl = new JLabel("Location");
@@ -31,87 +30,65 @@ public class ValuePrediction extends InternalFrame {
 	private final JComboBox<String> endbx = new JComboBox<String>();
 	private final JButton btnPredict = new JButton("Predict");
 
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HashMap<String, HashMap<Date, Double>> loadedData = null;
-					ValuePrediction window = new ValuePrediction(loadedData);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
 	public ValuePrediction(HashMap<String, HashMap<Date, Double>> data) {
-		initialize(data);
+		createFrame(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(HashMap<String, HashMap<Date, Double>> loadedData) {
+	private void createFrame(HashMap<String, HashMap<Date, Double>> loadedData) {
+		frame.setSize(450, 400);
+		frame.setTitle(title);
 		
-		ValuePrediction = new JFrame();
-		ValuePrediction.setSize(450, 400);
-		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ValuePrediction.getContentPane().setLayout(null);
 		ValuePredictionLabel.setBounds(158, 21, 140, 16);
-		ValuePrediction.getContentPane().add(ValuePredictionLabel);
+		frame.getContentPane().add(ValuePredictionLabel);
 		
 		algorithmlbl.setBounds(160, 49, 180, 16);
-		ValuePrediction.getContentPane().add(algorithmlbl);
+		frame.getContentPane().add(algorithmlbl);
 		
 		linearrd.setBounds(50, 92, 169, 23);
-		ValuePrediction.getContentPane().add(linearrd);
+		frame.getContentPane().add(linearrd);
 		
 		gaussianrd.setBounds(250, 92, 141, 23);
-		ValuePrediction.getContentPane().add(gaussianrd);
+		frame.getContentPane().add(gaussianrd);
 		
 		algoGrp.add(gaussianrd);
 		algoGrp.add(linearrd);
 		
 		loclbl.setBounds(40, 150, 61, 16);
-		ValuePrediction.getContentPane().add(loclbl);
+		frame.getContentPane().add(loclbl);
 		
 		locbx.setBounds(40, 180, 101, 27);
-		ValuePrediction.getContentPane().add(locbx);
+		frame.getContentPane().add(locbx);
 		
 		startlbl.setBounds(160, 150, 61, 16);
-		ValuePrediction.getContentPane().add(startlbl);
+		frame.getContentPane().add(startlbl);
 		
 		startbx.setBounds(160, 180, 101, 27);
-		ValuePrediction.getContentPane().add(startbx);
+		frame.getContentPane().add(startbx);
 		startbx.addActionListener(e -> WindowHelper.populateEndDate(locbx, startbx, endbx, e, loadedData));
 		
 		endlbl.setBounds(280, 150, 61, 16);
-		ValuePrediction.getContentPane().add(endlbl);
+		frame.getContentPane().add(endlbl);
 		
 		endbx.setBounds(280, 180, 101, 27);
-		ValuePrediction.getContentPane().add(endbx);
+		frame.getContentPane().add(endbx);
 		
 		lblAmountOfMonths.setBounds(165, 235, 180, 16);
-		ValuePrediction.getContentPane().add(lblAmountOfMonths);
+		frame.getContentPane().add(lblAmountOfMonths);
 		
 		monthbx.setBounds(150, 265, 138, 27);
-		ValuePrediction.getContentPane().add(monthbx);
+		frame.getContentPane().add(monthbx);
 		setMnthBoxValues();
 		
 		btnPredict.setBounds(160, 310, 117, 29);
-		ValuePrediction.getContentPane().add(btnPredict);
+		frame.getContentPane().add(btnPredict);
 		
-		ValuePrediction.setVisible(true);
-		
-		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		frame.setVisible(true);
 	}
 	
 	private void setMnthBoxValues() {

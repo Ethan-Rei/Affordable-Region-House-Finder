@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class StatisticalTest extends InternalFrame {
+	private final String title = "Statistical Test";
 	private final JLabel lblNewLabel = new JLabel("Statistical Test");
 	private final JLabel loclabel = new JLabel("Location");
 	private final JLabel startlabel = new JLabel("Start Date");
@@ -32,10 +33,8 @@ public class StatisticalTest extends InternalFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void createFrame(HashMap<String, HashMap<Date, Double>> loadedData) {
-		frame = new JInternalFrame();
 		frame.setSize(500, 320);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frame.setTitle(title);
 		
 		lblNewLabel.setBounds(200, 20, 93, 23);
 		frame.getContentPane().add(lblNewLabel);
