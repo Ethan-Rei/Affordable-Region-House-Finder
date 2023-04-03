@@ -41,7 +41,6 @@ public class ValuePrediction {
 				try {
 					HashMap<String, HashMap<Date, Double>> loadedData = null;
 					ValuePrediction window = new ValuePrediction(loadedData);
-					window.ValuePrediction.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -108,6 +107,8 @@ public class ValuePrediction {
 		
 		btnPredict.setBounds(160, 310, 117, 29);
 		ValuePrediction.getContentPane().add(btnPredict);
+		
+		ValuePrediction.setVisible(true);
 		
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

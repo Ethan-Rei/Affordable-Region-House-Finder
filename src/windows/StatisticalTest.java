@@ -39,7 +39,6 @@ public class StatisticalTest {
 				try {
 					HashMap<String, HashMap<Date, Double>> data = null;
 					StatisticalTest window = new StatisticalTest(data);
-					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -98,6 +97,8 @@ public class StatisticalTest {
 
 		btnCompare.setBounds(180, 224, 117, 29);
 		frame.getContentPane().add(btnCompare);
+		
+		frame.setVisible(true);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
