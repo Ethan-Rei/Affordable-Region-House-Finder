@@ -107,10 +107,10 @@ public class MainWindow extends WindowFrame {
 		radbtnGraph.setBounds(248, 42, 131, 23);
 		radbtnGraph.setSelected(true);
 		btnVisualize.setBounds(162, 82, 137, 29);
-		btnVisualize.addActionListener(e -> openInternalWindow(new ChooseVisualization(), btnVisualize));
+		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
-		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalTest(loadedTimeSeries), btnCompare));
+		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedTimeSeries), btnCompare));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
 		btnPredict.addActionListener(e -> openInternalWindow(new ValuePrediction(loadedTimeSeries), btnPredict));

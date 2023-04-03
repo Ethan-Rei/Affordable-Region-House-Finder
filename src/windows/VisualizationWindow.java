@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ChooseVisualization extends InternalFrame{
+public class VisualizationWindow extends InternalFrame{
 	private final JLabel chooselabel = new JLabel("Choose Visualization");
 	private final JCheckBox Graohchkbx = new JCheckBox("Graph ");
 	private final JCheckBox Tablechkbx = new JCheckBox("Table");
@@ -22,7 +22,7 @@ public class ChooseVisualization extends InternalFrame{
 	/**
 	 * Create the application.
 	 */
-	public ChooseVisualization() {
+	public VisualizationWindow() {
 		createFrame();
 	}
 

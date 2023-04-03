@@ -1,14 +1,12 @@
 package windows;
 
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.util.Date;
 import java.util.HashMap;
 
-public class StatisticalTest extends InternalFrame {
+public class StatisticalWindow extends InternalFrame {
 	private final String title = "Statistical Test";
 	private final JLabel lblNewLabel = new JLabel("Statistical Test");
 	private final JLabel loclabel = new JLabel("Location");
@@ -27,7 +25,7 @@ public class StatisticalTest extends InternalFrame {
 	/**
 	 * Create the application.
 	 */
-	public StatisticalTest(HashMap<String, HashMap<Date, Double>> data) {
+	public StatisticalWindow(HashMap<String, HashMap<Date, Double>> data) {
 		createFrame(data);
 	}
 	
@@ -46,9 +44,13 @@ public class StatisticalTest extends InternalFrame {
 		
 		locBox1.setBounds(30, 110, 101, 27);
 		frame.getContentPane().add(locBox1);
+		WindowHelper.populateLocBox(locBox1, loadedData);
+		locBox1.addActionListener(e -> WindowHelper.populateStartDate(locBox1, startBox1, e, loadedData));
 		
 		locBox2.setBounds(30, 160, 101, 27);
 		frame.getContentPane().add(locBox2);
+		WindowHelper.populateLocBox(locBox2, loadedData);
+		locBox2.addActionListener(e -> WindowHelper.populateStartDate(locBox2, startBox2, e, loadedData));
 		
 		startlabel.setBounds(180, 70, 61, 16);
 		frame.getContentPane().add(startlabel);
@@ -86,6 +88,8 @@ public class StatisticalTest extends InternalFrame {
 	public void close() {
 		MainWindow.getInstance().getBtnCompare().setEnabled(true);
 	}
+	
+	
 	
 	private void populatePValues() {
 		double val = 0.05;
