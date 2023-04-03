@@ -1,5 +1,7 @@
 package windows;
 
+import graphs.TimeSeriesLineChart;
+
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -53,6 +55,7 @@ public class MainWindow extends WindowFrame {
 	private final JSeparator sepHori = new JSeparator();
 	
 	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
+	private final ArrayList<TimeSeriesLineChart> charts = new ArrayList<TimeSeriesLineChart>();
 
 	/**
 	 * Create the application.
@@ -212,6 +215,12 @@ public class MainWindow extends WindowFrame {
 				Date refdate = format.parse(NHPIQuery.getString(1).substring(0, NHPIQuery.getString(1).length()-3));
 				timeSeries.put(refdate, NHPIQuery.getDouble(2));
 			}
+			
+			// Create a new chart based on the query
+			Date startDate = format.parse(startTime);
+			Date endDate = format.parse(endTime);
+			TimeSeriesLineChart newChart = TimeSeriesLineChart.getChart(location, startDate, endDate, loadedTimeSeries);
+			charts.add(newChart);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
