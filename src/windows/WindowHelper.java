@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class WindowHelper {
 		endbox.removeAllItems();
 		String pickedLocation = locbox.getSelectedItem().toString();
 		try {
+			System.out.println(startbox.getSelectedItem());
 			Date pickedDate = dateFormat.parse(startbox.getSelectedItem().toString());
 			ArrayList<Date> validDates = getLastViableDate(pickedLocation, pickedDate, loadedData);
 			for (Date validDate: validDates) {
@@ -48,16 +50,21 @@ public class WindowHelper {
 	public static void populateStartDate(JComboBox<String> locbox, JComboBox<String> startbox, ActionEvent e, HashMap<String, HashMap<Date, Double>> loadedData) {
 		startbox.removeAllItems();
 		String pickedLocation = locbox.getSelectedItem().toString();
-		Set<Date> validDates = loadedData.get(pickedLocation).keySet();
+		Set<Date> validDatesSet = loadedData.get(pickedLocation).keySet();
+		ArrayList<Date> validDates = new ArrayList<Date>(validDatesSet);
+		Collections.sort(validDates);
 		for (Date validDate: validDates) {
 			startbox.addItem(dateFormat.format(validDate));
 		}
+		startbox.setSelectedItem(dateFormat.format(validDates.get(0)));
 	}
 
 	public static void populateLocBox(JComboBox<String> locbox, HashMap<String, HashMap<Date, Double>> loadedData) {
-		Set<String> validLocations = loadedData.keySet();
+		Set<String> validLocationsSet = loadedData.keySet();
+		ArrayList<String> validLocations = new ArrayList<String>(validLocationsSet);
 		for (String validLocation: validLocations) {
 			locbox.addItem(validLocation);
 		}
+		locbox.setSelectedItem(validLocations.get(0));
 	}
 }
