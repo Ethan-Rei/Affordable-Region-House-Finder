@@ -120,8 +120,7 @@ public class LoginWindow extends WindowFrame {
 			Database.loginDetails.saveLoginDetails(userInput.getText(), String.valueOf(passInput.getPassword()), ipInput.getText(), portInput.getText(), schemaInput.getText());
 			Database.getInstance();
 			destroyWindow();
-			
-			new MainWindow();
+			MainWindow.getInstance().createWindow();
 		} catch (SQLException se) {
 			JOptionPane.showMessageDialog(null, loginError + se.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}

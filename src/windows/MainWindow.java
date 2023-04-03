@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class MainWindow extends WindowFrame {
+	private static MainWindow singleton;
 	private final String title = "Affordable Region House Finder";
-	
 	private final JPanel panLeftMenuOptions = new JPanel();
 	private final JLabel lblCompareLoc = new JLabel("Pick Location");
 	private final JLabel lblAnd = new JLabel("and");
@@ -50,21 +50,24 @@ public class MainWindow extends WindowFrame {
 	private final JSeparator sepVert = new JSeparator();
 	private final JSeparator sepHori = new JSeparator();
 	
-	private final JLayeredPane layeredPane = frame.getLayeredPane();
-	
 	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
 
 	/**
 	 * Create the application.
 	 */
-	public MainWindow() {
+	private MainWindow() {
 		setLocationBoxes();
 		setTimeBoxes();
-		createWindow();
+	}
+	
+	public static MainWindow getInstance() {
+		if (singleton == null)
+			singleton = new MainWindow();
+		return singleton;
 	}
 	
 	public static void main(String[] args) {
-		new MainWindow();
+		MainWindow.getInstance().createWindow();
 	}
 
 	/**
@@ -104,6 +107,7 @@ public class MainWindow extends WindowFrame {
 		radbtnGraph.setBounds(248, 42, 131, 23);
 		radbtnGraph.setSelected(true);
 		btnVisualize.setBounds(162, 82, 137, 29);
+		btnVisualize.addActionListener(e -> openInternalWindow(new ChooseVisualization()));
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
 		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalTest(loadedTimeSeries)));
@@ -173,9 +177,7 @@ public class MainWindow extends WindowFrame {
 	}
 	
 	private void openInternalWindow(InternalFrame iFrame) {
-		layeredPane.add(iFrame.frame);
-		iFrame.frame.setVisible(true);
-		iFrame.frame.toFront();
+		frame.getLayeredPane().add(iFrame.frame);
 	}
 	
 	private void addTimeSeries() {
