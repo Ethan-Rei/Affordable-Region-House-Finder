@@ -81,7 +81,7 @@ public class MainWindow extends WindowFrame {
 	 */
 	@Override
 	public void createWindow() {
-		frame.setSize(1000, 750);
+		frame.setSize(1000, 550);
 		frame.setLocationRelativeTo(null);
 		frame.setTitle(title);
 		
@@ -154,7 +154,7 @@ public class MainWindow extends WindowFrame {
 		
 		Font visual = new Font("Dialog", 0, 24);
 		lblSelectVis.setFont(visual);
-		lblSelectVis.setBounds(315, 230, 450, 30);
+		lblSelectVis.setBounds(315, 180, 450, 30);
 		//scrollPane.setBounds(302, -32, 100, 100);
 		
 		// visualizations adds
@@ -221,15 +221,7 @@ public class MainWindow extends WindowFrame {
 			Date startDate = format.parse(startTime);
 			Date endDate = format.parse(endTime);
 			TimeSeriesLineChart newChart = TimeSeriesLineChart.getChart(location, startDate, endDate, loadedTimeSeries);
-			charts.add(newChart);
-			ChartPanel newChartPanel = new ChartPanel(newChart.getChart());
-			
-			newChartPanel.setBounds(0, 0, 300, 300);
-			panVisual.add(newChartPanel);
-			lblSelectVis.setVisible(false);
-			panVisual.repaint();
-			
-			
+			addNewVisual(newChart);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,6 +232,17 @@ public class MainWindow extends WindowFrame {
 		}
 		if (loadedTimeSeries.size() >= 1) {
 			btnPredict.setEnabled(true);
+		}
+	}
+	
+	private void addNewVisual(TimeSeriesLineChart newChart) {
+		charts.add(newChart);
+		ChartPanel newChartPanel = new ChartPanel(newChart.getChart());
+		if (charts.size() <= 3) {
+			newChartPanel.setBounds(charts.size()*320 - 320 + 12, 25, 320, 320);
+			panVisual.add(newChartPanel);
+			lblSelectVis.setVisible(false);
+			panVisual.repaint();
 		}
 	}
 
