@@ -18,12 +18,19 @@ public class ValuePrediction {
 	private JFrame ValuePrediction;
 	private final JLabel ValuePredictionLabel = new JLabel("Timeseries Prediction");
 	private final JLabel algorithmlbl = new JLabel("Choose an algorithm:");
+	private final JLabel loclbl = new JLabel("Location");
+	private final JLabel startlbl = new JLabel("Start Date");
+	private final JLabel endlbl = new JLabel("End Date");
+	private final JLabel lblAmountOfMonths = new JLabel("Amount of months");
 	private final JRadioButton linearrd = new JRadioButton("Linear Regression");
 	private final JRadioButton gaussianrd = new JRadioButton("Gaussian Process");
 	private final ButtonGroup algoGrp = new ButtonGroup();
-	private final JLabel lblAmountOfMonths = new JLabel("Amount of months");
 	private final JComboBox<String> monthbx = new JComboBox<String>();
+	private final JComboBox<String> locbx = new JComboBox<String>();
+	private final JComboBox<String> startbx = new JComboBox<String>();
+	private final JComboBox<String> endbx = new JComboBox<String>();
 	private final JButton btnPredict = new JButton("Predict");
+	private HashMap<String, HashMap<Date, Double>> loadedData;
 
 
 	/**
@@ -46,15 +53,18 @@ public class ValuePrediction {
 	 * Create the application.
 	 */
 	public ValuePrediction() {
-		HashMap<String, HashMap<Date, Double>> loadedTimeSeries = null;
-		initialize(loadedTimeSeries);
+		HashMap<String, HashMap<Date, Double>> loadedData = null;
+		initialize(loadedData);
 		
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(HashMap<String, HashMap<Date, Double>> loadedTimeSeries) {
+	private void initialize(HashMap<String, HashMap<Date, Double>> loadedData) {
+		
+		this.loadedData = loadedData;
+		
 		ValuePrediction = new JFrame();
 		ValuePrediction.setSize(450, 400);
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,21 +84,34 @@ public class ValuePrediction {
 		algoGrp.add(gaussianrd);
 		algoGrp.add(linearrd);
 		
-		lblAmountOfMonths.setBounds(165, 152, 180, 16);
+		loclbl.setBounds(40, 150, 61, 16);
+		ValuePrediction.getContentPane().add(loclbl);
+		
+		locbx.setBounds(40, 180, 101, 27);
+		ValuePrediction.getContentPane().add(locbx);
+		
+		startlbl.setBounds(160, 150, 61, 16);
+		ValuePrediction.getContentPane().add(startlbl);
+		
+		startbx.setBounds(160, 180, 101, 27);
+		ValuePrediction.getContentPane().add(startbx);
+		startbx.addActionListener(e -> WindowHelper.populateEndDate(locbx, startbx, endbx, e, loadedData));
+		
+		endlbl.setBounds(280, 150, 61, 16);
+		ValuePrediction.getContentPane().add(endlbl);
+		
+		endbx.setBounds(280, 180, 101, 27);
+		ValuePrediction.getContentPane().add(endbx);
+		
+		lblAmountOfMonths.setBounds(165, 235, 180, 16);
 		ValuePrediction.getContentPane().add(lblAmountOfMonths);
 		
-		monthbx.setBounds(150, 180, 138, 27);
+		monthbx.setBounds(150, 265, 138, 27);
 		ValuePrediction.getContentPane().add(monthbx);
 		setMnthBoxValues();
 		
-		btnPredict.setBounds(160, 270, 117, 29);
+		btnPredict.setBounds(160, 310, 117, 29);
 		ValuePrediction.getContentPane().add(btnPredict);
-		btnPredict.addActionListener (new ActionListener (){
-			 public void actionPerformed (ActionEvent e) {
-				 // To implement
-				 System.exit(0);
-			 }
-			});
 		
 		ValuePrediction.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

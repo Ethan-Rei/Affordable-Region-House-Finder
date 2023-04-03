@@ -29,6 +29,7 @@ public class WindowHelper {
 	}
 	
 	public static void populateEndDate(JComboBox<String> locbox, JComboBox<String> startbox, JComboBox<String> endbox, ActionEvent e, HashMap<String, HashMap<Date, Double>> loadedData) {
+		System.out.println("Here");
 		endbox.removeAllItems();
 		String pickedLocation = locbox.getSelectedItem().toString();
 		try {

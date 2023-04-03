@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class StatisticalTest {
 	private JFrame frame;
-	private final JLabel lblNewLabel = new JLabel("Statstical Test");
+	private final JLabel lblNewLabel = new JLabel("Statistical Test");
 	private final JLabel loclabel = new JLabel("Location");
 	private final JLabel startlabel = new JLabel("Start Date");
 	private final JLabel endlabel = new JLabel("End Date");
@@ -101,5 +101,7 @@ public class StatisticalTest {
 
 		btnCompare.setBounds(180, 224, 117, 29);
 		frame.getContentPane().add(btnCompare);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }
