@@ -42,6 +42,7 @@ public class LoginWindow extends WindowFrame {
 	@Override
 	public void createWindow() {
 		frame.setSize(320, 340);
+		frame.setLocationRelativeTo(null);
 		frame.setTitle(title);
 		Font normalText = new Font("Dialog", 0, 11);
 		

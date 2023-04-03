@@ -74,6 +74,7 @@ public class MainWindow extends WindowFrame {
 	@Override
 	public void createWindow() {
 		frame.setSize(1000, 750);
+		frame.setLocationRelativeTo(null);
 		frame.setTitle(title);
 		
 		// left side menu options
@@ -101,12 +102,12 @@ public class MainWindow extends WindowFrame {
 		radbtnGraph.setBounds(248, 42, 131, 23);
 		radbtnGraph.setSelected(true);
 		btnVisualize.setBounds(162, 82, 137, 29);
-		btnCompare.setBounds(16, 82, 127, 29);
+		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
 		btnCompare.addActionListener(e -> openStatWindow(e));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
-		btnCompare.addActionListener(e -> openPredictWindow(e));
+		btnPredict.addActionListener(e -> openPredictWindow(e));
 		visualGrp.add(radbtnGraph);
 		visualGrp.add(radbtnTable);
 		

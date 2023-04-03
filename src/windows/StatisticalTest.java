@@ -1,18 +1,9 @@
 package windows;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -31,22 +22,6 @@ public class StatisticalTest {
 	private final JButton btnCompare = new JButton("Compare");
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HashMap<String, HashMap<Date, Double>> data = null;
-					StatisticalTest window = new StatisticalTest(data);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public StatisticalTest(HashMap<String, HashMap<Date, Double>> data) {
@@ -57,7 +32,6 @@ public class StatisticalTest {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(HashMap<String, HashMap<Date, Double>> loadedData) {
-		
 		frame = new JFrame();
 		frame.setSize(500, 320);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

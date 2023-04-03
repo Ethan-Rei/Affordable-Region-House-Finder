@@ -9,7 +9,6 @@ public abstract class WindowFrame {
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 	}
 	
