@@ -81,7 +81,7 @@ public class TimeSeriesLineChart{
 			currentNHPI = loadedData.get(locationName).get(currentDate);
 			month = calendar.get(Calendar.MONTH) + 1;
 			year = calendar.get(Calendar.YEAR);
-			data.add(new Day(1, month, year - 1900), currentNHPI);
+			data.add(new Day(1, month, year), currentNHPI);
 			
 			// Next Date
 			calendar.add(Calendar.MONTH, 1);

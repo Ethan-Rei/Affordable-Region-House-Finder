@@ -15,6 +15,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import org.jfree.chart.ChartPanel;
+
 import database.Database;
 
 import javax.swing.JPanel;
@@ -221,6 +223,14 @@ public class MainWindow extends WindowFrame {
 			Date endDate = format.parse(endTime);
 			TimeSeriesLineChart newChart = TimeSeriesLineChart.getChart(location, startDate, endDate, loadedTimeSeries);
 			charts.add(newChart);
+			ChartPanel newChartPanel = new ChartPanel(newChart.getChart());
+			
+			newChartPanel.setBounds(0, 0, 300, 300);
+			panVisual.add(newChartPanel);
+			lblSelectVis.setVisible(false);
+			panVisual.repaint();
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
