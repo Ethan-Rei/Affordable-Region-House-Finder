@@ -2,9 +2,11 @@ package windows;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 import java.awt.Font;
 import javax.swing.JRadioButton;
@@ -185,6 +187,17 @@ public class MainWindow extends WindowFrame {
 		String location = boxLocation.getSelectedItem().toString();
 		String startTime = boxStartTime.getSelectedItem().toString();
 		String endTime = boxEndTime.getSelectedItem().toString();
+		
+		// Check if selected dates are valid could be its own method
+		if (startTime.compareTo(endTime) > 0) {
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame,
+				    "Selected start date came after end date. Please try again.",
+				    "Affordable Region House Finder",
+				    JOptionPane.ERROR_MESSAGE);
+			return ;
+		}
+		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
 		
 		if(loadedTimeSeries.get(location) == null)
