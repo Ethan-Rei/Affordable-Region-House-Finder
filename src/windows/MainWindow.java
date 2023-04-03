@@ -220,7 +220,7 @@ public class MainWindow extends WindowFrame {
 			// Create a new chart based on the query
 			Date startDate = format.parse(startTime);
 			Date endDate = format.parse(endTime);
-			TimeSeriesLineChart newChart = TimeSeriesLineChart.getChart(location, startDate, endDate, loadedTimeSeries);
+			TimeSeriesLineChart newChart = TimeSeriesLineChart.newChart(location, startDate, endDate, loadedTimeSeries);
 			addNewVisual(newChart);
 			
 		} catch (Exception e) {

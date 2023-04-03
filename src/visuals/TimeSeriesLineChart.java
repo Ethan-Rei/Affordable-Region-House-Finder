@@ -18,13 +18,9 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 import windows.WindowHelper;
 
-public class TimeSeriesLineChart{
+public class TimeSeriesLineChart extends Visualization{
 	
-	public static final int SMALL = 12;
-	public static final int SMALL_MEDIUM = 24;
-	public static final int MEDIUM = 48;
-	public static final int MEDIUM_LARGE = 96;
-	public static final int LARGE = 192;
+	
 	
 	private static final Calendar calendar = Calendar.getInstance();
 	
@@ -36,7 +32,7 @@ public class TimeSeriesLineChart{
 		this.dataCollection = dataCollection;
 	}
 	
-	public static TimeSeriesLineChart getChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
+	public static TimeSeriesLineChart newChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// locationName must be in loadedData as well as all values b/w its start and endDate
 		
 		// Fix data into a time series object
@@ -138,7 +134,7 @@ public class TimeSeriesLineChart{
 		loadedData.get("canada").put(new Date(2001, 7, 1), 3.0);
 		loadedData.get("canada").put(new Date(2001, 8, 1), 4.0);
 		
-		TimeSeriesLineChart chart = getChart("canada", new Date(2000, 1, 1), new Date(2001, 8, 1), loadedData);
+		TimeSeriesLineChart chart = newChart("canada", new Date(2000, 1, 1), new Date(2001, 8, 1), loadedData);
 		
 		ChartPanel chartPanel = new ChartPanel(chart.getChart());
         chartPanel.setPreferredSize(new Dimension(600, 500));
@@ -151,4 +147,5 @@ public class TimeSeriesLineChart{
         frame.setVisible(true);
 		
 	}
+
 }
