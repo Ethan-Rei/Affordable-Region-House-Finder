@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 
 class MySQLQuery implements DatabaseQuery {
 	private Statement statement;
@@ -32,6 +34,41 @@ class MySQLQuery implements DatabaseQuery {
 		
 		return null;
 	}
+
+	@Override
+	public ArrayList<String> queryLocations() {
+		String query = "SELECT DISTINCT location_name FROM data";
+		ArrayList<String> locations = new ArrayList<>();
+		try {
+			ResultSet returned = statement.executeQuery(query);
+			while(returned.next()) {
+				locations.add(returned.getString(1));
+			}
+			Collections.sort(locations);
+			return locations;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
+	@Override
+	public ArrayList<String> queryTimes() {
+		String query = "SELECT DISTINCT refdate FROM data";
+		ArrayList<String> times = new ArrayList<>();
+		try {
+			ResultSet returned = statement.executeQuery(query);
+			while(returned.next()) {
+				times.add(returned.getString(1).substring(0, returned.getString(1).length()-3));
+			}
+			Collections.sort(times);
+			return times;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 }
