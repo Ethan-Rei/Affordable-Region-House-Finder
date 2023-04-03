@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
-public class ValuePrediction {
+public class ValuePrediction extends InternalFrame {
 
 	private JFrame ValuePrediction;
 	private final JLabel ValuePredictionLabel = new JLabel("Timeseries Prediction");

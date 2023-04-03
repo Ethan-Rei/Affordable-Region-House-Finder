@@ -1,13 +1,12 @@
 package windows;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import java.awt.Font;
-import java.awt.Panel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -16,10 +15,7 @@ import database.Database;
 
 import javax.swing.JPanel;
 import java.awt.ScrollPane;
-import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,10 +23,11 @@ import java.util.HashMap;
 
 public class MainWindow extends WindowFrame {
 	private final String title = "Affordable Region House Finder";
+	
+	private final JPanel panLeftMenuOptions = new JPanel();
 	private final JLabel lblCompareLoc = new JLabel("Pick Location");
 	private final JLabel lblAnd = new JLabel("and");
 	private final JComboBox<String> boxLocation = new JComboBox<>();
-	
 	private final JLabel lblTimes = new JLabel("Times");
 	private final JLabel lblTo = new JLabel("to");
 	private final JComboBox<String> boxStartTime = new JComboBox<>();
@@ -46,12 +43,14 @@ public class MainWindow extends WindowFrame {
 	private final JButton btnCompare = new JButton("Statistical Test...");
 	private final JButton btnPredict = new JButton("Predict...");
 	
-	private final Panel panVisual = new Panel();
+	private final JPanel panVisual = new JPanel();
 	private final ScrollPane scrollPane = new ScrollPane();
 	private final JLabel lblSelectVis = new JLabel("Add your time series to visualize...");
 	
 	private final JSeparator sepVert = new JSeparator();
 	private final JSeparator sepHori = new JSeparator();
+	
+	private final JLayeredPane layeredPane = frame.getLayeredPane();
 	
 	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
 
@@ -78,6 +77,9 @@ public class MainWindow extends WindowFrame {
 		frame.setTitle(title);
 		
 		// left side menu options
+		panLeftMenuOptions.setBounds(0, 0, 500, 130);
+		panLeftMenuOptions.setLayout(null);
+		
 		lblCompareLoc.setBounds(50, 17, 130, 16);
 		boxLocation.setBounds(24, 41, 190, 27);
 		lblAnd.setBounds(100, 75, 27, 18);
@@ -91,10 +93,10 @@ public class MainWindow extends WindowFrame {
 		
 		sepVert.setBounds(485, 0, 18, 130);
 		sepVert.setOrientation(SwingConstants.VERTICAL);
-		sepHori.setBounds(0, 130, 1000, 18);
+		sepHori.setBounds(0, 0, 1000, 18);
 		
 		// right side menu options
-		panRightMenuOptions.setBounds(505, 0, 546, 224);
+		panRightMenuOptions.setBounds(505, 0, 546, 130);
 		panRightMenuOptions.setLayout(null);
 		
 		tabularViews.setBounds(185, 17, 87, 16);
@@ -104,27 +106,28 @@ public class MainWindow extends WindowFrame {
 		btnVisualize.setBounds(162, 82, 137, 29);
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
-		btnCompare.addActionListener(e -> openStatWindow(e));
+		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalTest(loadedTimeSeries)));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
-		btnPredict.addActionListener(e -> openPredictWindow(e));
+		btnPredict.addActionListener(e -> openInternalWindow(new ValuePrediction(loadedTimeSeries)));
 		visualGrp.add(radbtnGraph);
 		visualGrp.add(radbtnTable);
 		
 		// left side menu adds
-		frame.getContentPane().add(lblCompareLoc);
-		frame.getContentPane().add(boxLocation);
+		frame.getContentPane().add(panLeftMenuOptions);
+		panLeftMenuOptions.add(lblCompareLoc);
+		panLeftMenuOptions.add(boxLocation);
 		//frame.getContentPane().add(lblAnd);
 		//.getContentPane().add(boxSecondLocation);
 		
-		frame.getContentPane().add(boxStartTime);
-		frame.getContentPane().add(lblTimes);
-		frame.getContentPane().add(lblTo);
-		frame.getContentPane().add(boxEndTime);
-		frame.getContentPane().add(btnTimeSeries);
+		panLeftMenuOptions.add(boxStartTime);
+		panLeftMenuOptions.add(lblTimes);
+		panLeftMenuOptions.add(lblTo);
+		panLeftMenuOptions.add(boxEndTime);
+		panLeftMenuOptions.add(btnTimeSeries);
 		
-		frame.getContentPane().add(sepVert);
-		frame.getContentPane().add(sepHori);
+		panLeftMenuOptions.add(sepVert);
+		panVisual.add(sepHori);
 		
 		// right side menu adds
 		frame.getContentPane().add(panRightMenuOptions);
@@ -136,7 +139,7 @@ public class MainWindow extends WindowFrame {
 		panRightMenuOptions.add(btnPredict);
 		
 		// visualizations options
-		panVisual.setBounds(0, 130, frame.getWidth(), frame.getHeight()-200);
+		panVisual.setBounds(0, 130, frame.getWidth(), frame.getHeight());
 		panVisual.setLayout(null);
 		
 		Font visual = new Font("Dialog", 0, 24);
@@ -148,7 +151,9 @@ public class MainWindow extends WindowFrame {
 		frame.getContentPane().add(panVisual);
 		//panVisual.add(scrollPane);
 		panVisual.add(lblSelectVis);
-
+		
+		// Panel for internal windows
+		
 		frame.setVisible(true);
 	}
 	
@@ -167,12 +172,10 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 	
-	private void openStatWindow(ActionEvent e) {
-		new StatisticalTest(loadedTimeSeries);
-	}
-	
-	private void openPredictWindow(ActionEvent e) {
-		new ValuePrediction(loadedTimeSeries);
+	private void openInternalWindow(InternalFrame iFrame) {
+		layeredPane.add(iFrame.frame);
+		iFrame.frame.setVisible(true);
+		iFrame.frame.toFront();
 	}
 	
 	private void addTimeSeries() {
