@@ -33,16 +33,21 @@ public class TimeSeriesLineVisualization extends Visualization{
 		
 	}
 	
-	// could be bugged
+	// TODO FIX
 	public void addTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
+		double min1 = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+        double max1 = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
 		TimeSeries data = createTimeSeries(locationName, startDate, endDate, loadedData);
 		DateAxis newDateAxis = new DateAxis("Date");
 		this.dataCollection.addSeries(data);
 		this.startDate = this.startDate.compareTo(startDate) < 0 ? this.startDate : startDate;
-		this.endDate = this.endDate.compareTo(startDate) < 0 ? this.startDate : startDate;
-		newDateAxis.setRange(startDate, endDate);
+		this.endDate = this.endDate.compareTo(endDate) > 0 ? this.endDate : endDate;
+		newDateAxis.setRange(this.startDate, this.endDate);
 		this.chart.getXYPlot().setDomainAxis(newDateAxis);
-        setDateAxis(newDateAxis, getMonthCount(startDate, endDate));
+        setDateAxis(newDateAxis, getMonthCount(this.startDate, this.endDate));
+        double min2 = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+        double max2 = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
+        chart.getXYPlot().getRangeAxis().setRange(min1 < min2 ? min1 : min2, max1 > max2 ? max1 : max2);
 	}
 	
 	public JFreeChart getChart() {
