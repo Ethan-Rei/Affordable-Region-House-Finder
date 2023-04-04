@@ -13,9 +13,10 @@ import java.awt.event.ActionEvent;
 
 public class VisualizationWindow extends InternalFrame{
 	private final JLabel chooselabel = new JLabel("Choose Visualization");
-	private final JCheckBox Graohchkbx = new JCheckBox("Graph ");
-	private final JCheckBox Tablechkbx = new JCheckBox("Table");
-	private final JCheckBox chckbxPlotGraph = new JCheckBox("Plot Graph");
+	private final JCheckBox linebox = new JCheckBox("Line Chart");
+	private final JCheckBox stackbox = new JCheckBox("Stacked Chart");
+	private final JCheckBox scatterbox = new JCheckBox("Scatter Plot");
+	private final JCheckBox histobox = new JCheckBox("Scatter Plot");
 	private final JButton btnUpdate = new JButton("Update Visualization ");
 	private final JButton btnCancel = new JButton("Cancel");
 
@@ -31,15 +32,17 @@ public class VisualizationWindow extends InternalFrame{
 		chooselabel.setBounds(16, 24, 149, 16);
 		frame.getContentPane().add(chooselabel);
 		
-		Graohchkbx.setBounds(16, 63, 128, 23);
-		frame.getContentPane().add(Graohchkbx);
+		linebox.setBounds(16, 63, 128, 23);
+		frame.getContentPane().add(linebox);
 		
-		Tablechkbx.setBounds(222, 63, 128, 23);
-		frame.getContentPane().add(Tablechkbx);
+		histobox.setBounds(16, 146, 128, 23);
+		frame.getContentPane().add(histobox);
 		
-		chckbxPlotGraph.setActionCommand("");
-		chckbxPlotGraph.setBounds(222, 146, 128, 23);
-		frame.getContentPane().add(chckbxPlotGraph);
+		stackbox.setBounds(222, 63, 128, 23);
+		frame.getContentPane().add(stackbox);
+		
+		scatterbox.setBounds(222, 146, 128, 23);
+		frame.getContentPane().add(scatterbox);
 		
 		btnUpdate.setBounds(16, 213, 177, 37);
 		frame.getContentPane().add(btnUpdate);

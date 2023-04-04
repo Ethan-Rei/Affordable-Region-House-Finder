@@ -1,7 +1,15 @@
 package windows;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import analysis.*;
+import visuals.TimeSeriesLineVisualization;
+import visuals.Visualization;
+
 import java.util.HashMap;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -25,8 +33,9 @@ public class PredictionWindow extends InternalFrame {
 	private final JComboBox<String> startbx = new JComboBox<String>();
 	private final JComboBox<String> endbx = new JComboBox<String>();
 	private final JButton btnPredict = new JButton("Predict");
+	private static final Analysis analysis = Analysis.getInstance();
 
-	private final String errorDate = "The selected dates are invalid. Please try again.";
+	private final String errorMsg = "The selected dates are invalid or you haven't picked a algorithm. \nPlease try again.";
 	
 	/**
 	 * Create the application.
@@ -85,14 +94,15 @@ public class PredictionWindow extends InternalFrame {
 		setMnthBoxValues();
 		
 		btnPredict.setBounds(160, 310, 117, 29);
-		btnPredict.addActionListener(e -> predict());
+		btnPredict.addActionListener(e -> predict(loadedData));
 		frame.getContentPane().add(btnPredict);
 		
 		frame.setVisible(true);
 	}
 	
+	
 	private void setMnthBoxValues() {
-		for (int i = 1; i <= 12; i++) {
+		for (int i = 2; i <= 12; i++) {
 			monthbx.addItem(Integer.toString(i));
 		}
 		monthbx.setSelectedItem("1");
@@ -102,13 +112,72 @@ public class PredictionWindow extends InternalFrame {
 		MainWindow.getInstance().getBtnPredict().setEnabled(true);
 	}
 	
-	private void predict() {
+	private void predict(HashMap<String, HashMap<Date, Double>> loadedData) {
 		if (!checkValidDates()) {
-			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
 		// weka prediction code
+		
+		// get user's selection
+		int numOfMonths = Integer.parseInt(monthbx.getSelectedItem().toString());
+		String locationName = locbx.getSelectedItem().toString();
+		String startDateStr = startbx.getSelectedItem().toString();
+		String endDateStr = endbx.getSelectedItem().toString();
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = WindowHelper.dateFormat.parse(startDateStr);
+			endDate = WindowHelper.dateFormat.parse(endDateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// 
+		
+		
+		
+		
+		// get desired array of dates and array of corresponding nhpi values
+		ArrayList<Date> dates = WindowHelper.getDatesInRange(startDate, endDate);
+		ArrayList<Double> nhpis = WindowHelper.getNHPIInRangeArrayList(locationName, startDate, endDate, loadedData);	
+		
+		// get the predicted values
+		double[] predictions;
+		if (gaussianrd.isSelected()) {
+			predictions = analysis.predict(nhpis, dates, numOfMonths, Analysis.GAUSSIAN_PROCESS);
+		}
+		else {
+			// linearrd is selected
+			predictions = analysis.predict(nhpis, dates, numOfMonths, Analysis.LINEAR_REGRESSION);
+		}
+		
+		// Create a new visualization graph with the predictions (create a hashmap with our desired values)
+		HashMap<String, HashMap<Date, Double>> newValues = new HashMap<>();
+		newValues.put(locationName, new HashMap<Date, Double>());
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.setTime(endDate);
+		
+		
+		for (int i = 0; i < numOfMonths; i++) {
+			calendar.add(Calendar.MONTH, 1);
+			newValues.get(locationName).put(calendar.getTime(), predictions[i]);
+			
+		}
+		calendar.setTime(endDate);
+		calendar.add(Calendar.MONTH, 1);
+		Date newStartDate = calendar.getTime();
+		calendar.add(Calendar.MONTH, numOfMonths - 1);
+		Date newEndDate = calendar.getTime();
+		
+		Visualization visualization = new TimeSeriesLineVisualization(locationName, newStartDate, endDate, newValues);
+		
+		
+		// Add the graph to the mainwindow
+		MainWindow.getInstance().addVisualization(visualization);
+		
+		
 		
 	}
 	
@@ -117,7 +186,12 @@ public class PredictionWindow extends InternalFrame {
 			return false;
 		if (startbx.getSelectedItem().toString().compareTo(endbx.getSelectedItem().toString()) > 0)
 			return false;
+		if (!linearrd.isSelected() && !gaussianrd.isSelected())
+			return false;
+		
 		return true;
 	}
 
+	
+	
 }

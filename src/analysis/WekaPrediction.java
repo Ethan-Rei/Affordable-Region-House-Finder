@@ -18,25 +18,24 @@ class WekaPrediction implements TimeSeriesPrediction{
 	public static final int GAUSSIAN_PROCESS = 1;
 	
 	@Override
-	public double[] predict(double[] values, Date[] dates, int predictMonths, int algorithm) {
+	public double[] predict(ArrayList<Double> values, ArrayList<Date> dates, int predictMonths, int algorithm) {
 		
 		// Setup the data set into attributes and instances
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dates[dates.length - 1]);
 		Attribute dateVals = new Attribute("Date");
 		Attribute nhpiVals = new Attribute("NHPI");
 		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 		attributes.add(dateVals);
 		attributes.add(nhpiVals);
-		Instances data = new Instances("time series data", attributes, values.length);
+		Instances data = new Instances("time series data", attributes, values.size());
 		
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < values.size(); i++) {
 			Instance dataPoint = new DenseInstance(2);
-			calendar.setTime(dates[i]);
+			calendar.setTime(dates.get(i));
 			int numOfMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
 			dataPoint.setValue(0, numOfMonths);
-			dataPoint.setValue(1, values[i]);
+			dataPoint.setValue(1, values.get(i));
 			data.add(dataPoint);
 		}
 		

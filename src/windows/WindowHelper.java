@@ -112,4 +112,26 @@ public class WindowHelper {
 	    }
 	    return result;
 	}
+	
+	public static ArrayList<Double> getNHPIInRangeArrayList(String location, Date start, Date end, HashMap<String, HashMap<Date, Double>> loadedData) {
+		double[] nhpiArray = getNHPIInRange(location, start, end, loadedData);
+		ArrayList<Double> result = new ArrayList<Double>();
+		for (double nhpi : nhpiArray) {
+			result.add(nhpi);
+		}
+	    return result;
+	}
+
+	
+	public static ArrayList<Date> getDatesInRange(Date startDate, Date endDate) {
+		ArrayList<Date> dates = new ArrayList<Date>();
+		Date currentDate = startDate;
+		do {
+			calendar.setTime(currentDate);
+			dates.add(currentDate);
+			calendar.add(Calendar.MONTH, 1);
+			currentDate = calendar.getTime();
+		} while(currentDate.compareTo(endDate) <= 0);
+		return dates;
+	}
 }

@@ -1,12 +1,14 @@
 package analysis;
 
 import database.Database;
-import org.apache.commons.lang3.tuple.MutablePair;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.*;
 
 public class Analysis
 {
+	public static final int LINEAR_REGRESSION = 0;
+	public static final int GAUSSIAN_PROCESS = 1;
 	// Better to put monthConverter in a date converter class
 	private TimeSeriesTTest ttest;
 	private TimeSeriesPrediction prediction;
@@ -23,7 +25,7 @@ public class Analysis
 	}
 	
 
-	public double[] predict(double[] values, Date[] dates, int predictMonths, int algorithm) {	
+	public double[] predict(ArrayList<Double> values, ArrayList<Date> dates, int predictMonths, int algorithm) {	
 		return prediction.predict(values, dates, predictMonths, algorithm);
 	}
 	

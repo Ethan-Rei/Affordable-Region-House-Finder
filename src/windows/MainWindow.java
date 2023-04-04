@@ -1,21 +1,13 @@
 package windows;
 
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
-import java.awt.Font;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.jfree.chart.ChartPanel;
-
 import database.Database;
 import visuals.TimeSeriesLineVisualization;
 import visuals.Visualization;
@@ -43,7 +35,7 @@ public class MainWindow extends WindowFrame {
 	private final JLabel tabularViews = new JLabel("Tabular Views");
 	private final ButtonGroup visualGrp = new ButtonGroup();
 	private final JRadioButton radbtnRaw = new JRadioButton("Raw Data");
-	private final JRadioButton radbtnSummary = new JRadioButton("Summary");
+	private final JRadioButton radbtnSummary = new JRadioButton("Statistics");
 	private final JButton btnVisualize = new JButton("Visualizations...");
 	private final JButton btnCompare = new JButton("Statistical Test...");
 	private final JButton btnPredict = new JButton("Predict...");
@@ -230,6 +222,7 @@ public class MainWindow extends WindowFrame {
 			if (!isFull()) {
 				// Create new visualization
 				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedTimeSeries);
+<<<<<<< Updated upstream
 				
 				// Add visualization's panel
 				JPanel visualizationPanel = newVisualization.getPanel();
@@ -239,6 +232,9 @@ public class MainWindow extends WindowFrame {
 				visualizationPanel.setVisible(true);
 				charts.add(newVisualization);
 				panVisual.repaint();
+=======
+				addVisualization(newVisualization);
+>>>>>>> Stashed changes
 			}
 			
 		} catch (Exception e) {
@@ -255,6 +251,17 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 
+	public void addVisualization(Visualization visualization) {
+		// Add visualization's panel
+		JPanel visualizationPanel = visualization.getPanel();
+		visualizationPanel.setLayout(null);
+		visualizationPanel.setBounds(charts.size() * 320 + 13, 7, 320, 550);
+		panVisual.add(visualizationPanel);
+		visualizationPanel.setVisible(true);
+		charts.add(visualization);
+		panVisual.repaint();
+	}
+	
 	private boolean isFull() {
 		return charts.size() == 3;
 	}

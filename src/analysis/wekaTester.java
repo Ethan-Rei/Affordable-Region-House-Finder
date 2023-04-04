@@ -19,13 +19,13 @@ public class wekaTester {
 			testNHPIs[i] = i;
 		}
 	
-		double[] prediction;
-		WekaPrediction predictor = new WekaPrediction();
-		prediction = predictor.predict(testNHPIs, testDates, 4, WekaPrediction.LINEAR_REGRESSION);
-		
-		for (int i = 0; i < prediction.length; i++) {
-			System.out.println(prediction[i]);
-		}
+//		double[] prediction;
+//		WekaPrediction predictor = new WekaPrediction();
+//		prediction = predictor.predict(testNHPIs, testDates, 4, WekaPrediction.LINEAR_REGRESSION);
+//		
+//		for (int i = 0; i < prediction.length; i++) {
+//			System.out.println(prediction[i]);
+//		}
 	}
 
 }
