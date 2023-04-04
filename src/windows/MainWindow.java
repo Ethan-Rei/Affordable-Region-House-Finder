@@ -206,6 +206,10 @@ public class MainWindow extends WindowFrame {
 			return;
 		}
 		
+		// store into timeseries array
+		loadedTimeSeries.add(new TimeSeries(location, startTime, endTime));
+		
+		// create hashmap for the nhpi values
 		if(loadedData.get(location) == null)
 			loadedData.put(location, new HashMap<Date, Double>());
 		
