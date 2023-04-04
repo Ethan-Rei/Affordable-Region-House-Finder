@@ -18,7 +18,7 @@ public class Analysis
 	}
 	
 	public static Analysis getInstance() {
-		if (singleton != null) { return new Analysis(); }
+		if (singleton == null) { return new Analysis(); }
 		return singleton;
 	}
 	
