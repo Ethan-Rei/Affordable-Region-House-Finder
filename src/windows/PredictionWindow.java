@@ -135,6 +135,7 @@ public class PredictionWindow extends InternalFrame {
 			e.printStackTrace();
 		}
 		
+		
 		// get desired array of dates and array of corresponding nhpi values
 		ArrayList<Date> dates = WindowHelper.getDatesInRange(startDate, endDate);
 		ArrayList<Double> nhpis = WindowHelper.getNHPIInRangeArrayList(locationName, startDate, endDate, loadedData);	
@@ -181,11 +182,10 @@ public class PredictionWindow extends InternalFrame {
 	private boolean checkValidDates() {
 		if (startbx.getSelectedItem() == null || endbx.getSelectedItem() == null)
 			return false;
-		if (startbx.getSelectedItem().toString().compareTo(endbx.getSelectedItem().toString()) > 0)
+		if (startbx.getSelectedItem().toString().compareTo(endbx.getSelectedItem().toString()) >= 0)
 			return false;
 		if (!linearrd.isSelected() && !gaussianrd.isSelected())
 			return false;
-		
 		return true;
 	}
 
