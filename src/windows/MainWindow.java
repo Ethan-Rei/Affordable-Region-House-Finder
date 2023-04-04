@@ -207,8 +207,13 @@ public class MainWindow extends WindowFrame {
 			return;
 		}
 		
-		// store into timeseries array
-		loadedTimeSeries.add(new TimeSeries(location, startTime, endTime));
+		// store into timeseries array if its not in there already
+		TimeSeries newSeries = new TimeSeries(location, startTime, endTime);
+		for (TimeSeries series: loadedTimeSeries) {
+			if (series.equals(newSeries))
+				return ;
+		}
+		loadedTimeSeries.add(newSeries);
 		
 		// create hashmap for the nhpi values
 		if(loadedData.get(location) == null)
