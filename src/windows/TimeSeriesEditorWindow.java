@@ -1,5 +1,7 @@
 package windows;
 
+import java.awt.Container;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,14 +15,12 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	private final JLabel lblModify = new JLabel("Select time series chart to change:");
 	private final JLabel lblFrom = new JLabel("Select time series to add to the chart:");
 	
-	private final JButton ref;
+	private final Container refPanel;
+	private final JButton refButton;
 	
-	public static void main(String[] args) {
-		new TimeSeriesEditorWindow(null);
-	}
-	
-	public TimeSeriesEditorWindow(JButton ref) {
-		this.ref = ref;
+	public TimeSeriesEditorWindow(Container refPanel, JButton refButton) {
+		this.refPanel = refPanel;
+		this.refButton = refButton;
 		createFrame();
 	}
 	
@@ -47,7 +47,9 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	}
 	
 	public void close() {
-		ref.setEnabled(true);
+		refButton.setEnabled(true);
+		refPanel.remove(frame);
+		frame.dispose();
 	}
 	
 }
