@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -27,6 +28,16 @@ public abstract class Visualization {
 	public static final Calendar calendar = Calendar.getInstance();
 	public abstract JFreeChart getChart();
 	protected JFreeChart chart;
+	protected Date startDate;
+	protected Date endDate;
+	protected String locationName;
+	
+	
+	protected Visualization (String locationName, Date startDate, Date endDate) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.locationName = locationName;
+	}
 	
 	protected static int getMonthCount(Date startDate, Date endDate) {
 		calendar.setTime(endDate);
@@ -82,19 +93,20 @@ public abstract class Visualization {
 		return panel;
 	}
 	
-	protected void createPanel() {
+	protected void createPanel(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// Create chart panel
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setBounds(0, 0, 320, 320);
 		chartPanel.setVisible(true);
 		
+		// TODO Create the tabular view and insert into scroll pane
+		JTable table = TabularViewFactory.getDataView(locationName, startDate, endDate, loadedData);
+		
 		// Create scroll pane to scroll the tabular view
-		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 320, 320, 230);
 		scrollPane.setVisible(true);
 		
-		// TODO Create the tabular view and insert into scroll pane
-
 		this.panel = new JPanel();
 		panel.add(scrollPane);
 		panel.add(chartPanel);

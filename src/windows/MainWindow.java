@@ -213,7 +213,7 @@ public class MainWindow extends WindowFrame {
 			// Check if there's a max # of panels
 			if (!isFull()) {
 				// Create new visualization
-				Visualization newVisualization = TimeSeriesLineVisualization.newChart(location, startDate, endDate, loadedTimeSeries);
+				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedTimeSeries);
 				
 				// Add visualization's panel
 				JPanel visualizationPanel = newVisualization.getPanel();
