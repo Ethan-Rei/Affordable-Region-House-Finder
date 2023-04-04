@@ -25,7 +25,8 @@ class MySQLQuery implements DatabaseQuery {
 
 	@Override
 	public ResultSet query(String locationName, String fromDate, String toDate) {
-		String queryString = String.format("SELECT refdate, location_name, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locationName, fromDate, toDate);  
+		String locName = locationName.replace("'", "''");
+		String queryString = String.format("SELECT refdate, location_name, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locName, fromDate, toDate);  
 		try {
 			return statement.executeQuery(queryString);
 		} catch (SQLException e) {
@@ -73,8 +74,10 @@ class MySQLQuery implements DatabaseQuery {
 	
 	@Override
 	public ResultSet queryNHPI(String locationName, String fromDate, String toDate) {
-		String query = String.format("SELECT refdate, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locationName, fromDate, toDate);
+		String locName = locationName.replace("'", "''");
+		String query = String.format("SELECT refdate, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locName, fromDate, toDate);
 		try {
+			System.out.println(query);
 			return statement.executeQuery(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
