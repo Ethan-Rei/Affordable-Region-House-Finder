@@ -112,6 +112,7 @@ public class MainWindow extends WindowFrame {
 		radbtnSummary.addActionListener(e -> showSummaryTables());
 		btnVisualize.setBounds(162, 82, 137, 29);
 		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
+		btnVisualize.setEnabled(false);
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
 		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedData), btnCompare));
@@ -245,6 +246,7 @@ public class MainWindow extends WindowFrame {
 			btnPredict.setEnabled(true);
 			radbtnRaw.setEnabled(true);
 			radbtnSummary.setEnabled(true);
+			btnVisualize.setEnabled(true);
 		}
 	}
 
