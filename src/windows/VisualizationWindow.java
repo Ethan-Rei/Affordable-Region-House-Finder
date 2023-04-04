@@ -4,14 +4,14 @@ import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 
-public class VisualizationWindow extends InternalFrame{
+public class VisualizationWindow extends InternalFrame {
 	private final JLabel chooselabel = new JLabel("Choose Visualization");
 	private final JCheckBox linebox = new JCheckBox("Line Chart");
 	private final JCheckBox stackbox = new JCheckBox("Stacked Chart");
 	private final JCheckBox scatterbox = new JCheckBox("Scatter Plot");
 	private final JCheckBox histobox = new JCheckBox("Scatter Plot");
-	private final JButton btnUpdate = new JButton("Update Visualization ");
-	private final JButton btnCancel = new JButton("Cancel");
+	private final JButton btnUpdate = new JButton("Update Visualization");
+	private final JButton btnCancel = new JButton("Edit time series charts");
 
 	/**
 	 * Create the application.
