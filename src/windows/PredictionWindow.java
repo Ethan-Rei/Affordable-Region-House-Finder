@@ -3,6 +3,7 @@ package windows;
 import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.ButtonGroup;
@@ -25,6 +26,8 @@ public class PredictionWindow extends InternalFrame {
 	private final JComboBox<String> endbx = new JComboBox<String>();
 	private final JButton btnPredict = new JButton("Predict");
 
+	private final String errorDate = "The selected dates are invalid. Please try again.";
+	
 	/**
 	 * Create the application.
 	 */
@@ -60,14 +63,13 @@ public class PredictionWindow extends InternalFrame {
 		locbx.setBounds(40, 180, 101, 27);
 		frame.getContentPane().add(locbx);
 		WindowHelper.populateLocBox(locbx, loadedData);
-		locbx.addActionListener(e -> WindowHelper.populateStartDate(locbx, startbx, e, loadedData));
+		locbx.addActionListener(e -> WindowHelper.populateDateBoxes(locbx, startbx, endbx, loadedData));
 		
 		startlbl.setBounds(160, 150, 61, 16);
 		frame.getContentPane().add(startlbl);
 		
 		startbx.setBounds(160, 180, 101, 27);
 		frame.getContentPane().add(startbx);
-		startbx.addActionListener(e -> WindowHelper.populateEndDate(locbx, startbx, endbx, e, loadedData));
 		
 		endlbl.setBounds(280, 150, 61, 16);
 		frame.getContentPane().add(endlbl);
@@ -83,6 +85,7 @@ public class PredictionWindow extends InternalFrame {
 		setMnthBoxValues();
 		
 		btnPredict.setBounds(160, 310, 117, 29);
+		btnPredict.addActionListener(e -> predict());
 		frame.getContentPane().add(btnPredict);
 		
 		frame.setVisible(true);
@@ -99,6 +102,22 @@ public class PredictionWindow extends InternalFrame {
 		MainWindow.getInstance().getBtnPredict().setEnabled(true);
 	}
 	
+	private void predict() {
+		if (!checkValidDates()) {
+			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		// weka prediction code
+		
+	}
 	
+	private boolean checkValidDates() {
+		if (startbx.getSelectedItem() == null || endbx.getSelectedItem() == null)
+			return false;
+		if (startbx.getSelectedItem().toString().compareTo(endbx.getSelectedItem().toString()) > 0)
+			return false;
+		return true;
+	}
 
 }
