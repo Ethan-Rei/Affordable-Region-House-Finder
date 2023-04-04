@@ -1,5 +1,7 @@
 package analysis;
+
 import org.apache.commons.math3.stat.inference.TTest;
+
 class ApacheTTest implements TimeSeriesTTest {
 	TTest ttest;
 	

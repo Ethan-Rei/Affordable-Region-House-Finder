@@ -2,8 +2,6 @@ package windows;
 
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 
 public abstract class InternalFrame {
 	protected JInternalFrame frame;

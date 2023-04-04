@@ -50,6 +50,7 @@ public class ImportDB {
 			System.out.println("Importing the CSV to the database. Please wait this will take awhile.");
 			importData("18100205.csv", "data");
 			connection.close();
+			input.close();
 			System.out.println("Finished importing the CSV to the database.");
 		} catch (Exception e) {
 			e.printStackTrace();

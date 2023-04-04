@@ -1,15 +1,8 @@
 package windows;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class VisualizationWindow extends InternalFrame{
 	private final JLabel chooselabel = new JLabel("Choose Visualization");

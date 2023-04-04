@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class DatabaseLogin {

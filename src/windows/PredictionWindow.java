@@ -168,7 +168,7 @@ public class PredictionWindow extends InternalFrame {
 		calendar.add(Calendar.MONTH, numOfMonths - 1);
 		Date newEndDate = calendar.getTime();
 		
-		Visualization visualization = new TimeSeriesLineVisualization(locationName, newStartDate, endDate, newValues);
+		Visualization visualization = new TimeSeriesLineVisualization(locationName, newStartDate, newEndDate, newValues);
 		
 		
 		// Add the graph to the mainwindow
