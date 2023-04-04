@@ -134,10 +134,6 @@ public class PredictionWindow extends InternalFrame {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		// 
-		
-		
-		
 		
 		// get desired array of dates and array of corresponding nhpi values
 		ArrayList<Date> dates = WindowHelper.getDatesInRange(startDate, endDate);
