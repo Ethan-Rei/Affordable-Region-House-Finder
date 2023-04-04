@@ -47,7 +47,8 @@ public class MainWindow extends WindowFrame {
 	
 	private final String errorDate = "Selected start date came after end date. Please try again.";
 	
-	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
+	private final static ArrayList<TimeSeries> loadedTimeSeries = new ArrayList<>();
+	private final HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<>();
 	private final ArrayList<Visualization> charts = new ArrayList<Visualization>();
 
 	/**
@@ -56,6 +57,10 @@ public class MainWindow extends WindowFrame {
 	private MainWindow() {
 		setLocationBoxes();
 		setTimeBoxes();
+	}
+	
+	public static ArrayList<TimeSeries> getLoadedTimeSeries() {
+		return loadedTimeSeries;
 	}
 	
 	public static MainWindow getInstance() {
@@ -109,10 +114,10 @@ public class MainWindow extends WindowFrame {
 		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
-		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedTimeSeries), btnCompare));
+		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedData), btnCompare));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
-		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedTimeSeries), btnPredict));
+		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedData), btnPredict));
 		radbtnRaw.setSelected(true);
 		radbtnRaw.setEnabled(false);
 		radbtnSummary.setEnabled(false);
@@ -201,10 +206,10 @@ public class MainWindow extends WindowFrame {
 			return;
 		}
 		
-		if(loadedTimeSeries.get(location) == null)
-			loadedTimeSeries.put(location, new HashMap<Date, Double>());
+		if(loadedData.get(location) == null)
+			loadedData.put(location, new HashMap<Date, Double>());
 		
-		HashMap<Date, Double> timeSeries = loadedTimeSeries.get(location);
+		HashMap<Date, Double> timeSeries = loadedData.get(location);
 
 		try {
 			// query database for nhpi values
@@ -221,7 +226,7 @@ public class MainWindow extends WindowFrame {
 			// Check if there's a max # of panels
 			if (!isFull()) {
 				// Create new visualization
-				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedTimeSeries);
+				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedData);
 				addVisualization(newVisualization);
 			}
 			
@@ -229,10 +234,10 @@ public class MainWindow extends WindowFrame {
 			e.printStackTrace();
 		}
 		
-		if (loadedTimeSeries.size() >= 2) {
+		if (loadedData.size() >= 2) {
 			btnCompare.setEnabled(true);
 		}
-		if (loadedTimeSeries.size() >= 1) {
+		if (loadedData.size() >= 1) {
 			btnPredict.setEnabled(true);
 			radbtnRaw.setEnabled(true);
 			radbtnSummary.setEnabled(true);
@@ -248,6 +253,20 @@ public class MainWindow extends WindowFrame {
 		visualizationPanel.setVisible(true);
 		charts.add(visualization);
 		panVisual.repaint();
+	}
+	
+	public void removeVisualization(Visualization visualization) {
+		if (charts.contains(visualization)) {
+			panVisual.remove(visualization.getPanel());
+			charts.remove(visualization);
+			
+			for (int i = 0; i < charts.size(); i++) {
+				charts.get(i).getPanel().setBounds(i * 320 + 13, 7, 320, 550);
+			}
+			
+			panVisual.repaint();
+		}
+	
 	}
 	
 	private boolean isFull() {
