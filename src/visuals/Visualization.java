@@ -31,6 +31,9 @@ public abstract class Visualization {
 	protected Date startDate;
 	protected Date endDate;
 	protected String locationName;
+	protected ChartPanel chartPanel;
+	protected JScrollPane scrollPaneRaw;
+	protected JScrollPane scrollPaneSummary;
 	
 	
 	protected Visualization (String locationName, Date startDate, Date endDate) {
@@ -93,22 +96,35 @@ public abstract class Visualization {
 		return panel;
 	}
 	
+	public JScrollPane getScrollPaneRaw() {
+		return scrollPaneRaw;
+	}
+
+	public JScrollPane getScrollPaneSummary() {
+		return scrollPaneSummary;
+	}
+
 	protected void createPanel(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// Create chart panel
-		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel = new ChartPanel(chart);
 		chartPanel.setBounds(0, 0, 320, 320);
 		chartPanel.setVisible(true);
 		
-		// TODO Create the tabular view and insert into scroll pane
-		JTable table = TabularViewFactory.getDataView(locationName, startDate, endDate, loadedData);
+		JTable tableRaw = TabularViewFactory.getDataView(locationName, startDate, endDate, loadedData);
+		JTable tableSummary = TabularViewFactory.getStatsView(locationName, startDate, endDate, loadedData);
 		
 		// Create scroll pane to scroll the tabular view
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 320, 320, 230);
-		scrollPane.setVisible(true);
+		scrollPaneRaw = new JScrollPane(tableRaw);
+		scrollPaneRaw.setBounds(0, 320, 320, 230);
+		scrollPaneRaw.setVisible(true);
+		
+		scrollPaneSummary = new JScrollPane(tableSummary);
+		scrollPaneSummary.setBounds(0, 320, 320, 230);
+		scrollPaneSummary.setVisible(false);
 		
 		this.panel = new JPanel();
-		panel.add(scrollPane);
+		panel.add(scrollPaneRaw);
+		panel.add(scrollPaneSummary);
 		panel.add(chartPanel);
 	}
 }

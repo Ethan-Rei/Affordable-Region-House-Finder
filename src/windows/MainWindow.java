@@ -110,8 +110,9 @@ public class MainWindow extends WindowFrame {
 		
 		tabularViews.setBounds(185, 17, 87, 16);
 		radbtnRaw.setBounds(100, 42, 128, 23);
+		radbtnRaw.addActionListener(e -> showRawTables());
 		radbtnSummary.setBounds(270, 42, 131, 23);
-		radbtnSummary.setSelected(true);
+		radbtnSummary.addActionListener(e -> showSummaryTables());
 		btnVisualize.setBounds(162, 82, 137, 29);
 		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
 		btnCompare.setBounds(14, 82, 130, 29);
@@ -120,6 +121,9 @@ public class MainWindow extends WindowFrame {
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
 		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedTimeSeries), btnPredict));
+		radbtnRaw.setSelected(true);
+		radbtnRaw.setEnabled(false);
+		radbtnSummary.setEnabled(false);
 		visualGrp.add(radbtnSummary);
 		visualGrp.add(radbtnRaw);
 		
@@ -180,6 +184,20 @@ public class MainWindow extends WindowFrame {
 		button.setEnabled(false);
 	}
 	
+	private void showRawTables() {
+		for(Visualization chart: charts) {
+			chart.getScrollPaneRaw().setVisible(true);
+			chart.getScrollPaneSummary().setVisible(false);
+		}
+	}
+	
+	private void showSummaryTables() {
+		for(Visualization chart: charts) {
+			chart.getScrollPaneRaw().setVisible(false);
+			chart.getScrollPaneSummary().setVisible(true);
+		}
+	}
+	
 	private void addTimeSeries() {
 		String location = boxLocation.getSelectedItem().toString();
 		String startTime = boxStartTime.getSelectedItem().toString();
@@ -221,9 +239,7 @@ public class MainWindow extends WindowFrame {
 				visualizationPanel.setVisible(true);
 				charts.add(newVisualization);
 				panVisual.repaint();
-				
 			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -234,11 +250,10 @@ public class MainWindow extends WindowFrame {
 		}
 		if (loadedTimeSeries.size() >= 1) {
 			btnPredict.setEnabled(true);
+			radbtnRaw.setEnabled(true);
+			radbtnSummary.setEnabled(true);
 		}
 	}
-	
-	
-	// newChartPanel.setBounds(charts.size()*320 - 320 + 12, 25, 320, 320);
 
 	private boolean isFull() {
 		return charts.size() == 3;
