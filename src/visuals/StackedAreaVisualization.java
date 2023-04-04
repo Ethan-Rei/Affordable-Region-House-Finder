@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.data.time.TimePeriod;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -28,8 +29,11 @@ public class StackedAreaVisualization extends Visualization {
 		dataset.addSeries(data);
 		
 		TableXYDataset newData = convertToTableXYDataset(dataset);
-		
 		JFreeChart stackedAreaChart = ChartFactory.createStackedXYAreaChart(locationName, "Date", "NHPI", newData);
+		DateAxis newDateAxis = new DateAxis("Date");
+		newDateAxis.setRange(startDate, endDate);
+		stackedAreaChart.getXYPlot().setDomainAxis(newDateAxis);
+		setDateAxis(newDateAxis, getMonthCount(startDate, endDate));
 		return new StackedAreaVisualization(stackedAreaChart);
 	}
 
@@ -51,6 +55,7 @@ public class StackedAreaVisualization extends Visualization {
 	    return dataset;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<String, HashMap<Date, Double>>();
 		loadedData.put("canada", new HashMap<Date, Double>());
