@@ -222,19 +222,7 @@ public class MainWindow extends WindowFrame {
 			if (!isFull()) {
 				// Create new visualization
 				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedTimeSeries);
-<<<<<<< Updated upstream
-				
-				// Add visualization's panel
-				JPanel visualizationPanel = newVisualization.getPanel();
-				visualizationPanel.setLayout(null);
-				visualizationPanel.setBounds(charts.size() * 320 + 13, 7, 320, 550);
-				panVisual.add(visualizationPanel);
-				visualizationPanel.setVisible(true);
-				charts.add(newVisualization);
-				panVisual.repaint();
-=======
 				addVisualization(newVisualization);
->>>>>>> Stashed changes
 			}
 			
 		} catch (Exception e) {
