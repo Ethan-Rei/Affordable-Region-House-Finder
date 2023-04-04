@@ -122,7 +122,6 @@ public class WindowHelper {
 	    return result;
 	}
 
-	
 	public static ArrayList<Date> getDatesInRange(Date startDate, Date endDate) {
 		ArrayList<Date> dates = new ArrayList<Date>();
 		Date currentDate = startDate;
