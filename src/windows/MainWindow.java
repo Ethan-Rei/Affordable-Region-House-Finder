@@ -51,7 +51,6 @@ public class MainWindow extends WindowFrame {
 	private final JButton btnPredict = new JButton("Predict...");
 	
 	private final JPanel panVisual = new JPanel();
-	private final JLabel lblSelectVis = new JLabel("Add your time series to visualize...");
 	
 	private final JSeparator sepVert = new JSeparator();
 	private final JSeparator sepHori = new JSeparator();
@@ -84,7 +83,7 @@ public class MainWindow extends WindowFrame {
 	 */
 	@Override
 	public void createWindow() {
-		frame.setSize(1000, 550);
+		frame.setSize(1000, 730);
 		frame.setLocationRelativeTo(null);
 		frame.setTitle(title);
 		
@@ -155,15 +154,8 @@ public class MainWindow extends WindowFrame {
 		panVisual.setBounds(0, 130, frame.getWidth(), frame.getHeight());
 		panVisual.setLayout(null);
 		
-		Font visual = new Font("Dialog", 0, 24);
-		lblSelectVis.setFont(visual);
-		lblSelectVis.setBounds(315, 180, 450, 30);
-		//scrollPane.setBounds(302, -32, 100, 100);
-		
 		// visualizations adds
 		frame.getContentPane().add(panVisual);
-		//panVisual.add(scrollPane);
-		panVisual.add(lblSelectVis);
 		
 		// Panel for internal windows
 		
@@ -226,7 +218,7 @@ public class MainWindow extends WindowFrame {
 				// Add visualization's panel
 				JPanel visualizationPanel = newVisualization.getPanel();
 				System.out.println(visualizationPanel);
-				visualizationPanel.setBounds(charts.size() * 320 + 13, 10, 320, 580);
+				visualizationPanel.setBounds(charts.size() * 320 + 13, 7, 320, 550);
 				panVisual.add(visualizationPanel);
 				visualizationPanel.setVisible(true);
 				charts.add(newVisualization);
@@ -237,10 +229,6 @@ public class MainWindow extends WindowFrame {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
-		if (!charts.isEmpty()) {
-			lblSelectVis.setVisible(false);
 		}
 		
 		if (loadedTimeSeries.size() >= 2) {

@@ -90,7 +90,7 @@ public abstract class Visualization {
 		
 		// Create scroll pane to scroll the tabular view
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 320, 320, 260);
+		scrollPane.setBounds(0, 320, 320, 230);
 		scrollPane.setVisible(true);
 		
 		// TODO Create the tabular view and insert into scroll pane
