@@ -258,6 +258,7 @@ public class MainWindow extends WindowFrame {
 		panVisual.add(visualizationPanel);
 		visualizationPanel.setVisible(true);
 		charts.add(visualization);
+		loadedTimeSeries.get(loadedTimeSeries.size()-1).setSetting(ChartType.LINE_CHART, true);
 		panVisual.repaint();
 	}
 	

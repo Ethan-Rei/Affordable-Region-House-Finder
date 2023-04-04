@@ -12,15 +12,23 @@ public class TimeSeries {
 		this.location = location;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		insertSettings();
+		setDefaultSettings();
 	}
 	
-	private void insertSettings() {
+	private void setDefaultSettings() {
 		chartSettings = new HashMap<>();
 		chartSettings.put(ChartType.LINE_CHART, false);
 		chartSettings.put(ChartType.PLOT_CHART, false);
 		chartSettings.put(ChartType.STACKED_AREA_CHART, false);
 		chartSettings.put(ChartType.HISTOGRAM_CHART, false);
+	}
+	
+	public void setSetting(ChartType type, boolean setting) {
+		chartSettings.put(type, setting);
+	}
+	
+	public boolean getSetting(ChartType type) {
+		return chartSettings.get(type);
 	}
 	
 	public boolean isChartEnabled(ChartType type) {
