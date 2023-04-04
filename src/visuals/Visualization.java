@@ -30,6 +30,8 @@ public abstract class Visualization {
 	protected JFreeChart chart;
 	protected Date startDate;
 	protected Date endDate;
+	protected double min;
+	protected double max;
 	protected String locationName;
 	protected ChartPanel chartPanel;
 	protected JScrollPane scrollPaneRaw;

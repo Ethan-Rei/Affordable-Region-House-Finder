@@ -27,6 +27,8 @@ public class TimeSeriesLineVisualization extends Visualization{
         DateAxis dateAxis = (DateAxis) timeSeriesChart.getXYPlot().getDomainAxis();
         setDateAxis(dateAxis, monthCount);
 		
+        this.min = timeSeriesChart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+		this.max = timeSeriesChart.getXYPlot().getRangeAxis().getRange().getUpperBound();
         this.chart = timeSeriesChart;
 		this.dataCollection = dataCollection;
 		super.createPanel(locationName, startDate, endDate, loadedData);
@@ -35,19 +37,26 @@ public class TimeSeriesLineVisualization extends Visualization{
 	
 	// TODO FIX
 	public void addTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
-		double min1 = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
-        double max1 = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
+		// Load time series into chart
 		TimeSeries data = createTimeSeries(locationName, startDate, endDate, loadedData);
 		DateAxis newDateAxis = new DateAxis("Date");
 		this.dataCollection.addSeries(data);
+		
+		// Find the range of the chart
+		double minAdded = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+        double maxAdded = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
+        this.min = Math.min(minAdded, this.min);
+        this.max = Math.max(maxAdded, this.max);
+        
+        // Find the domain of the chart
 		this.startDate = this.startDate.compareTo(startDate) < 0 ? this.startDate : startDate;
 		this.endDate = this.endDate.compareTo(endDate) > 0 ? this.endDate : endDate;
+		
+        // Set the range for both axes
 		newDateAxis.setRange(this.startDate, this.endDate);
 		this.chart.getXYPlot().setDomainAxis(newDateAxis);
         setDateAxis(newDateAxis, getMonthCount(this.startDate, this.endDate));
-        double min2 = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
-        double max2 = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
-        chart.getXYPlot().getRangeAxis().setRange(min1 < min2 ? min1 : min2, max1 > max2 ? max1 : max2);
+        chart.getXYPlot().getRangeAxis().setRange(this.min, this.max);
 	}
 	
 	public JFreeChart getChart() {
