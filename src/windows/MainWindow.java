@@ -217,7 +217,7 @@ public class MainWindow extends WindowFrame {
 				
 				// Add visualization's panel
 				JPanel visualizationPanel = newVisualization.getPanel();
-				System.out.println(visualizationPanel);
+				visualizationPanel.setLayout(null);
 				visualizationPanel.setBounds(charts.size() * 320 + 13, 7, 320, 550);
 				panVisual.add(visualizationPanel);
 				visualizationPanel.setVisible(true);
