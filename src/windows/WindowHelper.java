@@ -65,19 +65,6 @@ public class WindowHelper {
 		
 	}
 	
-//	public static void populateStartDate(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
-//		startBox.removeAllItems();
-//		String pickedLocation = locBox.getSelectedItem().toString();
-//		Set<Date> validDatesSet = loadedData.get(pickedLocation).keySet();
-//		ArrayList<Date> validDates = new ArrayList<Date>(validDatesSet);
-//		Collections.sort(validDates);
-//		for (Date validDate: validDates) {
-//			startBox.addItem(dateFormat.format(validDate));
-//		}
-//		
-//		populateEndDate(locBox, startBox, endBox, loadedData);
-//	}
-	
 	public static void populateDateBoxes(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// Fix NullPointerException by removing the listener, then re-adding it at end of method
 		ActionListener startBoxListener = startBox.getActionListeners()[0];
