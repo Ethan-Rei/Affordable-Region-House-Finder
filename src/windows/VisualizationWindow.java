@@ -2,16 +2,23 @@ package windows;
 
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+
+import java.awt.Component;
+
 import javax.swing.JButton;
 
 public class VisualizationWindow extends InternalFrame {
-	private final JLabel chooselabel = new JLabel("Choose Visualization");
-	private final JCheckBox linebox = new JCheckBox("Line Chart");
-	private final JCheckBox stackbox = new JCheckBox("Stacked Chart");
-	private final JCheckBox scatterbox = new JCheckBox("Scatter Plot");
-	private final JCheckBox histobox = new JCheckBox("Scatter Plot");
+	private final String title = "Visualization Options";
+	private final JLabel lblVisuals = new JLabel("Select Visualizations:");
+	private final JLabel lblSelect = new JLabel("Select a specific time series to edit its chart visualizations:");
+	private final JCheckBox checkLine = new JCheckBox("Line Chart");
+	private final JCheckBox checkPlot = new JCheckBox("Plot Graph");
+	private final JCheckBox checkHisto = new JCheckBox("Histogram");
+	private final JCheckBox checkStack = new JCheckBox("Stacked Area");
+	private final JComboBox<String> boxTimeSeries = new JComboBox<>();
 	private final JButton btnUpdate = new JButton("Update Visualization");
-	private final JButton btnCancel = new JButton("Edit time series charts");
+	private final JButton btnEdit = new JButton("Edit time series charts");
 
 	/**
 	 * Create the application.
@@ -21,31 +28,45 @@ public class VisualizationWindow extends InternalFrame {
 	}
 
 	private void createFrame() {
-		frame.setBounds(100, 100, 450, 300);
-		chooselabel.setBounds(16, 24, 149, 16);
-		frame.getContentPane().add(chooselabel);
+		frame.setSize(415, 280);
+		frame.setTitle(title);
 		
-		linebox.setBounds(16, 63, 128, 23);
-		frame.getContentPane().add(linebox);
+		lblVisuals.setBounds(16, 24, 149, 16);
+		frame.getContentPane().add(lblVisuals);
 		
-		histobox.setBounds(16, 146, 128, 23);
-		frame.getContentPane().add(histobox);
+		checkLine.setBounds(16, 53, 83, 23);
+		frame.getContentPane().add(checkLine);
 		
-		stackbox.setBounds(222, 63, 128, 23);
-		frame.getContentPane().add(stackbox);
+		checkPlot.setBounds(105, 53, 88, 23);
+		frame.getContentPane().add(checkPlot);
 		
-		scatterbox.setBounds(222, 146, 128, 23);
-		frame.getContentPane().add(scatterbox);
+		checkHisto.setBounds(195, 53, 88, 23);
+		frame.getContentPane().add(checkHisto);
 		
-		btnUpdate.setBounds(16, 213, 177, 37);
+		checkStack.setBounds(285, 53, 110, 23);
+		frame.getContentPane().add(checkStack);
+		
+		lblSelect.setBounds(16, 93, 350, 16);
+		frame.getContentPane().add(lblSelect);
+		
+		boxTimeSeries.setBounds(16, 127, 370, 27);
+		frame.getContentPane().add(boxTimeSeries);
+		
+		btnUpdate.setBounds(16, 183, 177, 37);
 		frame.getContentPane().add(btnUpdate);
 		
-		btnCancel.setBounds(240, 213, 86, 37);
-		frame.getContentPane().add(btnCancel);
+		btnEdit.setBounds(215, 183, 170, 37);
+		btnEdit.addActionListener(e -> openInternalWindow(new TimeSeriesEditorWindow(boxTimeSeries, btnEdit)));
+		frame.getContentPane().add(btnEdit);
 		frame.setVisible(true);
 	}
 	
 	public void close() {
 		MainWindow.getInstance().getBtnVisualize().setEnabled(true);
 	}
+	
+	private void openInternalWindow(InternalFrame iFrame) {
+		MainWindow.getInstance().frame.getLayeredPane().add(iFrame.frame);
+	}
+	
 }

@@ -48,7 +48,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	
 	public void close() {
 		refButton.setEnabled(true);
-		refPanel.remove(frame);
+		MainWindow.getInstance().frame.remove(frame);
 		frame.dispose();
 	}
 	

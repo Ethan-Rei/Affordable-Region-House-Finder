@@ -16,4 +16,8 @@ public abstract class InternalFrame {
 	}
 	
 	public abstract void close();
+	
+	public JInternalFrame getFrame() {
+		return frame;
+	}
 }
