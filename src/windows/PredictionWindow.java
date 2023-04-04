@@ -79,6 +79,7 @@ public class PredictionWindow extends InternalFrame {
 		
 		startbx.setBounds(160, 180, 101, 27);
 		frame.getContentPane().add(startbx);
+		startbx.addActionListener(e -> WindowHelper.populateEndDate(locbx, startbx, endbx, loadedData));
 		
 		endlbl.setBounds(280, 150, 61, 16);
 		frame.getContentPane().add(endlbl);
