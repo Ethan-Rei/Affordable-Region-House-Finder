@@ -2,15 +2,21 @@ package visuals;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.stream.DoubleStream;
+
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+
 import javax.swing.JTable;
 
 public class TabularViewFactory {
 	private static final Calendar calendar = Calendar.getInstance();
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");;
+	private static final StandardDeviation sd = new StandardDeviation();
 	
 	public static JTable getStatsView (String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		Pair<ArrayList<String>, ArrayList<String>> listData = getData(locationName, startDate, endDate, loadedData);
@@ -20,7 +26,25 @@ public class TabularViewFactory {
 			nhpiDouble[i] = Double.parseDouble(nhpiStrings.get(i));
 		}
 		
-		JTable table = new JTable();
+		// Find statistics
+		String std = String.format("%.4f", sd.evaluate(nhpiDouble));
+		
+		String min = String.format("%.4f", Arrays.stream(nhpiDouble).min().getAsDouble());
+		
+		String max = String.format("%.4f", Arrays.stream(nhpiDouble).max().getAsDouble());
+		
+		String avg = String.format("%.4f", DoubleStream.of(nhpiDouble).average().orElse(0.0));
+		
+		// prepare table parameters
+		Object[][] data = {
+				{"Min", min},
+				{"Max", max},
+				{"StDev", std},
+				{"Mean", avg},
+		};
+		String[] columns = {"Stat", "Value"};
+		
+		JTable table = new JTable(data, columns);
 		return table;
 	}
 	
@@ -29,6 +53,7 @@ public class TabularViewFactory {
 		ArrayList<String> dates = listData.getLeft();
 		ArrayList<String> nhpi = listData.getRight();
 		
+		// prepare table parameters
 		Object[][] data = new Object[dates.size()][];
 		String[] columns = {"Dates", "NHPI"};
 		
