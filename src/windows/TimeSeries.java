@@ -62,4 +62,4 @@ public class TimeSeries {
 	public boolean equals(TimeSeries otherSeries) {
 		return this.startDate.equals(otherSeries.getStartDate()) && this.endDate.equals(otherSeries.getEndDate()) && this.location.equals(otherSeries.getLocation());
 	}
-	
+}
