@@ -77,7 +77,6 @@ class MySQLQuery implements DatabaseQuery {
 		String locName = locationName.replace("'", "''");
 		String query = String.format("SELECT refdate, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locName, fromDate, toDate);
 		try {
-			System.out.println(query);
 			return statement.executeQuery(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
