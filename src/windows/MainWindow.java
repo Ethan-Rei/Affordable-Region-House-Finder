@@ -42,8 +42,8 @@ public class MainWindow extends WindowFrame {
 	private final JPanel panRightMenuOptions = new JPanel();
 	private final JLabel tabularViews = new JLabel("Tabular Views");
 	private final ButtonGroup visualGrp = new ButtonGroup();
-	private final JRadioButton radbtnTable = new JRadioButton("Table Summary");
-	private final JRadioButton radbtnGraph = new JRadioButton("Graph Summary");
+	private final JRadioButton radbtnRaw = new JRadioButton("Raw Data");
+	private final JRadioButton radbtnSummary = new JRadioButton("Summary");
 	private final JButton btnVisualize = new JButton("Visualizations...");
 	private final JButton btnCompare = new JButton("Statistical Test...");
 	private final JButton btnPredict = new JButton("Predict...");
@@ -111,9 +111,9 @@ public class MainWindow extends WindowFrame {
 		panRightMenuOptions.setLayout(null);
 		
 		tabularViews.setBounds(185, 17, 87, 16);
-		radbtnTable.setBounds(71, 42, 128, 23);
-		radbtnGraph.setBounds(248, 42, 131, 23);
-		radbtnGraph.setSelected(true);
+		radbtnRaw.setBounds(100, 42, 128, 23);
+		radbtnSummary.setBounds(270, 42, 131, 23);
+		radbtnSummary.setSelected(true);
 		btnVisualize.setBounds(162, 82, 137, 29);
 		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
 		btnCompare.setBounds(14, 82, 130, 29);
@@ -122,8 +122,8 @@ public class MainWindow extends WindowFrame {
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
 		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedTimeSeries), btnPredict));
-		visualGrp.add(radbtnGraph);
-		visualGrp.add(radbtnTable);
+		visualGrp.add(radbtnSummary);
+		visualGrp.add(radbtnRaw);
 		
 		// left side menu adds
 		frame.getContentPane().add(panLeftMenuOptions);
@@ -144,8 +144,8 @@ public class MainWindow extends WindowFrame {
 		// right side menu adds
 		frame.getContentPane().add(panRightMenuOptions);
 		panRightMenuOptions.add(tabularViews);
-		panRightMenuOptions.add(radbtnTable);
-		panRightMenuOptions.add(radbtnGraph);
+		panRightMenuOptions.add(radbtnRaw);
+		panRightMenuOptions.add(radbtnSummary);
 		panRightMenuOptions.add(btnVisualize);
 		panRightMenuOptions.add(btnCompare);
 		panRightMenuOptions.add(btnPredict);
