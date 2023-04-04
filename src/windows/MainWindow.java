@@ -16,7 +16,7 @@ import javax.swing.SwingConstants;
 import org.jfree.chart.ChartPanel;
 
 import database.Database;
-import visuals.TimeSeriesLineChart;
+import visuals.TimeSeriesLineVisualization;
 
 import javax.swing.JPanel;
 import java.awt.ScrollPane;
@@ -58,7 +58,7 @@ public class MainWindow extends WindowFrame {
 	private final String errorDate = "Selected start date came after end date. Please try again.";
 	
 	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
-	private final ArrayList<TimeSeriesLineChart> charts = new ArrayList<TimeSeriesLineChart>();
+	private final ArrayList<TimeSeriesLineVisualization> charts = new ArrayList<TimeSeriesLineVisualization>();
 
 	/**
 	 * Create the application.
@@ -216,7 +216,7 @@ public class MainWindow extends WindowFrame {
 			// Create a new chart based on the query
 			Date startDate = WindowHelper.dateFormat.parse(startTime);
 			Date endDate = WindowHelper.dateFormat.parse(endTime);
-			TimeSeriesLineChart newChart = TimeSeriesLineChart.newChart(location, startDate, endDate, loadedTimeSeries);
+			TimeSeriesLineVisualization newChart = TimeSeriesLineVisualization.newChart(location, startDate, endDate, loadedTimeSeries);
 			addNewVisual(newChart);
 			
 		} catch (Exception e) {
@@ -231,7 +231,7 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 	
-	private void addNewVisual(TimeSeriesLineChart newChart) {
+	private void addNewVisual(TimeSeriesLineVisualization newChart) {
 		charts.add(newChart);
 		ChartPanel newChartPanel = new ChartPanel(newChart.getChart());
 		if (charts.size() <= 3) {

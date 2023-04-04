@@ -12,17 +12,17 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-public class TimeSeriesLineChart extends Visualization{
+public class TimeSeriesLineVisualization extends Visualization{
 	
 	private JFreeChart chart;
 	private TimeSeriesCollection dataCollection;
 	
-	private TimeSeriesLineChart(JFreeChart chart, TimeSeriesCollection dataCollection) {
+	private TimeSeriesLineVisualization(JFreeChart chart, TimeSeriesCollection dataCollection) {
 		this.chart = chart;
 		this.dataCollection = dataCollection;
 	}
 	
-	public static TimeSeriesLineChart newChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
+	public static TimeSeriesLineVisualization newChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// locationName must be in loadedData as well as all values b/w its start and endDate
 		
 		// Fix data into a time series object
@@ -36,7 +36,7 @@ public class TimeSeriesLineChart extends Visualization{
         DateAxis dateAxis = (DateAxis) timeSeriesChart.getXYPlot().getDomainAxis();
         setDateAxis(dateAxis, monthCount);
         
-		return new TimeSeriesLineChart(timeSeriesChart, dataCollection);
+		return new TimeSeriesLineVisualization(timeSeriesChart, dataCollection);
 	}
 	
 	// could be bugged
@@ -49,7 +49,6 @@ public class TimeSeriesLineChart extends Visualization{
 		return this.chart;
 	}
 
-	
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<String, HashMap<Date, Double>>();
@@ -75,7 +74,7 @@ public class TimeSeriesLineChart extends Visualization{
 		loadedData.get("canada").put(new Date(2001, 7, 1), 3.0);
 		loadedData.get("canada").put(new Date(2001, 8, 1), 4.0);
 		
-		TimeSeriesLineChart chart = newChart("canada", new Date(2000, 1, 1), new Date(2001, 8, 1), loadedData);
+		TimeSeriesLineVisualization chart = newChart("canada", new Date(2000, 1, 1), new Date(2001, 8, 1), loadedData);
 		
 		ChartPanel chartPanel = new ChartPanel(chart.getChart());
         chartPanel.setPreferredSize(new Dimension(600, 500));
