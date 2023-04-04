@@ -21,9 +21,7 @@ import visuals.TimeSeriesLineVisualization;
 import visuals.Visualization;
 
 import javax.swing.JPanel;
-import java.awt.ScrollPane;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
