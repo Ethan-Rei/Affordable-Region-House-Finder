@@ -32,7 +32,7 @@ public class PredictionWindow extends InternalFrame {
 	private final JButton btnPredict = new JButton("Predict");
 	private static final Analysis analysis = Analysis.getInstance();
 
-	private final String errorMsg = "The selected dates are invalid or you haven't picked a algorithm. \nPlease try again.";
+	private final String errorMsg = "Select a timeseries with atleast 12 months loaded. \nPlease try again.";
 	
 	/**
 	 * Create the application.
@@ -56,6 +56,7 @@ public class PredictionWindow extends InternalFrame {
 		
 		linearrd.setBounds(50, 92, 169, 23);
 		frame.getContentPane().add(linearrd);
+		linearrd.setSelected(true);
 		
 		gaussianrd.setBounds(250, 92, 141, 23);
 		frame.getContentPane().add(gaussianrd);
@@ -110,6 +111,11 @@ public class PredictionWindow extends InternalFrame {
 		Date startDate = chart.getStartDate();
 		Date endDate = chart.getEndDate();
 		
+		// Check if there are atleast 12 months 
+		if (WindowHelper.getDatesInRange(startDate, endDate).size() < 12) {
+			JOptionPane.showMessageDialog(null, errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		
 		// get desired array of dates and array of corresponding nhpi values
 		ArrayList<Date> dates = WindowHelper.getDatesInRange(startDate, endDate);
@@ -154,6 +160,8 @@ public class PredictionWindow extends InternalFrame {
 		}
 		
 	}
+	
+	
 
 	
 	
