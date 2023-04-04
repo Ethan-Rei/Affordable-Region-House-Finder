@@ -112,12 +112,12 @@ public class StatisticalWindow extends InternalFrame {
 			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
 		if (!checkSameDateLength()) {
 			JOptionPane.showMessageDialog(null, errorDateLength, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
+		// call ttest stuff
 	}
 	
 	private boolean checkValidDates() {
