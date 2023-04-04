@@ -208,12 +208,12 @@ public class MainWindow extends WindowFrame {
 		}
 		
 		// store into timeseries array if its not in there already
+		
 		TimeSeries newSeries = new TimeSeries(location, startTime, endTime);
-		for (TimeSeries series: loadedTimeSeries) {
-			if (series.equals(newSeries))
-				return ;
+		if (!inLoadedTimeSeries(newSeries)) {
+			loadedTimeSeries.add(newSeries);
 		}
-		loadedTimeSeries.add(newSeries);
+		
 		
 		// create hashmap for the nhpi values
 		if(loadedData.get(location) == null)
@@ -253,6 +253,14 @@ public class MainWindow extends WindowFrame {
 			radbtnSummary.setEnabled(true);
 			btnVisualize.setEnabled(true);
 		}
+	}
+
+	private boolean inLoadedTimeSeries(TimeSeries newSeries) {
+		for (TimeSeries series: loadedTimeSeries) {
+			if (series.equals(newSeries))
+				return true;
+		}
+		return false;
 	}
 
 	public void addVisualization(Visualization visualization) {
