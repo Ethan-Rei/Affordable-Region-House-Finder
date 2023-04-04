@@ -2,8 +2,15 @@ package windows;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import org.apache.commons.math3.exception.NumberIsTooSmallException;
+
+import analysis.Analysis;
+
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -25,8 +32,12 @@ public class StatisticalWindow extends InternalFrame {
 	private final JComboBox<String> endBox2 = new JComboBox<String>();
 	private final JButton btnCompare = new JButton("Compare");
 
+	private final String errorLocation = "You must select both locations. Please try again.";
 	private final String errorDate = "The selected dates are invalid. Please try again.";
 	private final String errorDateLength = "The timespan of the two locations must be the same. Please try again.";
+	private final String errorSize = "There must be more than 1 month selected in the dates to do a statistical test. Please try again.";
+	private final String reject = "We can reject the null hypothesis.";
+	private final String cantReject = "We cannot reject the null hypothesis.";
 	
 	private final HashMap<String, HashMap<Date, Double>> loadedData;
 	
@@ -35,6 +46,7 @@ public class StatisticalWindow extends InternalFrame {
 	 */
 	public StatisticalWindow(HashMap<String, HashMap<Date, Double>> data) {
 		this.loadedData = data;
+		populatePValues();
 		createFrame();
 	}
 	
@@ -85,7 +97,6 @@ public class StatisticalWindow extends InternalFrame {
 		
 		pBox.setBounds(180, 244, 117, 29);
 		frame.getContentPane().add(pBox);
-		populatePValues();
 		
 		btnCompare.setBounds(180, 294, 117, 29);
 		btnCompare.addActionListener(e -> compare());
@@ -100,14 +111,19 @@ public class StatisticalWindow extends InternalFrame {
 	}
 	
 	private void populatePValues() {
-		double val = 0.05;
-		for (int i = 0; i <= 15; i++) {
+		double val = 0.01;
+		for (int i = 0; i < 10; i++) {
 			pBox.addItem(String.format("%.2f", val));
 			val += 0.01;
 		}
+		pBox.setSelectedIndex(4);
 	}
 
 	private void compare() {
+		if (!checkValidLocation()) {
+			JOptionPane.showMessageDialog(null, errorLocation, "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (!checkValidDates()) {
 			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -117,7 +133,27 @@ public class StatisticalWindow extends InternalFrame {
 			return;
 		}
 		
-		// call ttest stuff
+		// get the double array values for both time series
+		try {
+			Date startLoc1 = WindowHelper.dateFormat.parse(startBox1.getSelectedItem().toString());
+			Date startLoc2 = WindowHelper.dateFormat.parse(startBox2.getSelectedItem().toString());
+			Date endLoc1 = WindowHelper.dateFormat.parse(endBox1.getSelectedItem().toString());
+			Date endLoc2 = WindowHelper.dateFormat.parse(endBox2.getSelectedItem().toString());
+			
+			double[] loc1Values = WindowHelper.getNHPIInRange(locBox1.getSelectedItem().toString(), startLoc1, endLoc1, loadedData);
+			double[] loc2Values = WindowHelper.getNHPIInRange(locBox2.getSelectedItem().toString(), startLoc2, endLoc2, loadedData);
+			
+			double pValue = Analysis.getInstance().tTest(loc1Values, loc2Values);
+			if (pValue <= Double.parseDouble(pBox.getSelectedItem().toString()))
+				JOptionPane.showMessageDialog(null, reject, "Result", JOptionPane.DEFAULT_OPTION);
+			else
+				JOptionPane.showMessageDialog(null, cantReject, "Result", JOptionPane.DEFAULT_OPTION);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (NumberIsTooSmallException en) {
+			JOptionPane.showMessageDialog(null, errorSize, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	private boolean checkValidDates() {
@@ -139,6 +175,12 @@ public class StatisticalWindow extends InternalFrame {
 		if (firstLoc != secondLoc)
 			return false;
 		
+		return true;
+	}
+	
+	private boolean checkValidLocation() {
+		if (locBox1.getSelectedItem() == null || locBox2.getSelectedItem() == null)
+			return false;
 		return true;
 	}
 }
