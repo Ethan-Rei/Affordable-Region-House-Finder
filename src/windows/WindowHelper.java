@@ -1,5 +1,7 @@
 package windows;
 
+import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +17,6 @@ public class WindowHelper {
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 	private static final Calendar calendar = Calendar.getInstance();
 	
-	// may be unused
 	public static ArrayList<Date> getLastViableDate(String location, Date startDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// Guaranteed that location is present within the loadedData hashmap
 		ArrayList<Date> viableDates = new ArrayList<Date>();
@@ -31,7 +32,57 @@ public class WindowHelper {
 		
 	}
 	
+	public static void populateEndDate(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
+		// Don't change end date box every time
+		String prevPicked = "";
+		if (endBox.getSelectedItem() != null)
+			prevPicked = endBox.getSelectedItem().toString();
+		
+		endBox.removeAllItems();
+		
+		String pickedLocation = locBox.getSelectedItem().toString();
+		String startDate = startBox.getSelectedItem().toString();
+		ArrayList<Date> validDates = null;
+		try {
+			Date pickedDate = dateFormat.parse(startDate);
+			validDates = getLastViableDate(pickedLocation, pickedDate, loadedData);
+			
+			for (Date validDate: validDates) {
+				endBox.addItem(dateFormat.format(validDate));
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		// Only change end box if the previous picked value was less than start date or new time series range
+		ArrayList<String> endBoxDates = new ArrayList<>();
+		for (Date date: validDates)
+			endBoxDates.add(dateFormat.format(date));
+		
+		if (endBoxDates.contains(prevPicked) && startDate.compareTo(prevPicked) < 0)
+			endBox.setSelectedItem(prevPicked);
+			
+		
+	}
+	
+//	public static void populateStartDate(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
+//		startBox.removeAllItems();
+//		String pickedLocation = locBox.getSelectedItem().toString();
+//		Set<Date> validDatesSet = loadedData.get(pickedLocation).keySet();
+//		ArrayList<Date> validDates = new ArrayList<Date>(validDatesSet);
+//		Collections.sort(validDates);
+//		for (Date validDate: validDates) {
+//			startBox.addItem(dateFormat.format(validDate));
+//		}
+//		
+//		populateEndDate(locBox, startBox, endBox, loadedData);
+//	}
+	
 	public static void populateDateBoxes(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
+		// Fix NullPointerException by removing the listener, then re-adding it at end of method
+		ActionListener startBoxListener = startBox.getActionListeners()[0];
+		startBox.removeActionListener(startBoxListener);
+		
 		startBox.removeAllItems();
 		endBox.removeAllItems();
 		String pickedLocation = locBox.getSelectedItem().toString();
@@ -40,19 +91,21 @@ public class WindowHelper {
 		Collections.sort(validDates);
 		for (Date validDate: validDates) {
 			startBox.addItem(dateFormat.format(validDate));
-			endBox.addItem(dateFormat.format(validDate));
 		}
-		startBox.setSelectedItem(dateFormat.format(validDates.get(0)));
-		endBox.setSelectedItem(dateFormat.format(validDates.get(0)));
+		
+		startBox.setSelectedItem(null);
+		startBox.addActionListener(startBoxListener);
 	}
 
-	public static void populateLocBox(JComboBox<String> locbox, HashMap<String, HashMap<Date, Double>> loadedData) {
+	public static void populateLocBox(JComboBox<String> locBox, HashMap<String, HashMap<Date, Double>> loadedData) {
 		Set<String> validLocationsSet = loadedData.keySet();
 		ArrayList<String> validLocations = new ArrayList<String>(validLocationsSet);
 		Collections.sort(validLocations);
 		for (String validLocation: validLocations) {
-			locbox.addItem(validLocation);
+			locBox.addItem(validLocation);
 		}
+		
+		locBox.setSelectedItem(null);
 	}
 	
 	public static double[] getNHPIInRange(String location, Date start, Date end, HashMap<String, HashMap<Date, Double>> loadedData) {

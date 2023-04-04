@@ -79,9 +79,11 @@ public class StatisticalWindow extends InternalFrame {
 		
 		startBox1.setBounds(180, 110, 101, 27);
 		frame.getContentPane().add(startBox1);
+		startBox1.addActionListener(e -> WindowHelper.populateEndDate(locBox1, startBox1, endBox1, loadedData));
 		
 		startBox2.setBounds(180, 160, 101, 27);
 		frame.getContentPane().add(startBox2);
+		startBox2.addActionListener(e -> WindowHelper.populateEndDate(locBox2, startBox2, endBox2, loadedData));
 		
 		endlabel.setBounds(330, 70, 61, 16);
 		frame.getContentPane().add(endlabel);
