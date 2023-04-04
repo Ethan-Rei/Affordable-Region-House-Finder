@@ -151,7 +151,7 @@ public class MainWindow extends WindowFrame {
 		panRightMenuOptions.add(btnPredict);
 		
 		// visualizations options
-		panVisual.setBounds(0, 130, frame.getWidth(), frame.getHeight());
+		panVisual.setBounds(0, 130, 1000, 600);
 		panVisual.setLayout(null);
 		
 		// visualizations adds
