@@ -4,6 +4,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
@@ -19,8 +23,10 @@ public abstract class Visualization {
 	public static final int MEDIUM = 48;
 	public static final int MEDIUM_LARGE = 96;
 	public static final int LARGE = 192;
+	private JPanel panel;
 	public static final Calendar calendar = Calendar.getInstance();
 	public abstract JFreeChart getChart();
+	protected JFreeChart chart;
 	
 	protected static int getMonthCount(Date startDate, Date endDate) {
 		calendar.setTime(endDate);
@@ -70,5 +76,27 @@ public abstract class Visualization {
 			currentDate = calendar.getTime();
 		}
 		return data;
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+	
+	protected void createPanel() {
+		// Create chart panel
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setBounds(0, 0, 320, 320);
+		chartPanel.setVisible(true);
+		
+		// Create scroll pane to scroll the tabular view
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 320, 320, 260);
+		scrollPane.setVisible(true);
+		
+		// TODO Create the tabular view and insert into scroll pane
+
+		this.panel = new JPanel();
+		panel.add(scrollPane);
+		panel.add(chartPanel);
 	}
 }

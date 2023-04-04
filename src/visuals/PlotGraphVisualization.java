@@ -14,11 +14,10 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
 public class PlotGraphVisualization extends Visualization{
-
-	private JFreeChart chart;
 	
 	private PlotGraphVisualization(JFreeChart chart) {
 		this.chart = chart;
+		super.createPanel();
 	}
 	
 	public static PlotGraphVisualization newChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {

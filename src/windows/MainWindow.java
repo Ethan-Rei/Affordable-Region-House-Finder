@@ -11,12 +11,14 @@ import javax.swing.JFrame;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
-
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jfree.chart.ChartPanel;
 
 import database.Database;
 import visuals.TimeSeriesLineVisualization;
+import visuals.Visualization;
 
 import javax.swing.JPanel;
 import java.awt.ScrollPane;
@@ -49,7 +51,6 @@ public class MainWindow extends WindowFrame {
 	private final JButton btnPredict = new JButton("Predict...");
 	
 	private final JPanel panVisual = new JPanel();
-	private final ScrollPane scrollPane = new ScrollPane();
 	private final JLabel lblSelectVis = new JLabel("Add your time series to visualize...");
 	
 	private final JSeparator sepVert = new JSeparator();
@@ -58,7 +59,7 @@ public class MainWindow extends WindowFrame {
 	private final String errorDate = "Selected start date came after end date. Please try again.";
 	
 	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
-	private final ArrayList<TimeSeriesLineVisualization> charts = new ArrayList<TimeSeriesLineVisualization>();
+	private final ArrayList<Visualization> charts = new ArrayList<Visualization>();
 
 	/**
 	 * Create the application.
@@ -213,14 +214,33 @@ public class MainWindow extends WindowFrame {
 				timeSeries.put(refdate, NHPIQuery.getDouble(2));
 			}
 			
-			// Create a new chart based on the query
+			// Create a new panel with the chart based on the query
 			Date startDate = WindowHelper.dateFormat.parse(startTime);
 			Date endDate = WindowHelper.dateFormat.parse(endTime);
-			TimeSeriesLineVisualization newChart = TimeSeriesLineVisualization.newChart(location, startDate, endDate, loadedTimeSeries);
-			addNewVisual(newChart);
+			
+			// Check if there's a max # of panels
+			if (!isFull()) {
+				// Create new visualization
+				Visualization newVisualization = TimeSeriesLineVisualization.newChart(location, startDate, endDate, loadedTimeSeries);
+				
+				// Add visualization's panel
+				JPanel visualizationPanel = newVisualization.getPanel();
+				System.out.println(visualizationPanel);
+				visualizationPanel.setBounds(charts.size() * 320 + 13, 10, 320, 580);
+				panVisual.add(visualizationPanel);
+				visualizationPanel.setVisible(true);
+				charts.add(newVisualization);
+				panVisual.repaint();
+				
+			}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		if (!charts.isEmpty()) {
+			lblSelectVis.setVisible(false);
 		}
 		
 		if (loadedTimeSeries.size() >= 2) {
@@ -231,15 +251,11 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 	
-	private void addNewVisual(TimeSeriesLineVisualization newChart) {
-		charts.add(newChart);
-		ChartPanel newChartPanel = new ChartPanel(newChart.getChart());
-		if (charts.size() <= 3) {
-			newChartPanel.setBounds(charts.size()*320 - 320 + 12, 25, 320, 320);
-			panVisual.add(newChartPanel);
-			lblSelectVis.setVisible(false);
-			panVisual.repaint();
-		}
+	
+	// newChartPanel.setBounds(charts.size()*320 - 320 + 12, 25, 320, 320);
+
+	private boolean isFull() {
+		return charts.size() == 3;
 	}
 
 	public JButton getBtnVisualize() {

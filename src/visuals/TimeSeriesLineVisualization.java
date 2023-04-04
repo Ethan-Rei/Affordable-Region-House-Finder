@@ -14,12 +14,12 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 public class TimeSeriesLineVisualization extends Visualization{
 	
-	private JFreeChart chart;
 	private TimeSeriesCollection dataCollection;
 	
 	private TimeSeriesLineVisualization(JFreeChart chart, TimeSeriesCollection dataCollection) {
 		this.chart = chart;
 		this.dataCollection = dataCollection;
+		super.createPanel();
 	}
 	
 	public static TimeSeriesLineVisualization newChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {

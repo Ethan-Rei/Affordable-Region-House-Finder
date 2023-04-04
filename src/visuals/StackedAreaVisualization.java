@@ -17,10 +17,10 @@ import org.jfree.data.time.TimeTableXYDataset;
 import org.jfree.data.xy.TableXYDataset;
 
 public class StackedAreaVisualization extends Visualization {
-	private JFreeChart chart;
 	
 	public StackedAreaVisualization(JFreeChart chart) {
 		this.chart = chart;
+		super.createPanel();
 	}
 	
 	public static Visualization newChart(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
