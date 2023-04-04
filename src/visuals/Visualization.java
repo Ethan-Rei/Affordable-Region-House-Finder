@@ -96,6 +96,22 @@ public abstract class Visualization {
 		return panel;
 	}
 	
+	public Date getStartDate() {
+		return startDate;
+	}
+	
+	public Date getEndDate() {
+		return endDate;
+	}
+	
+	public String getLocationName() {
+		return locationName;
+	}
+	
+	public String toString() {
+		return locationName + " (" + WindowHelper.dateFormat.format(startDate) + " to " + WindowHelper.dateFormat.format(endDate) + ")";
+	}
+	
 	public JScrollPane getScrollPaneRaw() {
 		return scrollPaneRaw;
 	}

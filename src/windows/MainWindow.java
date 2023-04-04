@@ -117,7 +117,7 @@ public class MainWindow extends WindowFrame {
 		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedData), btnCompare));
 		btnPredict.setBounds(320, 82, 127, 29);
 		btnPredict.setEnabled(false);
-		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedData), btnPredict));
+		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedData, charts), btnPredict));
 		radbtnRaw.setSelected(true);
 		radbtnRaw.setEnabled(false);
 		radbtnSummary.setEnabled(false);
@@ -283,5 +283,9 @@ public class MainWindow extends WindowFrame {
 
 	public JButton getBtnPredict() {
 		return btnPredict;
+	}
+	
+	public void refresh() {
+		panVisual.repaint();
 	}
 }

@@ -36,7 +36,13 @@ public class TimeSeriesLineVisualization extends Visualization{
 	// could be bugged
 	public void addTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		TimeSeries data = createTimeSeries(locationName, startDate, endDate, loadedData);
+		DateAxis newDateAxis = new DateAxis("Date");
 		this.dataCollection.addSeries(data);
+		this.startDate = this.startDate.compareTo(startDate) < 0 ? this.startDate : startDate;
+		this.endDate = this.endDate.compareTo(startDate) < 0 ? this.startDate : startDate;
+		newDateAxis.setRange(startDate, endDate);
+		this.chart.getXYPlot().setDomainAxis(newDateAxis);
+        setDateAxis(newDateAxis, getMonthCount(startDate, endDate));
 	}
 	
 	public JFreeChart getChart() {
