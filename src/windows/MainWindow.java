@@ -55,6 +55,8 @@ public class MainWindow extends WindowFrame {
 	private final JSeparator sepVert = new JSeparator();
 	private final JSeparator sepHori = new JSeparator();
 	
+	private final String errorDate = "Selected start date came after end date. Please try again.";
+	
 	private final HashMap<String, HashMap<Date, Double>> loadedTimeSeries = new HashMap<>();
 	private final ArrayList<TimeSeriesLineChart> charts = new ArrayList<TimeSeriesLineChart>();
 
@@ -194,15 +196,9 @@ public class MainWindow extends WindowFrame {
 		
 		// Check if selected dates are valid could be its own method
 		if (startTime.compareTo(endTime) > 0) {
-			JFrame frame = new JFrame();
-			JOptionPane.showMessageDialog(frame,
-				    "Selected start date came after end date. Please try again.",
-				    "Affordable Region House Finder",
-				    JOptionPane.ERROR_MESSAGE);
-			return ;
+			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
 		
 		if(loadedTimeSeries.get(location) == null)
 			loadedTimeSeries.put(location, new HashMap<Date, Double>());
@@ -213,13 +209,13 @@ public class MainWindow extends WindowFrame {
 			// query database for nhpi values
 			ResultSet NHPIQuery = Database.getInstance().queryNHPI(location, startTime, endTime);
 			while (NHPIQuery.next()) {
-				Date refdate = format.parse(NHPIQuery.getString(1).substring(0, NHPIQuery.getString(1).length()-3));
+				Date refdate = WindowHelper.dateFormat.parse(NHPIQuery.getString(1).substring(0, NHPIQuery.getString(1).length()-3));
 				timeSeries.put(refdate, NHPIQuery.getDouble(2));
 			}
 			
 			// Create a new chart based on the query
-			Date startDate = format.parse(startTime);
-			Date endDate = format.parse(endTime);
+			Date startDate = WindowHelper.dateFormat.parse(startTime);
+			Date endDate = WindowHelper.dateFormat.parse(endTime);
 			TimeSeriesLineChart newChart = TimeSeriesLineChart.newChart(location, startDate, endDate, loadedTimeSeries);
 			addNewVisual(newChart);
 			
