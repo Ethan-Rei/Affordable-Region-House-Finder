@@ -7,14 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class MySQLQuery implements DatabaseQuery {
+class MySQLQuery {
 	private Statement statement;
 	
 	public MySQLQuery(DatabaseConnection connection) {
 		setConnection(connection.getConnection());
 	}
 
-	@Override
 	public void setConnection(Connection connection) {
 		try {
 			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -23,20 +22,6 @@ class MySQLQuery implements DatabaseQuery {
 		}
 	}
 
-	@Override
-	public ResultSet query(String locationName, String fromDate, String toDate) {
-		String locName = locationName.replace("'", "''");
-		String queryString = String.format("SELECT refdate, location_name, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locName, fromDate, toDate);  
-		try {
-			return statement.executeQuery(queryString);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-
-	@Override
 	public ArrayList<String> queryLocations() {
 		String query = "SELECT DISTINCT location_name FROM data";
 		ArrayList<String> locations = new ArrayList<>();
@@ -54,7 +39,6 @@ class MySQLQuery implements DatabaseQuery {
 		return null;
 	}
 	
-	@Override
 	public ArrayList<String> queryTimes() {
 		String query = "SELECT DISTINCT refdate FROM data";
 		ArrayList<String> times = new ArrayList<>();
@@ -72,7 +56,6 @@ class MySQLQuery implements DatabaseQuery {
 		return null;
 	}
 	
-	@Override
 	public ResultSet queryNHPI(String locationName, String fromDate, String toDate) {
 		String locName = locationName.replace("'", "''");
 		String query = String.format("SELECT refdate, property_value FROM data WHERE location_name='%s' AND refdate BETWEEN '%s-01' AND '%s-01'", locName, fromDate, toDate);

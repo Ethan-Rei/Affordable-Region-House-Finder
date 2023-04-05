@@ -9,6 +9,7 @@ import visuals.PlotGraphVisualization;
 import visuals.StackedAreaVisualization;
 import visuals.TimeSeriesLineVisualization;
 import visuals.Visualization;
+import visuals.VisualizationFactory;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -184,19 +185,19 @@ public class VisualizationWindow extends InternalFrame {
 		}
 		
 		if (checkLine.isSelected() && !ts.getSetting(ChartType.LINE_CHART)) {
-			MainWindow.getInstance().addVisualization(new TimeSeriesLineVisualization(ts.getLocation(), startDate, endDate, loadedData));
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createTimeSeriesLineVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.LINE_CHART, true);
 		}
 		if (checkPlot.isSelected() && !ts.getSetting(ChartType.PLOT_CHART)) {
-			MainWindow.getInstance().addVisualization(new PlotGraphVisualization(ts.getLocation(), startDate, endDate, loadedData));
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createPlotGraphVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.PLOT_CHART, true);
 		}
 		if (checkHisto.isSelected() && !ts.getSetting(ChartType.HISTOGRAM_CHART)) {
-			MainWindow.getInstance().addVisualization(new HistogramVisualization(ts.getLocation(), startDate, endDate, loadedData));
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createHistogramVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.HISTOGRAM_CHART, true);
 		}
 		if (checkStack.isSelected() && !ts.getSetting(ChartType.STACKED_AREA_CHART)) {
-			MainWindow.getInstance().addVisualization(new StackedAreaVisualization(ts.getLocation(), startDate, endDate, loadedData));
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createStackedAreaVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.STACKED_AREA_CHART, true);
 		}
 			

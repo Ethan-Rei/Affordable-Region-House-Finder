@@ -38,6 +38,7 @@ public abstract class Visualization {
 	protected JScrollPane scrollPaneSummary;
 	
 	public abstract JFreeChart getChart();
+	
 	protected Visualization (String locationName, Date startDate, Date endDate) {
 		this.startDate = startDate;
 		this.endDate = endDate;

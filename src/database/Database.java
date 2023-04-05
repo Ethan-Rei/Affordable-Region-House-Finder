@@ -1,8 +1,9 @@
 package database;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Database {
 	private static Database singleton;
@@ -16,7 +17,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		query = new MySQLQuery(connection);
+		query = new MySQLQueryAdapter(connection);
 	}
 	
 	public static Database getInstance() {
@@ -24,10 +25,6 @@ public class Database {
 			singleton = new Database(); 
 		}
 		return singleton;
-	}
-	
-	public ResultSet query(String locationName, String fromDate, String toDate) {
-		return query.query(locationName, fromDate, toDate);
 	}
 	
 	public ArrayList<String> queryLocations() {
@@ -38,7 +35,7 @@ public class Database {
 		return query.queryTimes();
 	}
 	
-	public ResultSet queryNHPI(String locationName, String fromDate, String toDate) {
+	public HashMap<Date, Double> queryNHPI(String locationName, String fromDate, String toDate) {
 		return query.queryNHPI(locationName, fromDate, toDate);
 	}
 	

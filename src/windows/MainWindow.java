@@ -10,11 +10,10 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import database.Database;
 import visuals.ChartType;
-import visuals.TimeSeriesLineVisualization;
 import visuals.Visualization;
+import visuals.VisualizationFactory;
 
 import javax.swing.JPanel;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -219,10 +218,9 @@ public class MainWindow extends WindowFrame {
 
 		try {
 			// query database for nhpi values
-			ResultSet NHPIQuery = Database.getInstance().queryNHPI(location, startTime, endTime);
-			while (NHPIQuery.next()) {
-				Date refdate = WindowHelper.dateFormat.parse(NHPIQuery.getString(1).substring(0, NHPIQuery.getString(1).length()-3));
-				timeSeries.put(refdate, NHPIQuery.getDouble(2));
+			HashMap<Date, Double> NHPIQuery = Database.getInstance().queryNHPI(location, startTime, endTime);
+			for (Date key : NHPIQuery.keySet()) {
+			    timeSeries.put(key, NHPIQuery.get(key));
 			}
 			
 			// Create a new panel with the chart based on the query
@@ -232,7 +230,7 @@ public class MainWindow extends WindowFrame {
 			// Check if there's a max # of panels
 			if (!isFull()) {
 				// Create new visualization
-				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedData);
+				Visualization newVisualization = VisualizationFactory.createTimeSeriesLineVisualization(location, startDate, endDate, loadedData);
 				newSeries.setSetting(ChartType.LINE_CHART, true);
 				addVisualization(newVisualization);
 			}
