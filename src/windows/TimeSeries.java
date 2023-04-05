@@ -2,6 +2,8 @@ package windows;
 
 import java.util.HashMap;
 
+import visuals.ChartType;
+
 public class TimeSeries {
 	private String location;
 	private String startDate;
@@ -19,8 +21,8 @@ public class TimeSeries {
 		chartSettings = new HashMap<>();
 		chartSettings.put(ChartType.LINE_CHART, false);
 		chartSettings.put(ChartType.PLOT_CHART, false);
-		chartSettings.put(ChartType.STACKED_AREA_CHART, false);
 		chartSettings.put(ChartType.HISTOGRAM_CHART, false);
+		chartSettings.put(ChartType.STACKED_AREA_CHART, false);
 	}
 	
 	public void setSetting(ChartType type, boolean setting) {
@@ -29,6 +31,19 @@ public class TimeSeries {
 	
 	public boolean getSetting(ChartType type) {
 		return chartSettings.get(type);
+	}
+	
+	public int getSettingsCount() {
+		int count = 0;
+		if (chartSettings.get(ChartType.LINE_CHART))
+			count++;
+		if (chartSettings.get(ChartType.PLOT_CHART))
+			count++;
+		if (chartSettings.get(ChartType.HISTOGRAM_CHART))
+			count++;
+		if (chartSettings.get(ChartType.STACKED_AREA_CHART))
+			count++;
+		return count;
 	}
 	
 	public boolean isChartEnabled(ChartType type) {

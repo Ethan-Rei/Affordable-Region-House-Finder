@@ -1,4 +1,4 @@
-package windows;
+package visuals;
 
 public enum ChartType {
 	LINE_CHART,

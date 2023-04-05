@@ -9,6 +9,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import database.Database;
+import visuals.ChartType;
 import visuals.TimeSeriesLineVisualization;
 import visuals.Visualization;
 
@@ -45,9 +46,9 @@ public class MainWindow extends WindowFrame {
 	private final JSeparator sepVert = new JSeparator();
 	private final JSeparator sepHori = new JSeparator();
 	
-	private final String errorDate = "Selected start date came after end date. Please try again.";
+	private final String errorDate = "Selected dates are invalid. If you have selected the same start and end date, please change it.";
 	
-	private final static ArrayList<TimeSeries> loadedTimeSeries = new ArrayList<>();
+	private final ArrayList<TimeSeries> loadedTimeSeries = new ArrayList<>();
 	private final HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<>();
 	private final ArrayList<Visualization> charts = new ArrayList<Visualization>();
 
@@ -59,7 +60,7 @@ public class MainWindow extends WindowFrame {
 		setTimeBoxes();
 	}
 	
-	public static ArrayList<TimeSeries> getLoadedTimeSeries() {
+	public ArrayList<TimeSeries> getLoadedTimeSeries() {
 		return loadedTimeSeries;
 	}
 	
@@ -111,7 +112,7 @@ public class MainWindow extends WindowFrame {
 		radbtnSummary.setBounds(270, 42, 131, 23);
 		radbtnSummary.addActionListener(e -> showSummaryTables());
 		btnVisualize.setBounds(162, 82, 137, 29);
-		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
+		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(loadedData, charts), btnVisualize));
 		btnVisualize.setEnabled(false);
 		btnCompare.setBounds(14, 82, 130, 29);
 		btnCompare.setEnabled(false);
@@ -202,7 +203,7 @@ public class MainWindow extends WindowFrame {
 		String endTime = boxEndTime.getSelectedItem().toString();
 		
 		// Check if selected dates are valid could be its own method
-		if (startTime.compareTo(endTime) > 0) {
+		if (startTime.compareTo(endTime) >= 0) {
 			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -210,10 +211,10 @@ public class MainWindow extends WindowFrame {
 		// store into timeseries array if its not in there already
 		
 		TimeSeries newSeries = new TimeSeries(location, startTime, endTime);
-		if (!inLoadedTimeSeries(newSeries)) {
-			loadedTimeSeries.add(newSeries);
+		if (inLoadedTimeSeries(newSeries)) {
+			return;
 		}
-		
+		loadedTimeSeries.add(newSeries);
 		
 		// create hashmap for the nhpi values
 		if(loadedData.get(location) == null)

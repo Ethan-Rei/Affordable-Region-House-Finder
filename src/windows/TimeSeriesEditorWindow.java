@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Container;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,6 +22,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	public TimeSeriesEditorWindow(Container refPanel, JButton refButton) {
 		this.refPanel = refPanel;
 		this.refButton = refButton;
+		getTimeSeries();
 		createFrame();
 	}
 	
@@ -41,9 +43,26 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		frame.getContentPane().add(boxChart2);
 		
 		btnAdd.setBounds(45, 200, 170, 27);
+		btnAdd.addActionListener(e -> addTimeSeries());
 		frame.getContentPane().add(btnAdd);
 		
 		frame.setVisible(true);
+	}
+	
+	private void addTimeSeries() {
+		
+	}
+	
+	private void getTimeSeries() {
+		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
+		
+		for (TimeSeries ts: timeSeries) {
+			boxChart1.addItem(ts.toString());
+			boxChart2.addItem(ts.toString());
+		}
+		
+		boxChart1.setSelectedItem(null);
+		boxChart2.setSelectedItem(null);
 	}
 	
 	public void close() {

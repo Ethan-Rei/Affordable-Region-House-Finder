@@ -35,7 +35,6 @@ public class TimeSeriesLineVisualization extends Visualization{
 		
 	}
 	
-	// TODO FIX
 	public void addTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		// Load time series into chart
 		TimeSeries data = createTimeSeries(locationName, startDate, endDate, loadedData);
