@@ -53,7 +53,7 @@ public class StatisticalWindow extends InternalFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void createFrame() {
+	public void createFrame() {
 		frame.setSize(500, 380);
 		frame.setTitle(title);
 		

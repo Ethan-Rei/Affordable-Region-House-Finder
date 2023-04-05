@@ -6,6 +6,10 @@ public abstract class WindowFrame {
 	protected JFrame frame;
 	
 	public WindowFrame() {
+		init();
+	}
+	
+	public void init() {
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

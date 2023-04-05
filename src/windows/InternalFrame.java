@@ -7,6 +7,10 @@ public abstract class InternalFrame {
 	protected JInternalFrame frame;
 	
 	public InternalFrame() {
+		init();
+	}
+	
+	public void init() {
 		frame = new JInternalFrame();
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -15,6 +19,7 @@ public abstract class InternalFrame {
 		frame.addPropertyChangeListener("closed", e -> close());
 	}
 	
+	public abstract void createFrame();
 	public abstract void close();
 	
 	public JInternalFrame getFrame() {

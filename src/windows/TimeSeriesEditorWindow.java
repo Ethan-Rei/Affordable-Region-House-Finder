@@ -41,7 +41,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		createFrame();
 	}
 	
-	private void createFrame() {
+	public void createFrame() {
 		frame.setSize(280, 300);
 		frame.setTitle(title);
 		

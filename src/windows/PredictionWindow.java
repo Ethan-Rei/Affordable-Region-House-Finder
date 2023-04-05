@@ -30,20 +30,23 @@ public class PredictionWindow extends InternalFrame {
 	private final JComboBox<String> chartbx = new JComboBox<String>();
 	private final JButton btnPredict = new JButton("Predict");
 	private static final Analysis analysis = Analysis.getInstance();
-
+	private final HashMap<String, HashMap<Date, Double>> loadedData;
+	private final ArrayList<Visualization> charts;
 	private final String errorMsg = "Select a timeseries with atleast 12 months loaded. \nPlease try again.";
 	
 	/**
 	 * Create the application.
 	 */
 	public PredictionWindow(HashMap<String, HashMap<Date, Double>> data, ArrayList<Visualization> charts) {
-		createFrame(data, charts);
+		this.loadedData = data;
+		this.charts = charts;
+		createFrame();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void createFrame(HashMap<String, HashMap<Date, Double>> loadedData, ArrayList<Visualization> charts) {
+	public void createFrame() {
 		frame.setSize(450, 400);
 		frame.setTitle(title);
 		

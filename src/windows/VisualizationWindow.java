@@ -46,7 +46,7 @@ public class VisualizationWindow extends InternalFrame {
 		createFrame();
 	}
 
-	private void createFrame() {
+	public void createFrame() {
 		frame.setSize(415, 280);
 		frame.setTitle(title);
 		
