@@ -12,8 +12,6 @@ import visuals.Visualization;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-
-import java.awt.Component;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
