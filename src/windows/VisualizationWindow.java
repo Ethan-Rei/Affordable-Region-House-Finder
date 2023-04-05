@@ -117,19 +117,14 @@ public class VisualizationWindow extends InternalFrame {
 		// check through all settings, throw error if they already had 3 selected, can be own method
 		int counter = 0;
 		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		// this can be optimized to O(1) or O(n) if every new visualization chart contained a TimeSeries and ChartType?
-		// look for the same time series 
-		for (Visualization vis: charts) {
-			for (TimeSeries ts: timeSeries) {
-				if(ts.toString().equals(boxTimeSeries.getSelectedItem().toString())) {
-					// don't count the currently selected
-					continue;
-				}
-					
-				if(vis.toString().equals(ts.toString())) {
-					counter += ts.getSettingsCount();
-				}
+		TimeSeries curSelect = null;
+		for (TimeSeries ts: timeSeries) {
+			if(ts.toString().equals(boxTimeSeries.getSelectedItem().toString())) {
+				// don't count the currently selected
+				curSelect = ts;
+				continue;
 			}
+			counter += ts.getSettingsCount();
 		}
 		
 		// count the boxes selected and see if greater than counter, throw error if so
@@ -141,17 +136,12 @@ public class VisualizationWindow extends InternalFrame {
 			counter++;
 		if (checkStack.isSelected())
 			counter++;
-		System.out.println(counter);
+
 		if (counter > 3) {
 			JOptionPane.showMessageDialog(null, errorCount, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-		TimeSeries curSelect = null;
-		for (TimeSeries ts: timeSeries) {
-			if (ts.toString().equals(boxTimeSeries.getSelectedItem().toString()))
-				curSelect = ts;
-		}
 		// now we add visuals and remove unselected
 		removeUnselectedVisualization(curSelect);
 		addSelectedVisualization(curSelect);
@@ -164,22 +154,22 @@ public class VisualizationWindow extends InternalFrame {
 				if (charts.get(i) instanceof TimeSeriesLineVisualization && !checkLine.isSelected()) {
 					MainWindow.getInstance().removeVisualization(charts.get(i));
 					ts.setSetting(ChartType.LINE_CHART, false);
-					i = 0;
+					i--;
 				}
 				else if (charts.get(i) instanceof PlotGraphVisualization && !checkPlot.isSelected()) {
 					MainWindow.getInstance().removeVisualization(charts.get(i));
 					ts.setSetting(ChartType.PLOT_CHART, false);
-					i = 0;
+					i--;
 				}
 				else if (charts.get(i) instanceof HistogramVisualization && !checkHisto.isSelected()) {
 					MainWindow.getInstance().removeVisualization(charts.get(i));
 					ts.setSetting(ChartType.HISTOGRAM_CHART, false);
-					i = 0;
+					i--;
 				}
 				else if (charts.get(i) instanceof StackedAreaVisualization && !checkStack.isSelected()) {
 					MainWindow.getInstance().removeVisualization(charts.get(i));
 					ts.setSetting(ChartType.STACKED_AREA_CHART, false);
-					i = 0;
+					i--;
 				}
 			}
 		}
@@ -199,15 +189,15 @@ public class VisualizationWindow extends InternalFrame {
 			MainWindow.getInstance().addVisualization(new TimeSeriesLineVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.LINE_CHART, true);
 		}
-		if (checkPlot.isSelected()) {
+		if (checkPlot.isSelected() && !ts.getSetting(ChartType.PLOT_CHART)) {
 			MainWindow.getInstance().addVisualization(new PlotGraphVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.PLOT_CHART, true);
 		}
-		if (checkHisto.isSelected()) {
+		if (checkHisto.isSelected() && !ts.getSetting(ChartType.HISTOGRAM_CHART)) {
 			MainWindow.getInstance().addVisualization(new HistogramVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.HISTOGRAM_CHART, true);
 		}
-		if (checkStack.isSelected()) {
+		if (checkStack.isSelected() && !ts.getSetting(ChartType.STACKED_AREA_CHART)) {
 			MainWindow.getInstance().addVisualization(new StackedAreaVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.STACKED_AREA_CHART, true);
 		}

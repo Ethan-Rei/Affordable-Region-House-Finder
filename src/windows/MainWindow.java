@@ -70,10 +70,6 @@ public class MainWindow extends WindowFrame {
 		return singleton;
 	}
 	
-	public static void main(String[] args) {
-		MainWindow.getInstance().createWindow();
-	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -238,6 +234,7 @@ public class MainWindow extends WindowFrame {
 			if (!isFull()) {
 				// Create new visualization
 				Visualization newVisualization = new TimeSeriesLineVisualization(location, startDate, endDate, loadedData);
+				newSeries.setSetting(ChartType.LINE_CHART, true);
 				addVisualization(newVisualization);
 			}
 			
@@ -272,7 +269,6 @@ public class MainWindow extends WindowFrame {
 		panVisual.add(visualizationPanel);
 		visualizationPanel.setVisible(true);
 		charts.add(visualization);
-		loadedTimeSeries.get(loadedTimeSeries.size()-1).setSetting(ChartType.LINE_CHART, true);
 		panVisual.repaint();
 	}
 	
