@@ -23,9 +23,9 @@ public class MainWindow extends WindowFrame {
 	private static MainWindow singleton;
 	private final String title = "Affordable Region House Finder";
 	private final JPanel panLeftMenuOptions = new JPanel();
-	private final JLabel lblCompareLoc = new JLabel("Pick Location");
-	private final JLabel lblAnd = new JLabel("and");
+	private final JLabel lblPickLoc = new JLabel("Pick Location");
 	private final JComboBox<String> boxLocation = new JComboBox<>();
+	
 	private final JLabel lblTimes = new JLabel("Times");
 	private final JLabel lblTo = new JLabel("to");
 	private final JComboBox<String> boxStartTime = new JComboBox<>();
@@ -83,9 +83,8 @@ public class MainWindow extends WindowFrame {
 		panLeftMenuOptions.setBounds(0, 0, 500, 130);
 		panLeftMenuOptions.setLayout(null);
 		
-		lblCompareLoc.setBounds(50, 17, 130, 16);
+		lblPickLoc.setBounds(50, 17, 130, 16);
 		boxLocation.setBounds(24, 41, 190, 27);
-		lblAnd.setBounds(100, 75, 27, 18);
 		
 		lblTimes.setBounds(325, 17, 43, 16);
 		boxStartTime.setBounds(240, 41, 90, 27);
@@ -124,7 +123,7 @@ public class MainWindow extends WindowFrame {
 		
 		// left side menu adds
 		frame.getContentPane().add(panLeftMenuOptions);
-		panLeftMenuOptions.add(lblCompareLoc);
+		panLeftMenuOptions.add(lblPickLoc);
 		panLeftMenuOptions.add(boxLocation);
 		//frame.getContentPane().add(lblAnd);
 		//.getContentPane().add(boxSecond	Location);
