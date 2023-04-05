@@ -50,7 +50,7 @@ public class MainWindow extends WindowFrame {
 	
 	private final ArrayList<TimeSeries> loadedTimeSeries = new ArrayList<>();
 	private final HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<>();
-	private final ArrayList<Visualization> charts = new ArrayList<Visualization>();
+	private final ArrayList<Visualization> charts = new ArrayList<>();
 
 	/**
 	 * Create the application.
