@@ -1,9 +1,7 @@
 package analysis;
 
-import database.Database;
 import java.util.ArrayList;
 import java.util.Date;
-import java.sql.*;
 
 public class Analysis
 {
