@@ -147,9 +147,9 @@ public class StatisticalWindow extends InternalFrame {
 			
 			double pValue = Analysis.getInstance().tTest(loc1Values, loc2Values);
 			if (pValue <= Double.parseDouble(pBox.getSelectedItem().toString()))
-				JOptionPane.showMessageDialog(null, reject, "Result", JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showMessageDialog(null, String.format("P Value: %.2f", pValue) + " " + reject, "Result", JOptionPane.DEFAULT_OPTION);
 			else
-				JOptionPane.showMessageDialog(null, cantReject, "Result", JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showMessageDialog(null, String.format("P Value: %.2f", pValue) + " " + cantReject, "Result", JOptionPane.DEFAULT_OPTION);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (NumberIsTooSmallException en) {
