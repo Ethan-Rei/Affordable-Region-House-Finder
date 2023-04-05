@@ -1,5 +1,6 @@
 package visuals;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +17,6 @@ import org.jfree.chart.axis.DateTickUnitType;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 
-import windows.WindowHelper;
 
 public abstract class Visualization {
 	public static final int SMALL = 12;
@@ -26,7 +26,7 @@ public abstract class Visualization {
 	public static final int LARGE = 192;
 	private JPanel panel;
 	public static final Calendar calendar = Calendar.getInstance();
-	public abstract JFreeChart getChart();
+	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 	protected JFreeChart chart;
 	protected Date startDate;
 	protected Date endDate;
@@ -37,7 +37,7 @@ public abstract class Visualization {
 	protected JScrollPane scrollPaneRaw;
 	protected JScrollPane scrollPaneSummary;
 	
-	
+	public abstract JFreeChart getChart();
 	protected Visualization (String locationName, Date startDate, Date endDate) {
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -71,7 +71,7 @@ public abstract class Visualization {
         else {
         	dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.YEAR, 12));
         }
-		dateAxis.setDateFormatOverride(WindowHelper.dateFormat);
+		dateAxis.setDateFormatOverride(dateFormat);
 	}
 	
 	protected static TimeSeries createTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
@@ -111,7 +111,7 @@ public abstract class Visualization {
 	}
 	
 	public String toString() {
-		return locationName + " (" + WindowHelper.dateFormat.format(startDate) + " to " + WindowHelper.dateFormat.format(endDate) + ")";
+		return locationName + " (" + dateFormat.format(startDate) + " to " + dateFormat.format(endDate) + ")";
 	}
 	
 	public JScrollPane getScrollPaneRaw() {

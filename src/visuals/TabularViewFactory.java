@@ -15,7 +15,7 @@ import javax.swing.JTable;
 
 public class TabularViewFactory {
 	private static final Calendar calendar = Calendar.getInstance();
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");;
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 	private static final StandardDeviation sd = new StandardDeviation();
 	
 	public static JTable getStatsView (String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
