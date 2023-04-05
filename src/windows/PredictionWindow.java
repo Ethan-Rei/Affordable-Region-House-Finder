@@ -151,7 +151,7 @@ public class PredictionWindow extends InternalFrame {
 		Date newEndDate = calendar.getTime();
 		chart.addTimeSeries(chart.getLocationName(), newStartDate, newEndDate, newValues);
 		
-		MainWindow.getInstance().refresh();;
+		MainWindow.getInstance().refresh();
 		try {
 			frame.setClosed(true);
 			close();

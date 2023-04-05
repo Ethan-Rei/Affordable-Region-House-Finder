@@ -77,7 +77,7 @@ public class VisualizationWindow extends InternalFrame {
 		frame.getContentPane().add(btnUpdate);
 		
 		btnEdit.setBounds(215, 183, 170, 37);
-		btnEdit.addActionListener(e -> openInternalWindow(new TimeSeriesEditorWindow(boxTimeSeries, btnEdit)));
+		btnEdit.addActionListener(e -> openInternalWindow(new TimeSeriesEditorWindow(frame, btnEdit, charts, loadedData)));
 		frame.getContentPane().add(btnEdit);
 		frame.setVisible(true);
 	}
@@ -214,6 +214,8 @@ public class VisualizationWindow extends InternalFrame {
 	
 	private void openInternalWindow(InternalFrame iFrame) {
 		MainWindow.getInstance().frame.getLayeredPane().add(iFrame.frame);
+		frame.setClosable(false);
+		btnEdit.setEnabled(false);
 	}
 	
 	public void close() {
