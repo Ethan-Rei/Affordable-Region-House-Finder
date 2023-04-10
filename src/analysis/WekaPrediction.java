@@ -21,50 +21,11 @@ class WekaPrediction implements TimeSeriesPrediction{
 	public double[] predict(ArrayList<Double> values, ArrayList<Date> dates, int predictMonths, int algorithm) {
 		
 		// Setup the data set into attributes and instances
-		
-		Calendar calendar = Calendar.getInstance();
-		Attribute dateVals = new Attribute("Date");
-		Attribute nhpiVals = new Attribute("NHPI");
-		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-		attributes.add(dateVals);
-		attributes.add(nhpiVals);
-		Instances data = new Instances("time series data", attributes, values.size());
-		
-		for (int i = 0; i < values.size(); i++) {
-			Instance dataPoint = new DenseInstance(2);
-			calendar.setTime(dates.get(i));
-			int numOfMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
-			dataPoint.setValue(0, numOfMonths);
-			dataPoint.setValue(1, values.get(i));
-			data.add(dataPoint);
-		}
-		
-		data.setClassIndex(1);
+		Instances data = createDataset(values, dates);
 		
 		// Setup the forecaster on given data
 		
-		WekaForecaster forecastModel = new WekaForecaster();
-		
-		switch (algorithm) {
-		case LINEAR_REGRESSION:
-			forecastModel.setBaseForecaster(new LinearRegression());
-			break;
-		case GAUSSIAN_PROCESS:
-			forecastModel.setBaseForecaster(new GaussianProcesses());
-			break;
-		}
-		
-		
-		forecastModel.getTSLagMaker().setTimeStampField("Date");
-		forecastModel.getTSLagMaker().setMinLag(12);
-		forecastModel.getTSLagMaker().setMaxLag(24);
-		try {
-			forecastModel.setFieldsToForecast("NHPI");
-			forecastModel.buildForecaster(data);
-			forecastModel.primeForecaster(data);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		WekaForecaster forecastModel = trainDataset(data, algorithm);
 		
 		// Get predicted values and return
 		
@@ -81,5 +42,54 @@ class WekaPrediction implements TimeSeriesPrediction{
 
 		return predictionArray;
 	}
+	
+	private Instances createDataset(ArrayList<Double> values, ArrayList<Date> dates) {
+		// Setup the data set into attributes and instances
+		Calendar calendar = Calendar.getInstance();
+		Attribute dateVals = new Attribute("Date");
+		Attribute nhpiVals = new Attribute("NHPI");
+		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+		attributes.add(dateVals);
+		attributes.add(nhpiVals);
+		Instances data = new Instances("time series data", attributes, values.size());
+				
+		for (int i = 0; i < values.size(); i++) {
+			Instance dataPoint = new DenseInstance(2);
+			calendar.setTime(dates.get(i));
+			int numOfMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
+			dataPoint.setValue(0, numOfMonths);
+			dataPoint.setValue(1, values.get(i));
+			data.add(dataPoint);
+		}
+				
+		data.setClassIndex(1);
+		
+		return data;
+	}
 
+	private WekaForecaster trainDataset(Instances data, int algorithm) {
+		// Setup the forecaster on given data
+		
+		WekaForecaster forecastModel = new WekaForecaster();
+		
+		switch (algorithm) {
+			case LINEAR_REGRESSION:
+				forecastModel.setBaseForecaster(new LinearRegression());
+				break;
+			case GAUSSIAN_PROCESS:
+				forecastModel.setBaseForecaster(new GaussianProcesses());
+		}
+		forecastModel.getTSLagMaker().setTimeStampField("Date");
+		forecastModel.getTSLagMaker().setMinLag(12);
+		forecastModel.getTSLagMaker().setMaxLag(24);
+		try {
+			forecastModel.setFieldsToForecast("NHPI");
+			forecastModel.buildForecaster(data);
+			forecastModel.primeForecaster(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return forecastModel;
+	}
 }
