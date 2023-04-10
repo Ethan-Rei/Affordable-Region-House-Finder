@@ -14,7 +14,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		query = new MySQLQueryAdapter(connection);
+		query = new MySQLQueryDecorator(connection);
 	}
 	
 	public static Database getInstance() {
