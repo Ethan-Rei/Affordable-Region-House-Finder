@@ -12,16 +12,14 @@ public class HistogramVisualization extends Visualization {
 	
 	public HistogramVisualization(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		super(locationName, startDate, endDate);
+		// Create time series and add to a dataset
 		TimeSeries data = createTimeSeries(locationName, startDate, endDate, loadedData);
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		dataset.addSeries(data);
-		
-		JFreeChart plotChart = ChartFactory.createHistogram(locationName, "Date", "NHPI", dataset);
-		DateAxis newDateAxis = new DateAxis("Date");
-		newDateAxis.setRange(startDate, endDate);
-		plotChart.getXYPlot().setDomainAxis(newDateAxis);
-        setDateAxis(newDateAxis, getMonthCount(startDate, endDate));
-		this.chart = plotChart;
+		TimeSeriesCollection dataset = createCollection(data);
+
+		// Create the chart with the dataset and set axes
+		this.chart = ChartFactory.createHistogram(locationName, "Date", "NHPI", dataset);
+
+		fixToDateAxis();
 		super.createPanel(locationName, startDate, endDate, loadedData);
 	}
 	

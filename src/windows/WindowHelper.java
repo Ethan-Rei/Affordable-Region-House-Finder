@@ -33,36 +33,38 @@ public class WindowHelper {
 	}
 	
 	public static void populateEndDate(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
-		// Don't change end date box every time
-		String prevPicked = "";
-		if (endBox.getSelectedItem() != null)
-			prevPicked = endBox.getSelectedItem().toString();
-		
+		// Get the previous pick
+		String prevPicked = getPrevPick(endBox);
 		endBox.removeAllItems();
 		
 		String pickedLocation = locBox.getSelectedItem().toString();
 		String startDate = startBox.getSelectedItem().toString();
-		ArrayList<Date> validDates = null;
 		try {
 			Date pickedDate = dateFormat.parse(startDate);
-			validDates = getLastViableDate(pickedLocation, pickedDate, loadedData);
-			
+			ArrayList<Date> validDates = getLastViableDate(pickedLocation, pickedDate, loadedData);
 			for (Date validDate: validDates) {
 				endBox.addItem(dateFormat.format(validDate));
 			}
+			setEndBoxValue(validDates, prevPicked, startDate, endBox);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	private static String getPrevPick(JComboBox<String> box) {
+		if (box.getSelectedItem() != null)
+			return box.getSelectedItem().toString();
+		return "";
+	}
+	
+	private static void setEndBoxValue(ArrayList<Date> validDates, String prevPicked, String startDate, JComboBox<String> endBox) {
 		// Only change end box if the previous picked value was less than start date or new time series range
 		ArrayList<String> endBoxDates = new ArrayList<>();
 		for (Date date: validDates)
 			endBoxDates.add(dateFormat.format(date));
-		
+
 		if (endBoxDates.contains(prevPicked) && startDate.compareTo(prevPicked) < 0)
 			endBox.setSelectedItem(prevPicked);
-			
-		
 	}
 	
 	public static void populateDateBoxes(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox, HashMap<String, HashMap<Date, Double>> loadedData) {
@@ -83,6 +85,7 @@ public class WindowHelper {
 		startBox.setSelectedItem(null);
 		startBox.addActionListener(startBoxListener);
 	}
+	
 
 	public static void populateLocBox(JComboBox<String> locBox, HashMap<String, HashMap<Date, Double>> loadedData) {
 		Set<String> validLocationsSet = loadedData.keySet();

@@ -17,19 +17,16 @@ public class TimeSeriesLineVisualization extends Visualization{
 		// locationName must be in loadedData as well as all values b/w its start and endDate
 		
 		// Fix data into a time series object
-		int monthCount = getMonthCount(startDate, endDate);
 		TimeSeries data = createTimeSeries(locationName, startDate, endDate, loadedData);
-		TimeSeriesCollection dataCollection = new TimeSeriesCollection();
+		TimeSeriesCollection dataCollection = createCollection(data);
 				
 		// Fix data onto graph
-		JFreeChart timeSeriesChart = ChartFactory.createTimeSeriesChart(locationName, "Date", "NHPI", dataCollection);
-		dataCollection.addSeries(data);
-        DateAxis dateAxis = (DateAxis) timeSeriesChart.getXYPlot().getDomainAxis();
-        setDateAxis(dateAxis, monthCount);
+		this.chart = ChartFactory.createTimeSeriesChart(locationName, "Date", "NHPI", dataCollection);
+        DateAxis dateAxis = (DateAxis) this.chart.getXYPlot().getDomainAxis();
+        setDateAxis(dateAxis, getMonthCount(startDate, endDate));
 		
-        this.min = timeSeriesChart.getXYPlot().getRangeAxis().getRange().getLowerBound();
-		this.max = timeSeriesChart.getXYPlot().getRangeAxis().getRange().getUpperBound();
-        this.chart = timeSeriesChart;
+        this.min = this.chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+		this.max = this.chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
 		this.dataCollection = dataCollection;
 		super.createPanel(locationName, startDate, endDate, loadedData);
 		
