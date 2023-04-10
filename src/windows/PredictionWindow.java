@@ -113,14 +113,14 @@ public class PredictionWindow extends InternalFrame {
 		Date endDate = chart.getEndDate();
 		
 		// Check if there are atleast 12 months 
-		if (WindowHelper.getDatesInRange(startDate, endDate).size() < 12) {
+		if (getDatesInRange(startDate, endDate).size() < 12) {
 			JOptionPane.showMessageDialog(null, errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
 		// get desired array of dates and array of corresponding nhpi values
-		ArrayList<Date> dates = WindowHelper.getDatesInRange(startDate, endDate);
-		ArrayList<Double> nhpis = WindowHelper.getNHPIInRangeArrayList(chart.getLocationName(), startDate, endDate, loadedData);	
+		ArrayList<Date> dates = getDatesInRange(startDate, endDate);
+		ArrayList<Double> nhpis = getNHPIInRangeArrayList(chart.getLocationName(), startDate, endDate, loadedData);
 		
 		// get the predicted values
 		double[] predictions;

@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-
-import windows.WindowHelper;
+import windows.WindowFrame;
 
 public class MySQLQueryDecorator implements DatabaseQuery {
 	
@@ -69,7 +68,7 @@ public class MySQLQueryDecorator implements DatabaseQuery {
 		try {
 			while (returned.next()) {
 				String rowDate = returned.getString(dateColumn);
-				Date refdate = WindowHelper.dateFormat.parse(rowDate.substring(0, rowDate.length() - 3));
+				Date refdate = WindowFrame.dateFormat.parse(rowDate.substring(0, rowDate.length() - 3));
 				nhpiValues.put(refdate, returned.getDouble(nhpiColumn));
 			}
 		} catch (Exception e) {

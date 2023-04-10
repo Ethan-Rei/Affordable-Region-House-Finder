@@ -3,7 +3,7 @@ package windows;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
-public abstract class InternalFrame {
+public abstract class InternalFrame extends Frame{
 	protected JInternalFrame frame;
 	
 	public abstract void createFrame();

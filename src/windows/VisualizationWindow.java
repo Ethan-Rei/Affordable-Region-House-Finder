@@ -177,8 +177,8 @@ public class VisualizationWindow extends InternalFrame {
 		Date startDate = null;
 		Date endDate = null;
 		try {
-			startDate = WindowHelper.dateFormat.parse(ts.getStartDate());
-			endDate = WindowHelper.dateFormat.parse(ts.getEndDate());
+			startDate = dateFormat.parse(ts.getStartDate());
+			endDate = dateFormat.parse(ts.getEndDate());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

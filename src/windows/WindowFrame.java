@@ -2,7 +2,7 @@ package windows;
 
 import javax.swing.JFrame;
 
-public abstract class WindowFrame {
+public abstract class WindowFrame extends Frame{
 	protected JFrame frame;
 	
 	public abstract void createWindow();

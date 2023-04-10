@@ -91,8 +91,8 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		Date startDate = null;
 		Date endDate = null;
 		try {
-			startDate = WindowHelper.dateFormat.parse(tsToAdd.getStartDate());
-			endDate = WindowHelper.dateFormat.parse(tsToAdd.getEndDate());
+			startDate = dateFormat.parse(tsToAdd.getStartDate());
+			endDate = dateFormat.parse(tsToAdd.getEndDate());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

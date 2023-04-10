@@ -231,35 +231,27 @@ public class MainWindow extends WindowFrame {
 		
 		if (!addTimeSeriesValid(newSeries, startTime, endTime))
 			return;
-			
 		loadedTimeSeries.add(newSeries);
-		
 		// create hashmap for the nhpi values
 		if(loadedData.get(location) == null)
 			loadedData.put(location, new HashMap<Date, Double>());
-		
 		HashMap<Date, Double> timeSeries = loadedData.get(location);
-
 		try {
 			// query database for nhpi values
 			HashMap<Date, Double> NHPIQuery = Database.getInstance().getQuery().getNHPI(location, startTime, endTime);
 			for (Date key : NHPIQuery.keySet()) {
 			    timeSeries.put(key, NHPIQuery.get(key));
 			}
-			
 			// Check if there's a max # of panels
 			if (!isFull()) {
 				// Create new visualization
 				addTimeSeriesVisualization(location, startTime, endTime);
 				newSeries.setSetting(ChartType.LINE_CHART, true);
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		updateButtonStates();
-		
 	}
 	
 	private void updateButtonStates() {
@@ -288,8 +280,8 @@ public class MainWindow extends WindowFrame {
 	
 	private void addTimeSeriesVisualization(String location, String startTime, String endTime) {
 		try {
-			Date startDate = WindowHelper.dateFormat.parse(startTime);
-			Date endDate = WindowHelper.dateFormat.parse(endTime);
+			Date startDate = dateFormat.parse(startTime);
+			Date endDate = dateFormat.parse(endTime);
 			Visualization newVisualization = VisualizationFactory.createTimeSeriesLineVisualization(location, startDate, endDate, loadedData);
 			addVisualization(newVisualization);
 		} catch (Exception e) {
