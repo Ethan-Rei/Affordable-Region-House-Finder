@@ -34,60 +34,58 @@ public class PredictionWindow extends InternalFrame {
 	private final ArrayList<Visualization> charts;
 	private final String errorMsg = "Select a timeseries with atleast 12 months loaded. \nPlease try again.";
 	
-	/**
-	 * Create the application.
-	 */
 	public PredictionWindow(HashMap<String, HashMap<Date, Double>> data, ArrayList<Visualization> charts) {
 		this.loadedData = data;
 		this.charts = charts;
+		setInternalWindowSettings(title, 450, 400);
 		createFrame();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	public void createFrame() {
-		frame.setSize(450, 400);
-		frame.setTitle(title);
-		
-		ValuePredictionLabel.setBounds(158, 21, 140, 16);
-		frame.getContentPane().add(ValuePredictionLabel);
-		
-		algorithmlbl.setBounds(160, 49, 180, 16);
-		frame.getContentPane().add(algorithmlbl);
-		
-		linearrd.setBounds(50, 92, 169, 23);
-		frame.getContentPane().add(linearrd);
-		linearrd.setSelected(true);
-		
-		gaussianrd.setBounds(250, 92, 141, 23);
-		frame.getContentPane().add(gaussianrd);
-		
-		algoGrp.add(gaussianrd);
-		algoGrp.add(linearrd);
-		
-		chartlbl.setBounds(190, 150, 61, 16);
-		frame.getContentPane().add(chartlbl);
-		
-		chartbx.setBounds(70, 180, 300, 27);
-		frame.getContentPane().add(chartbx);
-		setChartBoxValues(charts);
-		
-		lblAmountOfMonths.setBounds(165, 235, 180, 16);
-		frame.getContentPane().add(lblAmountOfMonths);
-		
-		monthbx.setBounds(150, 265, 138, 27);
-		frame.getContentPane().add(monthbx);
-		setMnthBoxValues();
-		
-		btnPredict.setBounds(160, 310, 117, 29);
-		btnPredict.addActionListener(e -> predict(loadedData, charts));
-		frame.getContentPane().add(btnPredict);
-		
 		frame.setVisible(true);
 	}
+
+	public void createFrame() {
+		setGUIBounds();
+		setChartBoxValues(charts);
+		setMonthBoxValues();
+		configAlgorithmGroupGUI();
+		setGUIListeners();
+		addToInternalFrame();
+	}
 	
-	private void setMnthBoxValues() {
+	private void setGUIBounds() {
+		ValuePredictionLabel.setBounds(158, 21, 140, 16);
+		algorithmlbl.setBounds(160, 49, 180, 16);
+		linearrd.setBounds(50, 92, 169, 23);
+		gaussianrd.setBounds(250, 92, 141, 23);
+		chartlbl.setBounds(190, 150, 61, 16);
+		chartbx.setBounds(70, 180, 300, 27);
+		lblAmountOfMonths.setBounds(165, 235, 180, 16);
+		monthbx.setBounds(150, 265, 138, 27);
+		btnPredict.setBounds(160, 310, 117, 29);
+	}
+	
+	private void setGUIListeners() {
+		btnPredict.addActionListener(e -> predict(loadedData, charts));
+	}
+	
+	private void configAlgorithmGroupGUI() {
+		linearrd.setSelected(true);
+		algoGrp.add(gaussianrd);
+		algoGrp.add(linearrd);
+	}
+	
+	private void addToInternalFrame() {
+		frame.getContentPane().add(ValuePredictionLabel);
+		frame.getContentPane().add(algorithmlbl);
+		frame.getContentPane().add(linearrd);
+		frame.getContentPane().add(gaussianrd);
+		frame.getContentPane().add(chartlbl);
+		frame.getContentPane().add(chartbx);
+		frame.getContentPane().add(lblAmountOfMonths);
+		frame.getContentPane().add(monthbx);
+		frame.getContentPane().add(btnPredict);
+	}
+	
+	private void setMonthBoxValues() {
 		for (int i = 2; i <= 12; i++) {
 			monthbx.addItem(Integer.toString(i));
 		}
@@ -104,6 +102,7 @@ public class PredictionWindow extends InternalFrame {
 	
 	public void close() {
 		MainWindow.getInstance().getBtnPredict().setEnabled(true);
+		MainWindow.getInstance().frame.remove(frame);
 	}
 	
 	private void predict(HashMap<String, HashMap<Date, Double>> loadedData, ArrayList<Visualization> charts) {
@@ -162,9 +161,4 @@ public class PredictionWindow extends InternalFrame {
 		}
 		
 	}
-	
-	
-
-	
-	
 }

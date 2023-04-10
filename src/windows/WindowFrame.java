@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 public abstract class WindowFrame {
 	protected JFrame frame;
 	
+	public abstract void createWindow();
+	
 	public WindowFrame() {
 		init();
 	}
@@ -16,9 +18,13 @@ public abstract class WindowFrame {
 		frame.getContentPane().setLayout(null);
 	}
 	
-	public abstract void createWindow();
-	
 	public void destroyWindow() {
 		frame.dispose();
+	}
+	
+	public void setWindowSettings(String title, int windowWidth, int windowHeight) {
+		frame.setTitle(title);
+		frame.setSize(windowWidth, windowHeight);
+		frame.setLocationRelativeTo(null);
 	}
 }

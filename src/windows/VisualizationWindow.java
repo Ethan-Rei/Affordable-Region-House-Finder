@@ -37,50 +37,49 @@ public class VisualizationWindow extends InternalFrame {
 	private final String errorSelection = "Please select a time series chart to edit.";
 	private final String errorCount = "You have more than 3 charts selected. Please unselect some.";
 
-	/**
-	 * Create the application.
-	 */
 	public VisualizationWindow(HashMap<String, HashMap<Date, Double>> loadedData, ArrayList<Visualization> charts) {
 		this.loadedData = loadedData;
 		this.charts = charts;
-		getTimeSeries();
+		setInternalWindowSettings(title, 415, 280);
 		createFrame();
+		frame.setVisible(true);
 	}
 
 	public void createFrame() {
-		frame.setSize(415, 280);
-		frame.setTitle(title);
-		
+		getTimeSeries();
+		setGUIBounds();
+		setGUIListeners();
+		addToInternalFrame();
+	}
+	
+	private void setGUIBounds() {
 		lblVisuals.setBounds(16, 24, 149, 16);
-		frame.getContentPane().add(lblVisuals);
-		
 		checkLine.setBounds(16, 53, 83, 23);
-		frame.getContentPane().add(checkLine);
-		
 		checkPlot.setBounds(105, 53, 88, 23);
-		frame.getContentPane().add(checkPlot);
-		
 		checkHisto.setBounds(195, 53, 88, 23);
-		frame.getContentPane().add(checkHisto);
-		
 		checkStack.setBounds(285, 53, 110, 23);
-		frame.getContentPane().add(checkStack);
-		
 		lblSelect.setBounds(16, 93, 350, 16);
-		frame.getContentPane().add(lblSelect);
-		
 		boxTimeSeries.setBounds(16, 127, 370, 27);
-		boxTimeSeries.addActionListener(e -> loadTimeSeriesSettings());
-		frame.getContentPane().add(boxTimeSeries);
-		
 		btnUpdate.setBounds(16, 183, 177, 37);
-		btnUpdate.addActionListener(e -> updateVisualizations());
-		frame.getContentPane().add(btnUpdate);
-		
 		btnEdit.setBounds(215, 183, 170, 37);
+	}
+	
+	private void setGUIListeners() {
+		boxTimeSeries.addActionListener(e -> loadTimeSeriesSettings());
+		btnUpdate.addActionListener(e -> updateVisualizations());
 		btnEdit.addActionListener(e -> openInternalWindow(new TimeSeriesEditorWindow(frame, btnEdit, charts, loadedData)));
+	}
+	
+	private void addToInternalFrame() {
+		frame.getContentPane().add(lblVisuals);
+		frame.getContentPane().add(checkLine);
+		frame.getContentPane().add(checkPlot);
+		frame.getContentPane().add(checkHisto);
+		frame.getContentPane().add(checkStack);
+		frame.getContentPane().add(lblSelect);
+		frame.getContentPane().add(boxTimeSeries);
+		frame.getContentPane().add(btnUpdate);
 		frame.getContentPane().add(btnEdit);
-		frame.setVisible(true);
 	}
 	
 	private void getTimeSeries() {

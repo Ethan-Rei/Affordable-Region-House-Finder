@@ -41,75 +41,65 @@ public class StatisticalWindow extends InternalFrame {
 	
 	private final HashMap<String, HashMap<Date, Double>> loadedData;
 	
-	/**
-	 * Create the application.
-	 */
 	public StatisticalWindow(HashMap<String, HashMap<Date, Double>> data) {
 		this.loadedData = data;
-		populatePValues();
+		setInternalWindowSettings(title, 500, 380);
 		createFrame();
+		frame.setVisible(true);
 	}
 	
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	public void createFrame() {
-		frame.setSize(500, 380);
-		frame.setTitle(title);
-		
-		lblNewLabel.setBounds(200, 20, 93, 23);
-		frame.getContentPane().add(lblNewLabel);
-		
-		loclabel.setBounds(30, 70, 61, 16);
-		frame.getContentPane().add(loclabel);
-		
-		locBox1.setBounds(30, 110, 101, 27);
-		frame.getContentPane().add(locBox1);
+		populatePValues();
 		WindowHelper.populateLocBox(locBox1, loadedData);
-		locBox1.addActionListener(e -> WindowHelper.populateDateBoxes(locBox1, startBox1, endBox1, loadedData));
-		
-		
-		locBox2.setBounds(30, 160, 101, 27);
-		frame.getContentPane().add(locBox2);
 		WindowHelper.populateLocBox(locBox2, loadedData);
-		locBox2.addActionListener(e -> WindowHelper.populateDateBoxes(locBox2, startBox2, endBox2, loadedData));
-		
+		setGUIBounds();
+		setGUIListeners();
+		addToInternalFrame();
+	}
+	
+	private void setGUIBounds() {
+		lblNewLabel.setBounds(200, 20, 93, 23);
+		loclabel.setBounds(30, 70, 61, 16);
+		locBox1.setBounds(30, 110, 101, 27);
+		locBox2.setBounds(30, 160, 101, 27);
 		startlabel.setBounds(180, 70, 61, 16);
-		frame.getContentPane().add(startlabel);
-		
 		startBox1.setBounds(180, 110, 101, 27);
-		frame.getContentPane().add(startBox1);
-		startBox1.addActionListener(e -> WindowHelper.populateEndDate(locBox1, startBox1, endBox1, loadedData));
-		
 		startBox2.setBounds(180, 160, 101, 27);
-		frame.getContentPane().add(startBox2);
-		startBox2.addActionListener(e -> WindowHelper.populateEndDate(locBox2, startBox2, endBox2, loadedData));
-		
 		endlabel.setBounds(330, 70, 61, 16);
-		frame.getContentPane().add(endlabel);
-		
 		endBox1.setBounds(330, 110, 101, 27);
-		frame.getContentPane().add(endBox1);
-		
 		endBox2.setBounds(330, 160, 101, 27);
-		frame.getContentPane().add(endBox2);
-
 		plabel.setBounds(180, 204, 117, 29);
-		frame.getContentPane().add(plabel);
-		
 		pBox.setBounds(180, 244, 117, 29);
-		frame.getContentPane().add(pBox);
-		
 		btnCompare.setBounds(180, 294, 117, 29);
+	}
+	
+	private void setGUIListeners() {
+		locBox1.addActionListener(e -> WindowHelper.populateDateBoxes(locBox1, startBox1, endBox1, loadedData));
+		locBox2.addActionListener(e -> WindowHelper.populateDateBoxes(locBox2, startBox2, endBox2, loadedData));
+		startBox1.addActionListener(e -> WindowHelper.populateEndDate(locBox1, startBox1, endBox1, loadedData));
+		startBox2.addActionListener(e -> WindowHelper.populateEndDate(locBox2, startBox2, endBox2, loadedData));
 		btnCompare.addActionListener(e -> compare());
+	}
+	
+	private void addToInternalFrame() {
+		frame.getContentPane().add(lblNewLabel);
+		frame.getContentPane().add(loclabel);
+		frame.getContentPane().add(locBox1);
+		frame.getContentPane().add(locBox2);
+		frame.getContentPane().add(startlabel);
+		frame.getContentPane().add(startBox1);
+		frame.getContentPane().add(startBox2);
+		frame.getContentPane().add(endlabel);
+		frame.getContentPane().add(endBox1);
+		frame.getContentPane().add(endBox2);
+		frame.getContentPane().add(plabel);
+		frame.getContentPane().add(pBox);
 		frame.getContentPane().add(btnCompare);
-		
-		frame.setVisible(true);
 	}
 	
 	public void close() {
 		MainWindow.getInstance().getBtnCompare().setEnabled(true);
-		// get mainwindow frame later and remove component
+		MainWindow.getInstance().frame.remove(frame);
 	}
 	
 	private void populatePValues() {

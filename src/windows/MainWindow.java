@@ -52,12 +52,9 @@ public class MainWindow extends WindowFrame {
 	private final ArrayList<Visualization> charts = new ArrayList<>();
 
 	private MainWindow() {
-		setLocationBoxes();
-		setTimeBoxes();
-	}
-	
-	public ArrayList<TimeSeries> getLoadedTimeSeries() {
-		return loadedTimeSeries;
+		setWindowSettings(title, 1000, 730);
+		createWindow();
+		frame.setVisible(true);
 	}
 	
 	public static MainWindow getInstance() {
@@ -68,87 +65,128 @@ public class MainWindow extends WindowFrame {
 	
 	@Override
 	public void createWindow() {
-		frame.setSize(1000, 730);
-		frame.setLocationRelativeTo(null);
-		frame.setTitle(title);
-		
-		// left side menu options
+		setLocationBoxes();
+		setTimeBoxes();
+		addLeftMenuGUI();
+		addRightMenuGUI();
+		addVisualPanelGUI();
+		addToWindowFrame();
+	}
+	
+	private void addLeftMenuGUI() {
+		configLeftMenu();
+		addToLeftMenu();
+	}
+	
+	private void configLeftMenu() {
 		panLeftMenuOptions.setBounds(0, 0, 500, 130);
 		panLeftMenuOptions.setLayout(null);
+		sepVert.setOrientation(SwingConstants.VERTICAL);
 		
+		setLeftMenuBounds();
+		setLeftMenuActionListeners();
+	}
+	
+	private void setLeftMenuBounds() {
 		lblPickLoc.setBounds(50, 17, 130, 16);
 		boxLocation.setBounds(24, 41, 190, 27);
-		
 		lblTimes.setBounds(325, 17, 43, 16);
 		boxStartTime.setBounds(240, 41, 90, 27);
 		lblTo.setBounds(340, 46, 27, 18);
 		boxEndTime.setBounds(360, 41, 90, 27);
 		btnTimeSeries.setBounds(170, 80, 140, 27);
-		btnTimeSeries.addActionListener(e -> addTimeSeries());
-		
 		sepVert.setBounds(485, 0, 18, 130);
-		sepVert.setOrientation(SwingConstants.VERTICAL);
-		sepHori.setBounds(0, 0, 1000, 18);
-		
-		// right side menu options
-		panRightMenuOptions.setBounds(505, 0, 546, 130);
-		panRightMenuOptions.setLayout(null);
-		
-		tabularViews.setBounds(185, 17, 87, 16);
-		radbtnRaw.setBounds(100, 42, 128, 23);
-		radbtnRaw.addActionListener(e -> showRawTables());
-		radbtnSummary.setBounds(270, 42, 131, 23);
-		radbtnSummary.addActionListener(e -> showSummaryTables());
-		btnVisualize.setBounds(162, 82, 137, 29);
-		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(loadedData, charts), btnVisualize));
-		btnVisualize.setEnabled(false);
-		btnCompare.setBounds(14, 82, 130, 29);
-		btnCompare.setEnabled(false);
-		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedData), btnCompare));
-		btnPredict.setBounds(320, 82, 127, 29);
-		btnPredict.setEnabled(false);
-		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedData, charts), btnPredict));
-		radbtnRaw.setSelected(true);
-		radbtnRaw.setEnabled(false);
-		radbtnSummary.setEnabled(false);
-		visualGrp.add(radbtnSummary);
-		visualGrp.add(radbtnRaw);
-		
-		// left side menu adds
-		frame.getContentPane().add(panLeftMenuOptions);
+	}
+	
+	private void setLeftMenuActionListeners() {
+		btnTimeSeries.addActionListener(e -> addTimeSeries());
+	}
+	
+	private void addToLeftMenu() {
 		panLeftMenuOptions.add(lblPickLoc);
 		panLeftMenuOptions.add(boxLocation);
-		//frame.getContentPane().add(lblAnd);
-		//.getContentPane().add(boxSecond	Location);
-		
 		panLeftMenuOptions.add(boxStartTime);
 		panLeftMenuOptions.add(lblTimes);
 		panLeftMenuOptions.add(lblTo);
 		panLeftMenuOptions.add(boxEndTime);
 		panLeftMenuOptions.add(btnTimeSeries);
-		
 		panLeftMenuOptions.add(sepVert);
-		panVisual.add(sepHori);
+	}
+	
+	private void addRightMenuGUI() {
+		configRightMenu();
+		addToRightMenu();
+	}
+	
+	private void configRightMenu() {
+		panRightMenuOptions.setBounds(505, 0, 546, 130);
+		panRightMenuOptions.setLayout(null);
 		
-		// right side menu adds
-		frame.getContentPane().add(panRightMenuOptions);
+		setRightMenuBounds();
+		setRightMenuActionListeners();
+		setRightMenuEnables();
+	}
+	
+	private void setRightMenuBounds() {
+		tabularViews.setBounds(185, 17, 87, 16);
+		radbtnRaw.setBounds(100, 42, 128, 23);
+		radbtnSummary.setBounds(270, 42, 131, 23);
+		btnVisualize.setBounds(162, 82, 137, 29);
+		btnCompare.setBounds(14, 82, 130, 29);
+		btnPredict.setBounds(320, 82, 127, 29);
+	}
+	
+	private void setRightMenuActionListeners() {
+		radbtnRaw.addActionListener(e -> showRawTables());
+		radbtnSummary.addActionListener(e -> showSummaryTables());
+		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(loadedData, charts), btnVisualize));
+		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedData), btnCompare));
+		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedData, charts), btnPredict));
+	}
+	
+	private void setRightMenuEnables() {
+		btnVisualize.setEnabled(false);
+		btnCompare.setEnabled(false);
+		btnPredict.setEnabled(false);
+		radbtnRaw.setSelected(true);
+		radbtnRaw.setEnabled(false);
+		radbtnSummary.setEnabled(false);
+	}
+	
+	private void addToRightMenu() {
 		panRightMenuOptions.add(tabularViews);
 		panRightMenuOptions.add(radbtnRaw);
 		panRightMenuOptions.add(radbtnSummary);
 		panRightMenuOptions.add(btnVisualize);
 		panRightMenuOptions.add(btnCompare);
 		panRightMenuOptions.add(btnPredict);
-		
-		// visualizations options
+		visualGrp.add(radbtnSummary);
+		visualGrp.add(radbtnRaw);
+	}
+	
+	private void addVisualPanelGUI() {
+		configVisualPanel();
+		addToVisualPanel();
+	}
+	
+	private void configVisualPanel() {
 		panVisual.setBounds(0, 130, 1000, 600);
 		panVisual.setLayout(null);
-		
-		// visualizations adds
+		sepHori.setBounds(0, 0, 1000, 18);
+	}
+	
+	private void addToVisualPanel() {
+		panVisual.add(sepHori);
+	}
+	
+	private void addToWindowFrame() {
+		frame.getContentPane().add(panLeftMenuOptions);
+		frame.getContentPane().add(panRightMenuOptions);
 		frame.getContentPane().add(panVisual);
-		
-		// Panel for internal windows
-		
-		frame.setVisible(true);
+	}
+	
+	public ArrayList<TimeSeries> getLoadedTimeSeries() {
+		return loadedTimeSeries;
 	}
 	
 	private void setLocationBoxes() {

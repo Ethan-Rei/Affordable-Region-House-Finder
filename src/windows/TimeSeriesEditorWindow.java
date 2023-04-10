@@ -36,32 +36,37 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		this.refButton = refButton;
 		this.charts = charts;
 		this.loadedData = loadedData;
-		getCharts();
-		getTimeSeries();
+		setInternalWindowSettings(title, 280, 300);
 		createFrame();
+		frame.setVisible(true);
 	}
 	
 	public void createFrame() {
-		frame.setSize(280, 300);
-		frame.setTitle(title);
-		
+		getCharts();
+		getTimeSeries();
+		setGUIBounds();
+		setGUIListeners();
+		addToInternalFrame();
+	}
+	
+	private void setGUIBounds() {
 		lblModify.setBounds(20, 20, 240, 13);
-		frame.getContentPane().add(lblModify);
-		
 		boxChart1.setBounds(20, 50, 220, 27);
-		frame.getContentPane().add(boxChart1);
-		
 		lblFrom.setBounds(20, 107, 250, 13);
-		frame.getContentPane().add(lblFrom);
-		
 		boxChart2.setBounds(20, 137, 220, 27);
-		frame.getContentPane().add(boxChart2);
-		
 		btnAdd.setBounds(45, 200, 170, 27);
+	}
+	
+	private void setGUIListeners() {
 		btnAdd.addActionListener(e -> addTimeSeries());
+	}
+	
+	private void addToInternalFrame() {
+		frame.getContentPane().add(lblModify);
+		frame.getContentPane().add(boxChart1);
+		frame.getContentPane().add(lblFrom);
+		frame.getContentPane().add(boxChart2);
 		frame.getContentPane().add(btnAdd);
-		
-		frame.setVisible(true);
 	}
 	
 	// can only add to line charts

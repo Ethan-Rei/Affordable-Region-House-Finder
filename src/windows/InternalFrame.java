@@ -6,6 +6,9 @@ import javax.swing.JInternalFrame;
 public abstract class InternalFrame {
 	protected JInternalFrame frame;
 	
+	public abstract void createFrame();
+	public abstract void close();
+	
 	public InternalFrame() {
 		init();
 	}
@@ -19,8 +22,10 @@ public abstract class InternalFrame {
 		frame.addPropertyChangeListener("closed", e -> close());
 	}
 	
-	public abstract void createFrame();
-	public abstract void close();
+	public void setInternalWindowSettings(String title, int windowWidth, int windowHeight) {
+		frame.setTitle(title);
+		frame.setSize(windowWidth, windowHeight);
+	}
 	
 	public JInternalFrame getFrame() {
 		return frame;
