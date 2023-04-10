@@ -16,6 +16,7 @@ import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 
 
 public abstract class Visualization {
@@ -74,6 +75,12 @@ public abstract class Visualization {
         }
 		dateAxis.setDateFormatOverride(dateFormat);
 	}
+
+	protected static TimeSeriesCollection createCollection(TimeSeries series) {
+		TimeSeriesCollection collection = new TimeSeriesCollection();
+		collection.addSeries(series);
+		return collection;
+	}
 	
 	protected static TimeSeries createTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
 		TimeSeries data = new TimeSeries(locationName, "Date", "NHPI");
@@ -93,6 +100,13 @@ public abstract class Visualization {
 			currentDate = calendar.getTime();
 		}
 		return data;
+	}
+
+	protected void fixToDateAxis() {
+		DateAxis newDateAxis = new DateAxis("Date");
+		newDateAxis.setRange(startDate, endDate);
+		chart.getXYPlot().setDomainAxis(newDateAxis);
+		setDateAxis(newDateAxis, getMonthCount(startDate, endDate));
 	}
 
 	public JPanel getPanel() {

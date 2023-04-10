@@ -182,7 +182,7 @@ public class VisualizationWindow extends InternalFrame {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (checkLine.isSelected() && !ts.getSetting(ChartType.LINE_CHART)) {
 			MainWindow.getInstance().addVisualization(VisualizationFactory.createTimeSeriesLineVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.LINE_CHART, true);
@@ -199,7 +199,6 @@ public class VisualizationWindow extends InternalFrame {
 			MainWindow.getInstance().addVisualization(VisualizationFactory.createStackedAreaVisualization(ts.getLocation(), startDate, endDate, loadedData));
 			ts.setSetting(ChartType.STACKED_AREA_CHART, true);
 		}
-			
 	}
 	
 	private void openInternalWindow(InternalFrame iFrame) {
