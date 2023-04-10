@@ -1,6 +1,5 @@
 package database;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,24 +14,19 @@ public class MySQLQueryAdapter implements DatabaseQuery {
 	public MySQLQueryAdapter (DatabaseConnection connection) {
 		this.query = new MySQLQuery(connection);
 	}
-	
-	@Override
-	public void setConnection(Connection connection) {
-		this.query.setConnection(connection);
-	}
 
 	@Override
-	public ArrayList<String> queryLocations() {
+	public ArrayList<String> getAllLocations() {
 		return this.query.queryLocations();
 	}
 
 	@Override
-	public ArrayList<String> queryTimes() {
+	public ArrayList<String> getAllTimes() {
 		return this.query.queryTimes();
 	}
 
 	@Override
-	public HashMap<Date, Double> queryNHPI(String locationName, String fromDate, String toDate) {
+	public HashMap<Date, Double> getNHPI(String locationName, String fromDate, String toDate) {
 		ResultSet queryResultSet = this.query.queryNHPI(locationName, fromDate, toDate);
 		HashMap<Date, Double> queryAdapted = new HashMap<>();
 		try {

@@ -158,14 +158,14 @@ public class MainWindow extends WindowFrame {
 	}
 	
 	private void setLocationBoxes() {
-		ArrayList<String> locations = Database.getInstance().queryLocations();
+		ArrayList<String> locations = Database.getInstance().getQuery().getAllLocations();
 		for (int i = 0; i < locations.size(); i++) {
 			boxLocation.addItem(locations.get(i));
 		}
 	}
 	
 	private void setTimeBoxes() {
-		ArrayList<String> times = Database.getInstance().queryTimes();
+		ArrayList<String> times = Database.getInstance().getQuery().getAllTimes();
 		for (int i = 0; i < times.size(); i++) {
 			boxStartTime.addItem(times.get(i));
 			boxEndTime.addItem(times.get(i));
@@ -218,7 +218,7 @@ public class MainWindow extends WindowFrame {
 
 		try {
 			// query database for nhpi values
-			HashMap<Date, Double> NHPIQuery = Database.getInstance().queryNHPI(location, startTime, endTime);
+			HashMap<Date, Double> NHPIQuery = Database.getInstance().getQuery().getNHPI(location, startTime, endTime);
 			for (Date key : NHPIQuery.keySet()) {
 			    timeSeries.put(key, NHPIQuery.get(key));
 			}

@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class MySQLQuery {
+public class MySQLQuery {
 	private Statement statement;
 	
 	public MySQLQuery(DatabaseConnection connection) {
