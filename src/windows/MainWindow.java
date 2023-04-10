@@ -51,9 +51,6 @@ public class MainWindow extends WindowFrame {
 	private final HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<>();
 	private final ArrayList<Visualization> charts = new ArrayList<>();
 
-	/**
-	 * Create the application.
-	 */
 	private MainWindow() {
 		setLocationBoxes();
 		setTimeBoxes();
@@ -69,9 +66,6 @@ public class MainWindow extends WindowFrame {
 		return singleton;
 	}
 	
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	@Override
 	public void createWindow() {
 		frame.setSize(1000, 730);
@@ -195,19 +189,11 @@ public class MainWindow extends WindowFrame {
 		String location = boxLocation.getSelectedItem().toString();
 		String startTime = boxStartTime.getSelectedItem().toString();
 		String endTime = boxEndTime.getSelectedItem().toString();
-		
-		// Check if selected dates are valid could be its own method
-		if (startTime.compareTo(endTime) >= 0) {
-			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		// store into timeseries array if its not in there already
-		
 		TimeSeries newSeries = new TimeSeries(location, startTime, endTime);
-		if (inLoadedTimeSeries(newSeries)) {
+		
+		if (!addTimeSeriesValid(newSeries, startTime, endTime))
 			return;
-		}
+			
 		loadedTimeSeries.add(newSeries);
 		
 		// create hashmap for the nhpi values
@@ -223,22 +209,22 @@ public class MainWindow extends WindowFrame {
 			    timeSeries.put(key, NHPIQuery.get(key));
 			}
 			
-			// Create a new panel with the chart based on the query
-			Date startDate = WindowHelper.dateFormat.parse(startTime);
-			Date endDate = WindowHelper.dateFormat.parse(endTime);
-			
 			// Check if there's a max # of panels
 			if (!isFull()) {
 				// Create new visualization
-				Visualization newVisualization = VisualizationFactory.createTimeSeriesLineVisualization(location, startDate, endDate, loadedData);
+				addTimeSeriesVisualization(location, startTime, endTime);
 				newSeries.setSetting(ChartType.LINE_CHART, true);
-				addVisualization(newVisualization);
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		updateButtonStates();
+		
+	}
+	
+	private void updateButtonStates() {
 		if (loadedData.size() >= 2) {
 			btnCompare.setEnabled(true);
 		}
@@ -250,6 +236,30 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 
+	private boolean addTimeSeriesValid(TimeSeries series, String startTime, String endTime) {
+		// Check if selected dates are valid could be its own method
+		if (inLoadedTimeSeries(series)) {
+			return false;
+		}
+		if (startTime.compareTo(endTime) >= 0) {
+			JOptionPane.showMessageDialog(null, errorDate, "Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	private void addTimeSeriesVisualization(String location, String startTime, String endTime) {
+		try {
+			Date startDate = WindowHelper.dateFormat.parse(startTime);
+			Date endDate = WindowHelper.dateFormat.parse(endTime);
+			Visualization newVisualization = VisualizationFactory.createTimeSeriesLineVisualization(location, startDate, endDate, loadedData);
+			addVisualization(newVisualization);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private boolean inLoadedTimeSeries(TimeSeries newSeries) {
 		for (TimeSeries series: loadedTimeSeries) {
 			if (series.equals(newSeries))
@@ -257,7 +267,7 @@ public class MainWindow extends WindowFrame {
 		}
 		return false;
 	}
-
+	
 	public void addVisualization(Visualization visualization) {
 		// Add visualization's panel
 		JPanel visualizationPanel = visualization.getPanel();
