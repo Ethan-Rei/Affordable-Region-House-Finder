@@ -68,53 +68,72 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		frame.getContentPane().add(boxChart2);
 		frame.getContentPane().add(btnAdd);
 	}
-	
-	// can only add to line charts
-	private void addTimeSeries() {
-		if (boxChart1.getSelectedItem() == null || boxChart2.getSelectedItem() == null) {
-			JOptionPane.showMessageDialog(null, errorSelection, "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		// get the time series
-		TimeSeries tsToAdd = null;
+
+	private TimeSeries getTimeSeriesToAdd() {
 		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		
 		for (TimeSeries ts: timeSeries) {
 			if (boxChart2.getSelectedItem().equals(ts.toString())) {
-				tsToAdd = ts;
-				break;
+				return ts;
 			}
 		}
-		
-		// convert time series dates from String to Date
-		Date startDate = null;
-		Date endDate = null;
+		return null;
+	}
+
+	private Visualization getVisualizationToAdd() {
+		for (Visualization vs: charts) {
+			if (boxChart1.getSelectedItem().equals(vs.toString())) {
+				return vs;
+			}
+		}
+		return null;
+	}
+
+	// can only add to line charts
+	private void addTimeSeries() {
+		if (boxesNull())
+			return;
+		TimeSeries tsToAdd = getTimeSeriesToAdd();
+		Visualization chartToEdit = getVisualizationToAdd();
+		Date startDate = getTSStartDate(tsToAdd);
+		Date endDate = getTSEndDate(tsToAdd);
+		if (choicesMismatch(chartToEdit, startDate, endDate))
+			return;
+		TimeSeriesLineVisualization editedChart = (TimeSeriesLineVisualization) chartToEdit;
+		editedChart.addTimeSeries(tsToAdd.getLocation(), startDate, endDate, loadedData);
+	}
+
+	private boolean choicesMismatch(Visualization chartToEdit, Date startDate, Date endDate) {
+		if (!chartToEdit.getStartDate().equals(startDate) || !chartToEdit.getEndDate().equals(endDate)) {
+			JOptionPane.showMessageDialog(null, errorDateMismatch, "Error", JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean boxesNull() {
+		if (boxChart1.getSelectedItem() == null || boxChart2.getSelectedItem() == null) {
+			JOptionPane.showMessageDialog(null, errorSelection, "Error", JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		return false;
+	}
+
+	private static Date getTSStartDate(TimeSeries tsToAdd) {
 		try {
-			startDate = dateFormat.parse(tsToAdd.getStartDate());
-			endDate = dateFormat.parse(tsToAdd.getEndDate());
+			return dateFormat.parse(tsToAdd.getStartDate());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		// get chart to edit
-		Visualization chartToEdit = null;
-		for (Visualization vs: charts) {
-			if (boxChart1.getSelectedItem().equals(vs.toString())) {
-				chartToEdit = vs;
-				break;
-			}
+		return null;
+	}
+
+	private static Date getTSEndDate(TimeSeries tsToAdd) {
+		try {
+			return dateFormat.parse(tsToAdd.getEndDate());
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		
-		// now compare for same dates, throw error if not, else add it to chart
-		if (chartToEdit.getStartDate().compareTo(startDate) != 0 || chartToEdit.getEndDate().compareTo(endDate) != 0) {
-			JOptionPane.showMessageDialog(null, errorDateMismatch, "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		// because only line charts can be added to
-		TimeSeriesLineVisualization editedChart = (TimeSeriesLineVisualization) chartToEdit;
-		editedChart.addTimeSeries(tsToAdd.getLocation(), startDate, endDate, loadedData);
+		return null;
 	}
 	
 	private void getCharts() {
