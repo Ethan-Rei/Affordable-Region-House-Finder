@@ -12,7 +12,7 @@ import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.timeseries.WekaForecaster;
 
 
-class WekaPrediction implements TimeSeriesPrediction{
+class WekaPrediction implements TimeSeriesPrediction {
 	
 	public static final int LINEAR_REGRESSION = 0;
 	public static final int GAUSSIAN_PROCESS = 1;

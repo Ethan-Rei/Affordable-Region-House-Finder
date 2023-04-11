@@ -1,17 +1,12 @@
 package windows;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import visuals.TimeSeriesLineVisualization;
+import visuals.TimeSeriesData;
 import visuals.Visualization;
 
 public class TimeSeriesEditorWindow extends InternalFrame {
@@ -25,25 +20,21 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	
 	private final JInternalFrame refPanel;
 	private final JButton refButton;
-	private final ArrayList<Visualization> charts;
-	private final HashMap<String, HashMap<Date, Double>> loadedData;
 	
 	private final String errorSelection = "Please select both time series.";
 	private final String errorDateMismatch = "The time series you are adding to the chart must have the same start and end date.";
 	
-	public TimeSeriesEditorWindow(JInternalFrame refPanel, JButton refButton, ArrayList<Visualization> charts, HashMap<String, HashMap<Date, Double>> loadedData) {
+	public TimeSeriesEditorWindow(JInternalFrame refPanel, JButton refButton) {
 		this.refPanel = refPanel;
 		this.refButton = refButton;
-		this.charts = charts;
-		this.loadedData = loadedData;
 		setInternalWindowSettings(title, 280, 300);
 		createFrame();
 		frame.setVisible(true);
 	}
 	
 	public void createFrame() {
-		getCharts();
-		getTimeSeries();
+		populateLoadedChartsBox(boxChart1);
+		populateLoadedTSBox(boxChart2);
 		setGUIBounds();
 		setGUIListeners();
 		addToInternalFrame();
@@ -69,9 +60,9 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		frame.getContentPane().add(btnAdd);
 	}
 
-	private TimeSeries getTimeSeriesToAdd() {
-		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		for (TimeSeries ts: timeSeries) {
+	private TimeSeriesData getTimeSeriesToAdd() {
+		ArrayList<TimeSeriesData> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
+		for (TimeSeriesData ts: timeSeries) {
 			if (boxChart2.getSelectedItem().equals(ts.toString())) {
 				return ts;
 			}
@@ -80,31 +71,30 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	}
 
 	private Visualization getVisualizationToAdd() {
-		for (Visualization vs: charts) {
-			if (boxChart1.getSelectedItem().equals(vs.toString())) {
+		TimeSeriesData selected = getSelectedTimeSeries(boxChart1.getSelectedItem().toString().substring(4, boxChart1.getSelectedItem().toString().length()));
+		for (Visualization vs: MainWindow.getInstance().getCharts()) {
+			if (selected.equals(vs.getTimeSeries()))
 				return vs;
-			}
 		}
+		
 		return null;
 	}
 
-	// can only add to line charts
 	private void addTimeSeries() {
 		if (boxesNull())
 			return;
-		TimeSeries tsToAdd = getTimeSeriesToAdd();
+		TimeSeriesData tsToAdd = getTimeSeriesToAdd();
 		Visualization chartToEdit = getVisualizationToAdd();
-		Date startDate = getTSStartDate(tsToAdd);
-		Date endDate = getTSEndDate(tsToAdd);
-		if (choicesMismatch(chartToEdit, startDate, endDate))
+		if (choicesMismatch(tsToAdd, chartToEdit.getTimeSeries())) {
+			JOptionPane.showMessageDialog(null, errorDateMismatch, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		TimeSeriesLineVisualization editedChart = (TimeSeriesLineVisualization) chartToEdit;
-		editedChart.addTimeSeries(tsToAdd.getLocation(), startDate, endDate, loadedData);
+		}
+
+		chartToEdit.addTimeSeries(tsToAdd);
 	}
 
-	private boolean choicesMismatch(Visualization chartToEdit, Date startDate, Date endDate) {
-		if (!chartToEdit.getStartDate().equals(startDate) || !chartToEdit.getEndDate().equals(endDate)) {
-			JOptionPane.showMessageDialog(null, errorDateMismatch, "Error", JOptionPane.ERROR_MESSAGE);
+	private boolean choicesMismatch(TimeSeriesData loc1, TimeSeriesData loc2) {
+		if (!loc1.getStartDateAsDate().equals(loc2.getStartDateAsDate()) && !loc1.getEndDate().equals(loc2.getEndDateAsDate())) {
 			return true;
 		}
 		return false;
@@ -116,44 +106,6 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 			return true;
 		}
 		return false;
-	}
-
-	private static Date getTSStartDate(TimeSeries tsToAdd) {
-		try {
-			return dateFormat.parse(tsToAdd.getStartDate());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private static Date getTSEndDate(TimeSeries tsToAdd) {
-		try {
-			return dateFormat.parse(tsToAdd.getEndDate());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private void getCharts() {
-		for (Visualization vs : charts) {
-			if (!(vs instanceof TimeSeriesLineVisualization))
-				continue;
-			boxChart1.addItem(vs.toString());
-		}
-		
-		boxChart1.setSelectedItem(null);
-	}
-	
-	private void getTimeSeries() {
-		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		
-		for (TimeSeries ts: timeSeries) {
-			boxChart2.addItem(ts.toString());
-		}
-		
-		boxChart2.setSelectedItem(null);
 	}
 	
 	public void close() {

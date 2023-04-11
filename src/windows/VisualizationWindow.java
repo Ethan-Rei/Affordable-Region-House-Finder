@@ -4,19 +4,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import visuals.ChartType;
-import visuals.HistogramVisualization;
-import visuals.PlotGraphVisualization;
-import visuals.StackedAreaVisualization;
-import visuals.TimeSeriesLineVisualization;
+import visuals.TimeSeriesData;
 import visuals.Visualization;
 import visuals.VisualizationFactory;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import javax.swing.JButton;
 
@@ -31,22 +25,18 @@ public class VisualizationWindow extends InternalFrame {
 	private final JComboBox<String> boxTimeSeries = new JComboBox<>();
 	private final JButton btnUpdate = new JButton("Update Visualization");
 	private final JButton btnEdit = new JButton("Edit time series charts");
-	private final ArrayList<Visualization> charts;
-	private final HashMap<String, HashMap<Date, Double>> loadedData;
 	
 	private final String errorSelection = "Please select a time series chart to edit.";
 	private final String errorCount = "You have more than 3 charts selected. Please unselect some.";
 
-	public VisualizationWindow(HashMap<String, HashMap<Date, Double>> loadedData, ArrayList<Visualization> charts) {
-		this.loadedData = loadedData;
-		this.charts = charts;
+	public VisualizationWindow() {
 		setInternalWindowSettings(title, 415, 280);
 		createFrame();
 		frame.setVisible(true);
 	}
 
 	public void createFrame() {
-		getTimeSeries();
+		populateLoadedTSBox(boxTimeSeries);
 		setGUIBounds();
 		setGUIListeners();
 		addToInternalFrame();
@@ -67,7 +57,7 @@ public class VisualizationWindow extends InternalFrame {
 	private void setGUIListeners() {
 		boxTimeSeries.addActionListener(e -> loadTimeSeriesSettings());
 		btnUpdate.addActionListener(e -> updateVisualizations());
-		btnEdit.addActionListener(e -> openInternalWindow(new TimeSeriesEditorWindow(frame, btnEdit, charts, loadedData)));
+		btnEdit.addActionListener(e -> openInternalWindow(new TimeSeriesEditorWindow(frame, btnEdit)));
 	}
 	
 	private void addToInternalFrame() {
@@ -82,20 +72,10 @@ public class VisualizationWindow extends InternalFrame {
 		frame.getContentPane().add(btnEdit);
 	}
 	
-	private void getTimeSeries() {
-		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		
-		for (TimeSeries ts: timeSeries) {
-			boxTimeSeries.addItem(ts.toString());
-		}
-		
-		boxTimeSeries.setSelectedItem(null);
-	}
-	
 	private void loadTimeSeriesSettings() {
-		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
+		ArrayList<TimeSeriesData> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
 		
-		for(TimeSeries ts: timeSeries) {
+		for(TimeSeriesData ts: timeSeries) {
 			if (ts.toString().equals(boxTimeSeries.getSelectedItem().toString())) {
 				checkLine.setSelected(ts.getSetting(ChartType.LINE_CHART));
 				checkPlot.setSelected(ts.getSetting(ChartType.PLOT_CHART));
@@ -112,93 +92,78 @@ public class VisualizationWindow extends InternalFrame {
 			return;
 		}
 		
-		// check through all settings, throw error if they already had 3 selected, can be own method
-		int counter = 0;
-		ArrayList<TimeSeries> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		TimeSeries curSelect = null;
-		for (TimeSeries ts: timeSeries) {
-			if(ts.toString().equals(boxTimeSeries.getSelectedItem().toString())) {
-				// don't count the currently selected
-				curSelect = ts;
-				continue;
-			}
-			counter += ts.getSettingsCount();
-		}
-		
-		// count the boxes selected and see if greater than counter, throw error if so
-		if (checkLine.isSelected())
-			counter++;
-		if (checkPlot.isSelected())
-			counter++;
-		if (checkHisto.isSelected())
-			counter++;
-		if (checkStack.isSelected())
-			counter++;
-
-		if (counter > 3) {
+		// check through all settings, throw error if they already had 3 selected
+		if (countSelectedVisualizations() > 3) {
 			JOptionPane.showMessageDialog(null, errorCount, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		
+		TimeSeriesData curSelect = getSelectedTimeSeries(boxTimeSeries.getSelectedItem().toString());
 		
 		// now we add visuals and remove unselected
 		removeUnselectedVisualization(curSelect);
 		addSelectedVisualization(curSelect);
 	}
 	
-	private void removeUnselectedVisualization(TimeSeries ts) {
+	private int countSelectedVisualizations() {
+		int counter = 0;
+		for (TimeSeriesData ts: MainWindow.getInstance().getLoadedTimeSeries()) {
+			if(ts.toString().equals(boxTimeSeries.getSelectedItem().toString()))
+				continue;
+			counter += ts.getSettingsCount();
+		}
+		
+		// count the boxes selected now
+		counter += getSelectedBoxes().size();
+		return counter;
+	}
+	
+	private ArrayList<ChartType> getSelectedBoxes() {
+		ArrayList<ChartType> selected = new ArrayList<>();
+		if (checkLine.isSelected())
+			selected.add(ChartType.LINE_CHART);
+		if (checkPlot.isSelected())
+			selected.add(ChartType.PLOT_CHART);
+		if (checkHisto.isSelected())
+			selected.add(ChartType.HISTOGRAM_CHART);
+		if (checkStack.isSelected())
+			selected.add(ChartType.STACKED_AREA_CHART);
+		return selected;
+	}
+	
+	private void removeUnselectedVisualization(TimeSeriesData ts) {
 		// Look for if the TimeSeries has a chart already
+		ArrayList<Visualization> charts = MainWindow.getInstance().getCharts();
 		for (int i = 0; i < charts.size(); i++) {
-			if (charts.get(i).toString().equals(ts.toString())) {
-				if (charts.get(i) instanceof TimeSeriesLineVisualization && !checkLine.isSelected()) {
-					MainWindow.getInstance().removeVisualization(charts.get(i));
-					ts.setSetting(ChartType.LINE_CHART, false);
-					i--;
-				}
-				else if (charts.get(i) instanceof PlotGraphVisualization && !checkPlot.isSelected()) {
-					MainWindow.getInstance().removeVisualization(charts.get(i));
-					ts.setSetting(ChartType.PLOT_CHART, false);
-					i--;
-				}
-				else if (charts.get(i) instanceof HistogramVisualization && !checkHisto.isSelected()) {
-					MainWindow.getInstance().removeVisualization(charts.get(i));
-					ts.setSetting(ChartType.HISTOGRAM_CHART, false);
-					i--;
-				}
-				else if (charts.get(i) instanceof StackedAreaVisualization && !checkStack.isSelected()) {
-					MainWindow.getInstance().removeVisualization(charts.get(i));
-					ts.setSetting(ChartType.STACKED_AREA_CHART, false);
-					i--;
-				}
+			if (charts.get(i).getTimeSeries().equals(ts) && !getSelectedBoxes().contains(charts.get(i).getType())) {
+				MainWindow.getInstance().removeVisualization(charts.get(i));
+				i--;
 			}
 		}
 	}
 	
-	private void addSelectedVisualization(TimeSeries ts)  {
-		Date startDate = null;
-		Date endDate = null;
-		try {
-			startDate = dateFormat.parse(ts.getStartDate());
-			endDate = dateFormat.parse(ts.getEndDate());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
+	private void addSelectedVisualization(TimeSeriesData ts)  {
 		if (checkLine.isSelected() && !ts.getSetting(ChartType.LINE_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createTimeSeriesLineVisualization(ts.getLocation(), startDate, endDate, loadedData));
-			ts.setSetting(ChartType.LINE_CHART, true);
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createTimeSeriesLineVisualization(ts));
 		}
 		if (checkPlot.isSelected() && !ts.getSetting(ChartType.PLOT_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createPlotGraphVisualization(ts.getLocation(), startDate, endDate, loadedData));
-			ts.setSetting(ChartType.PLOT_CHART, true);
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createPlotGraphVisualization(ts));
 		}
 		if (checkHisto.isSelected() && !ts.getSetting(ChartType.HISTOGRAM_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createHistogramVisualization(ts.getLocation(), startDate, endDate, loadedData));
-			ts.setSetting(ChartType.HISTOGRAM_CHART, true);
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createHistogramVisualization(ts));
 		}
 		if (checkStack.isSelected() && !ts.getSetting(ChartType.STACKED_AREA_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createStackedAreaVisualization(ts.getLocation(), startDate, endDate, loadedData));
-			ts.setSetting(ChartType.STACKED_AREA_CHART, true);
+			MainWindow.getInstance().addVisualization(VisualizationFactory.createStackedAreaVisualization(ts));
 		}
+		
+		setSettings(ts);
+	}
+	
+	private void setSettings(TimeSeriesData ts) {
+		ts.setSetting(ChartType.LINE_CHART, checkLine.isSelected());
+		ts.setSetting(ChartType.PLOT_CHART, checkPlot.isSelected());
+		ts.setSetting(ChartType.HISTOGRAM_CHART, checkHisto.isSelected());
+		ts.setSetting(ChartType.STACKED_AREA_CHART, checkStack.isSelected());
 	}
 	
 	private void openInternalWindow(InternalFrame iFrame) {

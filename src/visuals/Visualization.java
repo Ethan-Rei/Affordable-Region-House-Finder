@@ -3,12 +3,10 @@ package visuals;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
@@ -18,43 +16,62 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-
 public abstract class Visualization {
 	public static final int SMALL = 12;
 	public static final int SMALL_MEDIUM = 24;
 	public static final int MEDIUM = 48;
 	public static final int MEDIUM_LARGE = 96;
 	public static final int LARGE = 192;
-	private JPanel panel;
 	public static final Calendar calendar = Calendar.getInstance();
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+	protected JPanel panel;
 	protected JFreeChart chart;
-	protected Date startDate;
-	protected Date endDate;
 	protected double min;
 	protected double max;
-	protected String locationName;
 	protected ChartPanel chartPanel;
 	protected JScrollPane scrollPaneRaw;
 	protected JScrollPane scrollPaneSummary;
+	protected TimeSeriesData timeSeries;
+	protected TimeSeries data;
+	protected TimeSeriesCollection dataCollection;
+	protected ChartType type;
 	
-	public abstract JFreeChart getChart();
-	
-	protected Visualization (String locationName, Date startDate, Date endDate) {
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.locationName = locationName;
+	protected Visualization (TimeSeriesData timeSeries) {
+		this.timeSeries = timeSeries;
+		this.panel = new JPanel();
+		
+		// Fix data into a time series object
+		data = createTimeSeries(timeSeries);
+		dataCollection = createCollection(data);
 	}
 	
-	protected static int getMonthCount(Date startDate, Date endDate) {
-		calendar.setTime(endDate);
-		int endMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
-		calendar.setTime(startDate);
-		int startMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
-		return endMonths - startMonths + 1;
+	// might be same for all visualizations, dont know yet, make it abstract if not.
+	public void addTimeSeries(TimeSeriesData timeSeries) {
+		// Load time series into chart
+		TimeSeries data = createTimeSeries(timeSeries);
+		DateAxis newDateAxis = new DateAxis("Date");
+		this.dataCollection.addSeries(data);
+		
+		// Find the range of the chart
+		double minAdded = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+        double maxAdded = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
+        this.min = Math.min(minAdded, this.min);
+        this.max = Math.max(maxAdded, this.max);
+        
+//        // Find the domain of the chart idk if needed
+//		this.startDate = this.startDate.compareTo(startDate) < 0 ? this.startDate : startDate;
+//		this.endDate = this.endDate.compareTo(endDate) > 0 ? this.endDate : endDate;
+		
+        // Set the range for both axes
+		newDateAxis.setRange(timeSeries.getStartDateAsDate(), timeSeries.getEndDateAsDate());
+		this.chart.getXYPlot().setDomainAxis(newDateAxis);
+        setDateAxis(newDateAxis);
+        chart.getXYPlot().getRangeAxis().setRange(this.min, this.max);
 	}
 	
-	protected static void setDateAxis(DateAxis dateAxis, int monthCount) {
+	protected void setDateAxis(DateAxis dateAxis) {
+		int monthCount = getMonthCount();
+		
 		if (monthCount < SMALL) {
         	dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.MONTH, 2));
         }
@@ -76,21 +93,22 @@ public abstract class Visualization {
 		dateAxis.setDateFormatOverride(dateFormat);
 	}
 
-	protected static TimeSeriesCollection createCollection(TimeSeries series) {
+	protected TimeSeriesCollection createCollection(TimeSeries series) {
 		TimeSeriesCollection collection = new TimeSeriesCollection();
 		collection.addSeries(series);
 		return collection;
 	}
 	
-	protected static TimeSeries createTimeSeries(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
-		TimeSeries data = new TimeSeries(locationName, "Date", "NHPI");
+	protected TimeSeries createTimeSeries(TimeSeriesData timeSeries) {
+		TimeSeries data = new TimeSeries(timeSeries.getLocation(), "Date", "NHPI");
 		int month, year;
 		double currentNHPI;
-		Date currentDate = startDate;
+		Date currentDate = timeSeries.getStartDateAsDate();
+		Date endDate = timeSeries.getEndDateAsDate();
 		
 		while (currentDate.compareTo(endDate) <= 0) {
 			calendar.setTime(currentDate);
-			currentNHPI = loadedData.get(locationName).get(currentDate);
+			currentNHPI = timeSeries.getLoadedData().get(currentDate);
 			month = calendar.get(Calendar.MONTH) + 1;
 			year = calendar.get(Calendar.YEAR);
 			data.add(new Day(1, month, year), currentNHPI);
@@ -104,47 +122,19 @@ public abstract class Visualization {
 
 	protected void fixToDateAxis() {
 		DateAxis newDateAxis = new DateAxis("Date");
-		newDateAxis.setRange(startDate, endDate);
+		newDateAxis.setRange(timeSeries.getStartDateAsDate(), timeSeries.getEndDateAsDate());
 		chart.getXYPlot().setDomainAxis(newDateAxis);
-		setDateAxis(newDateAxis, getMonthCount(startDate, endDate));
-	}
-
-	public JPanel getPanel() {
-		return panel;
+		setDateAxis(newDateAxis);
 	}
 	
-	public Date getStartDate() {
-		return startDate;
-	}
-	
-	public Date getEndDate() {
-		return endDate;
-	}
-	
-	public String getLocationName() {
-		return locationName;
-	}
-	
-	public String toString() {
-		return locationName + " (" + dateFormat.format(startDate) + " to " + dateFormat.format(endDate) + ")";
-	}
-	
-	public JScrollPane getScrollPaneRaw() {
-		return scrollPaneRaw;
-	}
-
-	public JScrollPane getScrollPaneSummary() {
-		return scrollPaneSummary;
-	}
-
-	protected void createPanel(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
+	protected void createPanel() {
 		// Create chart panel
 		chartPanel = new ChartPanel(chart);
 		chartPanel.setBounds(0, 0, 320, 320);
 		chartPanel.setVisible(true);
 		
-		JTable tableRaw = TabularViewFactory.getDataView(locationName, startDate, endDate, loadedData);
-		JTable tableSummary = TabularViewFactory.getStatsView(locationName, startDate, endDate, loadedData);
+		JTable tableRaw = TabularViewFactory.getDataView(timeSeries);
+		JTable tableSummary = TabularViewFactory.getStatsView(timeSeries);
 		
 		// Create scroll pane to scroll the tabular view
 		scrollPaneRaw = new JScrollPane(tableRaw);
@@ -155,9 +145,48 @@ public abstract class Visualization {
 		scrollPaneSummary.setBounds(0, 320, 320, 230);
 		scrollPaneSummary.setVisible(false);
 		
-		this.panel = new JPanel();
 		panel.add(scrollPaneRaw);
 		panel.add(scrollPaneSummary);
 		panel.add(chartPanel);
+	}
+	
+	protected int getMonthCount() {
+		calendar.setTime(timeSeries.getEndDateAsDate());
+		int endMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
+		calendar.setTime(timeSeries.getStartDateAsDate());
+		int startMonths = (calendar.get(Calendar.YEAR) * 12) + calendar.get(Calendar.MONTH) + 1;
+		return endMonths - startMonths + 1;
+	}
+	
+	public ChartType getType() {
+		return type;
+	}
+
+	public void setType(ChartType type) {
+		this.type = type;
+	}
+	
+	public JFreeChart getChart() {
+		return chart;
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+	
+	public TimeSeriesData getTimeSeries() {
+		return timeSeries;
+	}
+
+	public void setTimeSeries(TimeSeriesData timeSeries) {
+		this.timeSeries = timeSeries;
+	}
+
+	public JScrollPane getScrollPaneRaw() {
+		return scrollPaneRaw;
+	}
+
+	public JScrollPane getScrollPaneSummary() {
+		return scrollPaneSummary;
 	}
 }

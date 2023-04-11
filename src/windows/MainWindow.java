@@ -10,13 +10,11 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import database.Database;
 import visuals.ChartType;
+import visuals.TimeSeriesData;
+import visuals.TimeSeriesLineVisualization;
 import visuals.Visualization;
-import visuals.VisualizationFactory;
-
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 public class MainWindow extends WindowFrame {
 	private static MainWindow singleton;
@@ -32,8 +30,8 @@ public class MainWindow extends WindowFrame {
 	private final JButton btnTimeSeries = new JButton("Add Time-Series");
 	
 	private final JPanel panRightMenuOptions = new JPanel();
-	private final JLabel tabularViews = new JLabel("Tabular Views");
-	private final ButtonGroup visualGrp = new ButtonGroup();
+	private final JLabel lblTabularViews = new JLabel("Tabular Views");
+	private final ButtonGroup btngrpVisual = new ButtonGroup();
 	private final JRadioButton radbtnRaw = new JRadioButton("Raw Data");
 	private final JRadioButton radbtnSummary = new JRadioButton("Statistics");
 	private final JButton btnVisualize = new JButton("Visualizations...");
@@ -47,8 +45,7 @@ public class MainWindow extends WindowFrame {
 	
 	private final String errorDate = "Selected dates are invalid. If you have selected the same start and end date, please change it.";
 	
-	private final ArrayList<TimeSeries> loadedTimeSeries = new ArrayList<>();
-	private final HashMap<String, HashMap<Date, Double>> loadedData = new HashMap<>();
+	private final ArrayList<TimeSeriesData> loadedTimeSeries = new ArrayList<>();
 	private final ArrayList<Visualization> charts = new ArrayList<>();
 
 	private MainWindow() {
@@ -128,7 +125,7 @@ public class MainWindow extends WindowFrame {
 	}
 	
 	private void setRightMenuBounds() {
-		tabularViews.setBounds(185, 17, 87, 16);
+		lblTabularViews.setBounds(185, 17, 87, 16);
 		radbtnRaw.setBounds(100, 42, 128, 23);
 		radbtnSummary.setBounds(270, 42, 131, 23);
 		btnVisualize.setBounds(162, 82, 137, 29);
@@ -139,9 +136,9 @@ public class MainWindow extends WindowFrame {
 	private void setRightMenuActionListeners() {
 		radbtnRaw.addActionListener(e -> showRawTables());
 		radbtnSummary.addActionListener(e -> showSummaryTables());
-		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(loadedData, charts), btnVisualize));
-		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(loadedData), btnCompare));
-		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(loadedData, charts), btnPredict));
+		btnVisualize.addActionListener(e -> openInternalWindow(new VisualizationWindow(), btnVisualize));
+		btnCompare.addActionListener(e -> openInternalWindow(new StatisticalWindow(), btnCompare));
+		btnPredict.addActionListener(e -> openInternalWindow(new PredictionWindow(), btnPredict));
 	}
 	
 	private void setRightMenuEnables() {
@@ -154,14 +151,14 @@ public class MainWindow extends WindowFrame {
 	}
 	
 	private void addToRightMenu() {
-		panRightMenuOptions.add(tabularViews);
+		panRightMenuOptions.add(lblTabularViews);
 		panRightMenuOptions.add(radbtnRaw);
 		panRightMenuOptions.add(radbtnSummary);
 		panRightMenuOptions.add(btnVisualize);
 		panRightMenuOptions.add(btnCompare);
 		panRightMenuOptions.add(btnPredict);
-		visualGrp.add(radbtnSummary);
-		visualGrp.add(radbtnRaw);
+		btngrpVisual.add(radbtnSummary);
+		btngrpVisual.add(radbtnRaw);
 	}
 	
 	private void addVisualPanelGUI() {
@@ -185,10 +182,6 @@ public class MainWindow extends WindowFrame {
 		frame.getContentPane().add(panVisual);
 	}
 	
-	public ArrayList<TimeSeries> getLoadedTimeSeries() {
-		return loadedTimeSeries;
-	}
-	
 	private void setLocationBoxes() {
 		ArrayList<String> locations = Database.getInstance().getQuery().getAllLocations();
 		for (int i = 0; i < locations.size(); i++) {
@@ -205,7 +198,7 @@ public class MainWindow extends WindowFrame {
 	}
 	
 	private void openInternalWindow(InternalFrame iFrame, JButton button) {
-		frame.getLayeredPane().add(iFrame.frame);
+		frame.getLayeredPane().add(iFrame.getFrame());
 		button.setEnabled(false);
 	}
 	
@@ -227,38 +220,25 @@ public class MainWindow extends WindowFrame {
 		String location = boxLocation.getSelectedItem().toString();
 		String startTime = boxStartTime.getSelectedItem().toString();
 		String endTime = boxEndTime.getSelectedItem().toString();
-		TimeSeries newSeries = new TimeSeries(location, startTime, endTime);
+		TimeSeriesData newSeries = new TimeSeriesData(location, startTime, endTime);
 		
 		if (!addTimeSeriesValid(newSeries, startTime, endTime))
 			return;
 		loadedTimeSeries.add(newSeries);
-		// create hashmap for the nhpi values
-		if(loadedData.get(location) == null)
-			loadedData.put(location, new HashMap<Date, Double>());
-		HashMap<Date, Double> timeSeries = loadedData.get(location);
-		try {
-			// query database for nhpi values
-			HashMap<Date, Double> NHPIQuery = Database.getInstance().getQuery().getNHPI(location, startTime, endTime);
-			for (Date key : NHPIQuery.keySet()) {
-			    timeSeries.put(key, NHPIQuery.get(key));
-			}
-			// Check if there's a max # of panels
-			if (!isFull()) {
-				// Create new visualization
-				addTimeSeriesVisualization(location, startTime, endTime);
-				newSeries.setSetting(ChartType.LINE_CHART, true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		
+		if (!isFull()) {
+			addVisualization(new TimeSeriesLineVisualization(newSeries));
+			newSeries.setSetting(ChartType.LINE_CHART, true);
 		}
+
 		updateButtonStates();
 	}
 	
 	private void updateButtonStates() {
-		if (loadedData.size() >= 2) {
+		if (loadedTimeSeries.size() >= 2) {
 			btnCompare.setEnabled(true);
 		}
-		if (loadedData.size() >= 1) {
+		if (loadedTimeSeries.size() >= 1) {
 			btnPredict.setEnabled(true);
 			radbtnRaw.setEnabled(true);
 			radbtnSummary.setEnabled(true);
@@ -266,8 +246,7 @@ public class MainWindow extends WindowFrame {
 		}
 	}
 
-	private boolean addTimeSeriesValid(TimeSeries series, String startTime, String endTime) {
-		// Check if selected dates are valid could be its own method
+	private boolean addTimeSeriesValid(TimeSeriesData series, String startTime, String endTime) {
 		if (inLoadedTimeSeries(series)) {
 			return false;
 		}
@@ -278,20 +257,8 @@ public class MainWindow extends WindowFrame {
 		return true;
 	}
 	
-	private void addTimeSeriesVisualization(String location, String startTime, String endTime) {
-		try {
-			Date startDate = dateFormat.parse(startTime);
-			Date endDate = dateFormat.parse(endTime);
-			Visualization newVisualization = VisualizationFactory.createTimeSeriesLineVisualization(location, startDate, endDate, loadedData);
-			addVisualization(newVisualization);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	private boolean inLoadedTimeSeries(TimeSeries newSeries) {
-		for (TimeSeries series: loadedTimeSeries) {
+	private boolean inLoadedTimeSeries(TimeSeriesData newSeries) {
+		for (TimeSeriesData series: loadedTimeSeries) {
 			if (series.equals(newSeries))
 				return true;
 		}
@@ -318,9 +285,12 @@ public class MainWindow extends WindowFrame {
 				charts.get(i).getPanel().setBounds(i * 320 + 13, 7, 320, 550);
 			}
 			
-			panVisual.repaint();
+			refresh();
 		}
+	}
 	
+	public void refresh() {
+		panVisual.repaint();
 	}
 	
 	private boolean isFull() {
@@ -339,7 +309,11 @@ public class MainWindow extends WindowFrame {
 		return btnPredict;
 	}
 	
-	public void refresh() {
-		panVisual.repaint();
+	public ArrayList<TimeSeriesData> getLoadedTimeSeries() {
+		return loadedTimeSeries;
+	}
+	
+	public ArrayList<Visualization> getCharts() {
+		return charts;
 	}
 }

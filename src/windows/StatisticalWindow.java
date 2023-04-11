@@ -2,14 +2,10 @@ package windows;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import org.apache.commons.math3.exception.NumberIsTooSmallException;
-
 import analysis.Analysis;
-
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -39,10 +35,7 @@ public class StatisticalWindow extends InternalFrame {
 	private final String reject = "We can reject the null hypothesis.";
 	private final String cantReject = "We cannot reject the null hypothesis.";
 	
-	private final HashMap<String, HashMap<Date, Double>> loadedData;
-	
-	public StatisticalWindow(HashMap<String, HashMap<Date, Double>> data) {
-		this.loadedData = data;
+	public StatisticalWindow() {
 		setInternalWindowSettings(title, 500, 380);
 		createFrame();
 		frame.setVisible(true);
@@ -50,8 +43,8 @@ public class StatisticalWindow extends InternalFrame {
 	
 	public void createFrame() {
 		populatePValues();
-		populateLocBox(locBox1, loadedData);
-		populateLocBox(locBox2, loadedData);
+		populateLocBox(locBox1);
+		populateLocBox(locBox2);
 		setGUIBounds();
 		setGUIListeners();
 		addToInternalFrame();
@@ -74,10 +67,10 @@ public class StatisticalWindow extends InternalFrame {
 	}
 	
 	private void setGUIListeners() {
-		locBox1.addActionListener(e -> populateDateBoxes(locBox1, startBox1, endBox1, loadedData));
-		locBox2.addActionListener(e -> populateDateBoxes(locBox2, startBox2, endBox2, loadedData));
-		startBox1.addActionListener(e -> populateEndDate(locBox1, startBox1, endBox1, loadedData));
-		startBox2.addActionListener(e -> populateEndDate(locBox2, startBox2, endBox2, loadedData));
+		locBox1.addActionListener(e -> populateDateBoxes(locBox1, startBox1, endBox1));
+		locBox2.addActionListener(e -> populateDateBoxes(locBox2, startBox2, endBox2));
+		startBox1.addActionListener(e -> populateEndDate(locBox1, startBox1, endBox1));
+		startBox2.addActionListener(e -> populateEndDate(locBox2, startBox2, endBox2));
 		btnCompare.addActionListener(e -> compare());
 	}
 	
@@ -127,13 +120,15 @@ public class StatisticalWindow extends InternalFrame {
 		
 		// get the double array values for both time series
 		try {
+			HashMap<Date, Double> loc1Data = getAllDataForLocation(locBox1.getSelectedItem().toString());
+			HashMap<Date, Double> loc2Data = getAllDataForLocation(locBox2.getSelectedItem().toString());
 			Date startLoc1 = dateFormat.parse(startBox1.getSelectedItem().toString());
 			Date startLoc2 = dateFormat.parse(startBox2.getSelectedItem().toString());
 			Date endLoc1 = dateFormat.parse(endBox1.getSelectedItem().toString());
 			Date endLoc2 = dateFormat.parse(endBox2.getSelectedItem().toString());
 			
-			double[] loc1Values = getNHPIInRange(locBox1.getSelectedItem().toString(), startLoc1, endLoc1, loadedData);
-			double[] loc2Values = getNHPIInRange(locBox2.getSelectedItem().toString(), startLoc2, endLoc2, loadedData);
+			double[] loc1Values = getNHPIInRange(startLoc1, endLoc1, loc1Data);
+			double[] loc2Values = getNHPIInRange(startLoc2, endLoc2, loc2Data);
 			
 			double pValue = Analysis.getInstance().tTest(loc1Values, loc2Values);
 			if (pValue <= Double.parseDouble(pBox.getSelectedItem().toString()))

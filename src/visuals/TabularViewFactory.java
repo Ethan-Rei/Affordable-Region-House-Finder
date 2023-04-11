@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.stream.DoubleStream;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -18,8 +17,8 @@ public class TabularViewFactory {
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 	private static final StandardDeviation sd = new StandardDeviation();
 	
-	public static JTable getStatsView (String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
-		Pair<ArrayList<String>, ArrayList<String>> listData = getData(locationName, startDate, endDate, loadedData);
+	public static JTable getStatsView (TimeSeriesData timeSeries) {
+		Pair<ArrayList<String>, ArrayList<String>> listData = getData(timeSeries);
 		ArrayList<String> nhpiStrings = listData.getRight();
 		double[] nhpiDouble = new double[nhpiStrings.size()];
 		for (int i = 0; i < nhpiDouble.length; i++) {
@@ -48,8 +47,8 @@ public class TabularViewFactory {
 		return table;
 	}
 	
-	public static JTable getDataView (String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
-		Pair<ArrayList<String>, ArrayList<String>> listData = getData(locationName, startDate, endDate, loadedData);
+	public static JTable getDataView (TimeSeriesData timeSeries) {
+		Pair<ArrayList<String>, ArrayList<String>> listData = getData(timeSeries);
 		ArrayList<String> dates = listData.getLeft();
 		ArrayList<String> nhpi = listData.getRight();
 		
@@ -65,17 +64,17 @@ public class TabularViewFactory {
 		return table;
 	}
 	
-	private static Pair<ArrayList<String>, ArrayList<String>> getData(String locationName, Date startDate, Date endDate, HashMap<String, HashMap<Date, Double>> loadedData) {
-		Date currentDate = startDate;
+	private static Pair<ArrayList<String>, ArrayList<String>> getData(TimeSeriesData timeSeries) {
+		Date currentDate = timeSeries.getStartDateAsDate();
 		ArrayList<String> dates = new ArrayList<String>();
 		ArrayList<String> nhpi = new ArrayList<String>();
 		do {
 			calendar.setTime(currentDate);
 			dates.add(dateFormat.format(currentDate));
-			nhpi.add(loadedData.get(locationName).get(currentDate).toString());
+			nhpi.add(timeSeries.getLoadedData().get(currentDate).toString());
 			calendar.add(Calendar.MONTH, 1);
 			currentDate = calendar.getTime();
-		} while(currentDate.compareTo(endDate) <= 0);
+		} while(currentDate.compareTo(timeSeries.getEndDateAsDate()) <= 0);
 		return Pair.of(dates, nhpi);
 	}
 	
