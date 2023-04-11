@@ -9,12 +9,17 @@ import org.jfree.data.xy.TableXYDataset;
 
 public class StackedAreaVisualization extends Visualization {
 	
+	private TableXYDataset newData;
+	
 	public StackedAreaVisualization(TimeSeriesData timeSeries) {
 		super(timeSeries);
 		setType(ChartType.STACKED_AREA_CHART);
 		
-		TableXYDataset newData = convertToTableXYDataset(dataCollection);
-		this.chart = ChartFactory.createStackedXYAreaChart(timeSeries.getLocation(), "Date", "NHPI", newData);
+		// bug lies here with adding to stacked area. need a way to change the newdata reference since we can't use
+		// dataCollection in Visualization. maybe this class needs to override addTimeSeries and add to newData.
+		// or when we add to dataCollection in parent class, we reconvert newData again.
+		newData = convertToTableXYDataset(dataCollection);
+		chart = ChartFactory.createStackedXYAreaChart(timeSeries.getLocation(), "Date", "NHPI", newData);
 
 		fixToDateAxis();
 		createPanel();

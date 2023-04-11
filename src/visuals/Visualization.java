@@ -45,7 +45,6 @@ public abstract class Visualization {
 		dataCollection = createCollection(data);
 	}
 	
-	// might be same for all visualizations, dont know yet, make it abstract if not.
 	public void addTimeSeries(TimeSeriesData timeSeries) {
 		// Load time series into chart
 		TimeSeries data = createTimeSeries(timeSeries);
@@ -57,10 +56,6 @@ public abstract class Visualization {
         double maxAdded = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
         this.min = Math.min(minAdded, this.min);
         this.max = Math.max(maxAdded, this.max);
-        
-//        // Find the domain of the chart idk if needed
-//		this.startDate = this.startDate.compareTo(startDate) < 0 ? this.startDate : startDate;
-//		this.endDate = this.endDate.compareTo(endDate) > 0 ? this.endDate : endDate;
 		
         // Set the range for both axes
 		newDateAxis.setRange(timeSeries.getStartDateAsDate(), timeSeries.getEndDateAsDate());

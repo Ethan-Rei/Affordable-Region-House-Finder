@@ -15,7 +15,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	private final JButton btnAdd = new JButton("Add time series to chart");
 	private final JComboBox<String> boxChart1 = new JComboBox<>();
 	private final JComboBox<String> boxChart2 = new JComboBox<>();
-	private final JLabel lblModify = new JLabel("Select time series line chart to change:");
+	private final JLabel lblModify = new JLabel("Select time series chart to change:");
 	private final JLabel lblFrom = new JLabel("Select time series to add to the chart:");
 	
 	private final JInternalFrame refPanel;
@@ -71,13 +71,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	}
 
 	private Visualization getVisualizationToAdd() {
-		TimeSeriesData selected = getSelectedTimeSeries(boxChart1.getSelectedItem().toString().substring(4, boxChart1.getSelectedItem().toString().length()));
-		for (Visualization vs: MainWindow.getInstance().getCharts()) {
-			if (selected.equals(vs.getTimeSeries()))
-				return vs;
-		}
-		
-		return null;
+		return MainWindow.getInstance().getCharts().get(boxChart1.getSelectedIndex());
 	}
 
 	private void addTimeSeries() {
@@ -94,7 +88,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	}
 
 	private boolean choicesMismatch(TimeSeriesData loc1, TimeSeriesData loc2) {
-		if (!loc1.getStartDateAsDate().equals(loc2.getStartDateAsDate()) && !loc1.getEndDate().equals(loc2.getEndDateAsDate())) {
+		if (!loc1.getStartDateAsDate().equals(loc2.getStartDateAsDate()) && !loc1.getEndDateAsDate().equals(loc2.getEndDateAsDate())) {
 			return true;
 		}
 		return false;

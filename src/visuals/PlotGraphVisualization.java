@@ -9,7 +9,7 @@ public class PlotGraphVisualization extends Visualization{
 		setType(ChartType.PLOT_CHART);
 
 		// Create the chart with the dataset and set axes
-		this.chart = ChartFactory.createScatterPlot(timeSeries.getLocation(), "Date", "NHPI", dataCollection);
+		chart = ChartFactory.createScatterPlot(timeSeries.getLocation(), "Date", "NHPI", dataCollection);
 
 		fixToDateAxis();
 		createPanel();
