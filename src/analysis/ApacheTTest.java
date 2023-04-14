@@ -11,7 +11,6 @@ class ApacheTTest implements TimeSeriesTTest {
 	
 	@Override
 	public double tTest(double[] timeSeries1, double[] timeSeries2) {
-		// Returns the p value of the TTest
 		return ttest.tTest(timeSeries1, timeSeries2);
 	}
 	

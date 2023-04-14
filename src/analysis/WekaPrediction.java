@@ -19,12 +19,9 @@ class WekaPrediction implements TimeSeriesPrediction {
 	
 	@Override
 	public double[] predict(ArrayList<Double> values, ArrayList<Date> dates, int predictMonths, int algorithm) {
-		
-		// Setup the data set into attributes and instances
+
 		Instances data = createDataset(values, dates);
-		
-		// Setup the forecaster on given data
-		
+
 		WekaForecaster forecastModel = trainDataset(data, algorithm);
 		
 		// Get predicted values and return

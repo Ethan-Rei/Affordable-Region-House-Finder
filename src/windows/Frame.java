@@ -14,7 +14,7 @@ abstract class Frame {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
     private static final Calendar calendar = Calendar.getInstance();
     
-    public ArrayList<Date> getLastViableDate(Date pickedDate, HashMap<Date, Double> loadedData) {
+    private ArrayList<Date> getLastViableDate(Date pickedDate, HashMap<Date, Double> loadedData) {
         // Guaranteed that location is present within the loadedData hashmap
         ArrayList<Date> viableDates = new ArrayList<Date>();
         Date currentDate = pickedDate;
@@ -80,7 +80,6 @@ abstract class Frame {
         startBox.setSelectedItem(null);
         startBox.addActionListener(startBoxListener);
     }
-
 
     public void populateLocBox(JComboBox<String> locBox) {
         ArrayList<TimeSeriesData> loadedTS = MainWindow.getInstance().getLoadedTimeSeries();
