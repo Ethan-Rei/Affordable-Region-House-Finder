@@ -48,20 +48,9 @@ public abstract class Visualization {
 	public void addTimeSeries(TimeSeriesData timeSeries) {
 		// Load time series into chart
 		TimeSeries data = createTimeSeries(timeSeries);
-		DateAxis newDateAxis = new DateAxis("Date");
 		this.dataCollection.addSeries(data);
 		
-		// Find the range of the chart
-		double minAdded = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
-        double maxAdded = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
-        this.min = Math.min(minAdded, this.min);
-        this.max = Math.max(maxAdded, this.max);
-		
-        // Set the range for both axes
-		newDateAxis.setRange(timeSeries.getStartDateAsDate(), timeSeries.getEndDateAsDate());
-		this.chart.getXYPlot().setDomainAxis(newDateAxis);
-        setDateAxis(newDateAxis);
-        chart.getXYPlot().getRangeAxis().setRange(this.min, this.max);
+		resizeAxes(timeSeries);
 	}
 	
 	protected void setDateAxis(DateAxis dateAxis) {
@@ -113,6 +102,23 @@ public abstract class Visualization {
 			currentDate = calendar.getTime();
 		}
 		return data;
+	}
+	
+	protected void resizeAxes(TimeSeriesData timeSeries) {
+		DateAxis newDateAxis = new DateAxis("Date");
+		
+		// Find the range of the chart
+		double minAdded = chart.getXYPlot().getRangeAxis().getRange().getLowerBound();
+        double maxAdded = chart.getXYPlot().getRangeAxis().getRange().getUpperBound();
+        this.min = Math.min(minAdded, this.min);
+        this.max = Math.max(maxAdded, this.max);
+		
+        // Set the range for both axes
+		newDateAxis.setRange(timeSeries.getStartDateAsDate(), timeSeries.getEndDateAsDate());
+		this.chart.getXYPlot().setDomainAxis(newDateAxis);
+        setDateAxis(newDateAxis);
+        chart.getXYPlot().getRangeAxis().setRange(this.min, this.max);
+        
 	}
 
 	protected void fixToDateAxis() {
