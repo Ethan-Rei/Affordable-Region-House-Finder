@@ -182,24 +182,15 @@ public class StatisticalWindow extends InternalFrame {
 		HashMap<Date, Double> loadedData = getAllDataForLocation(pickedLocation);
 		try {
 			Date pickedDate = dateFormat.parse(startDate);
-			ArrayList<Date> validDates = getLastViableDate(pickedDate, loadedData);
-			for (Date validDate: validDates) {
-				endBox.addItem(dateFormat.format(validDate));
+			ArrayList<String> validDates = getLastViableDate(pickedDate, loadedData);
+			for (String validDate: validDates) {
+				endBox.addItem(validDate);
 			}
-			setEndBoxValue(validDates, prevPicked, startDate, endBox);
+			if (validDates.contains(prevPicked) && startDate.compareTo(prevPicked) < 0)
+				endBox.setSelectedItem(prevPicked);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void setEndBoxValue(ArrayList<Date> validDates, String prevPicked, String startDate, JComboBox<String> endBox) {
-		// Only change end box if the previous picked value was less than start date or new time series range
-		ArrayList<String> endBoxDates = new ArrayList<>();
-		for (Date date: validDates)
-			endBoxDates.add(dateFormat.format(date));
-
-		if (endBoxDates.contains(prevPicked) && startDate.compareTo(prevPicked) < 0)
-			endBox.setSelectedItem(prevPicked);
 	}
 
 	private void populateDateBoxes(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox) {
@@ -236,13 +227,13 @@ public class StatisticalWindow extends InternalFrame {
 		locBox.setSelectedItem(null);
 	}
 
-	protected ArrayList<Date> getLastViableDate(Date pickedDate, HashMap<Date, Double> loadedData) {
+	protected ArrayList<String> getLastViableDate(Date pickedDate, HashMap<Date, Double> loadedData) {
 		// Guaranteed that location is present within the loadedData hashmap
-		ArrayList<Date> viableDates = new ArrayList<Date>();
+		ArrayList<String> viableDates = new ArrayList<>();
 		Date currentDate = pickedDate;
 		calendar.setTime(currentDate);
 		do {
-			viableDates.add(currentDate);
+			viableDates.add(dateFormat.format(currentDate));
 			calendar.add(Calendar.MONTH, 1);
 			currentDate = calendar.getTime();
 		} while(loadedData.containsKey(currentDate));
