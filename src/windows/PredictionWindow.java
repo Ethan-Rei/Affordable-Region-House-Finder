@@ -109,13 +109,6 @@ public class PredictionWindow extends InternalFrame {
 		
 		chart.addTimeSeries(predictedSeries);
 		MainWindow.getInstance().refresh();
-//		try {
-//			frame.setClosed(true);
-//			close();
-//		} catch (PropertyVetoException e) {
-//			e.printStackTrace();
-//		}
-		
 	}
 	
 	private double[] getPredictedValues(ArrayList<Double> nhpis, ArrayList<Date> dates, int numOfMonths) {
