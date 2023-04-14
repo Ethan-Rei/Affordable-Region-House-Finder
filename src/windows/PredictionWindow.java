@@ -60,13 +60,13 @@ public class PredictionWindow extends InternalFrame {
 	private void setGUIListeners() {
 		btnPredict.addActionListener(e -> predict());
 	}
-	
+
 	private void configAlgorithmGroupGUI() {
 		radbtnLinearReg.setSelected(true);
 		btngrpAlgo.add(radbtnGaussianProc);
 		btngrpAlgo.add(radbtnLinearReg);
 	}
-	
+
 	private void addToInternalFrame() {
 		frame.getContentPane().add(lblValuePrediction);
 		frame.getContentPane().add(lblAlgorithm);
@@ -78,14 +78,14 @@ public class PredictionWindow extends InternalFrame {
 		frame.getContentPane().add(boxMonth);
 		frame.getContentPane().add(btnPredict);
 	}
-	
+
 	private void setMonthBoxValues() {
 		for (int i = 2; i <= 12; i++) {
 			boxMonth.addItem(Integer.toString(i));
 		}
 		boxMonth.setSelectedItem("1");
 	}
-	
+
 	private void predict() {
 		// get user's selection
 		int numOfMonths = Integer.parseInt(boxMonth.getSelectedItem().toString());
@@ -110,7 +110,7 @@ public class PredictionWindow extends InternalFrame {
 		chart.addTimeSeries(predictedSeries);
 		MainWindow.getInstance().refresh();
 	}
-	
+
 	private double[] getPredictedValues(ArrayList<Double> nhpis, ArrayList<Date> dates, int numOfMonths) {
 		double[] predictions;
 		Analysis analysis = Analysis.getInstance();
@@ -123,7 +123,7 @@ public class PredictionWindow extends InternalFrame {
 		
 		return predictions;
 	}
-	
+
 	private void setPredictedDates(double[] predictions, TimeSeriesData timeSeries) {
 		// Add to data the predicted points
 		Calendar calendar = Calendar.getInstance();
@@ -135,6 +135,18 @@ public class PredictionWindow extends InternalFrame {
 		}
 
 		timeSeries.setEndDate(calendar.getTime());
+	}
+
+	protected ArrayList<Date> getDatesInRange(TimeSeriesData timeSeries) {
+		ArrayList<Date> dates = new ArrayList<Date>();
+		Date currentDate = timeSeries.getStartDateAsDate();
+		do {
+			calendar.setTime(currentDate);
+			dates.add(currentDate);
+			calendar.add(Calendar.MONTH, 1);
+			currentDate = calendar.getTime();
+		} while(currentDate.compareTo(timeSeries.getEndDateAsDate()) <= 0);
+		return dates;
 	}
 	
 	public void close() {

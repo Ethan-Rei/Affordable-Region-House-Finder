@@ -4,13 +4,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import org.apache.commons.math3.exception.NumberIsTooSmallException;
 import analysis.Analysis;
+import visuals.TimeSeriesData;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 public class StatisticalWindow extends InternalFrame {
 	private final String title = "Statistical Test";
@@ -170,4 +171,89 @@ public class StatisticalWindow extends InternalFrame {
 			return false;
 		return true;
 	}
+
+	public void populateEndDate(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox) {
+		// Get the previous pick
+		String prevPicked = getPrevPick(endBox);
+		endBox.removeAllItems();
+
+		String pickedLocation = locBox.getSelectedItem().toString();
+		String startDate = startBox.getSelectedItem().toString();
+		HashMap<Date, Double> loadedData = getAllDataForLocation(pickedLocation);
+		try {
+			Date pickedDate = dateFormat.parse(startDate);
+			ArrayList<Date> validDates = getLastViableDate(pickedDate, loadedData);
+			for (Date validDate: validDates) {
+				endBox.addItem(dateFormat.format(validDate));
+			}
+			setEndBoxValue(validDates, prevPicked, startDate, endBox);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setEndBoxValue(ArrayList<Date> validDates, String prevPicked, String startDate, JComboBox<String> endBox) {
+		// Only change end box if the previous picked value was less than start date or new time series range
+		ArrayList<String> endBoxDates = new ArrayList<>();
+		for (Date date: validDates)
+			endBoxDates.add(dateFormat.format(date));
+
+		if (endBoxDates.contains(prevPicked) && startDate.compareTo(prevPicked) < 0)
+			endBox.setSelectedItem(prevPicked);
+	}
+
+	private void populateDateBoxes(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox) {
+		ActionListener startBoxListener = startBox.getActionListeners()[0];
+		startBox.removeActionListener(startBoxListener);
+		startBox.removeAllItems();
+		endBox.removeAllItems();
+
+		HashMap<Date, Double> dates = getAllDataForLocation(locBox.getSelectedItem().toString());
+		Set<Date> validDatesSet = dates.keySet();
+		ArrayList<Date> validDates = new ArrayList<>(validDatesSet);
+		Collections.sort(validDates);
+		for(Date validDate: validDates) {
+			startBox.addItem(dateFormat.format(validDate));
+		}
+		startBox.setSelectedItem(null);
+		startBox.addActionListener(startBoxListener);
+	}
+
+	private void populateLocBox(JComboBox<String> locBox) {
+		ArrayList<TimeSeriesData> loadedTS = MainWindow.getInstance().getLoadedTimeSeries();
+
+		// get unique locations
+		ArrayList<String> validLocations = new ArrayList<>();
+		for (TimeSeriesData validLocation: loadedTS) {
+			if (!validLocations.contains(validLocation.getLocation()))
+				validLocations.add(validLocation.getLocation());
+		}
+
+		for (String location: validLocations) {
+			locBox.addItem(location);
+		}
+
+		locBox.setSelectedItem(null);
+	}
+
+	protected ArrayList<Date> getLastViableDate(Date pickedDate, HashMap<Date, Double> loadedData) {
+		// Guaranteed that location is present within the loadedData hashmap
+		ArrayList<Date> viableDates = new ArrayList<Date>();
+		Date currentDate = pickedDate;
+		calendar.setTime(currentDate);
+		do {
+			viableDates.add(currentDate);
+			calendar.add(Calendar.MONTH, 1);
+			currentDate = calendar.getTime();
+		} while(loadedData.containsKey(currentDate));
+
+		return viableDates;
+	}
+
+	protected String getPrevPick(JComboBox<String> box) {
+		if (box.getSelectedItem() != null)
+			return box.getSelectedItem().toString();
+		return "";
+	}
+
 }
