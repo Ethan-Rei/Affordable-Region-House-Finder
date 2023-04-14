@@ -65,7 +65,6 @@ abstract class Frame {
     }
 
     public void populateDateBoxes(JComboBox<String> locBox, JComboBox<String> startBox, JComboBox<String> endBox) {
-        // Fix NullPointerException by removing the listener, then re-adding it at end of method
         ActionListener startBoxListener = startBox.getActionListeners()[0];
         startBox.removeActionListener(startBoxListener);
         startBox.removeAllItems();

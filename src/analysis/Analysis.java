@@ -7,7 +7,6 @@ public class Analysis
 {
 	public static final int LINEAR_REGRESSION = 0;
 	public static final int GAUSSIAN_PROCESS = 1;
-	// Better to put monthConverter in a date converter class
 	private TimeSeriesTTest ttest;
 	private TimeSeriesPrediction prediction;
 	private static Analysis singleton = null;
