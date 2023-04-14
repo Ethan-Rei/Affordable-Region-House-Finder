@@ -1,6 +1,5 @@
 package windows;
 
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -60,16 +59,6 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 		frame.getContentPane().add(btnAdd);
 	}
 
-	private TimeSeriesData getTimeSeriesToAdd() {
-		ArrayList<TimeSeriesData> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
-		for (TimeSeriesData ts: timeSeries) {
-			if (boxChart2.getSelectedItem().equals(ts.toString())) {
-				return ts;
-			}
-		}
-		return null;
-	}
-
 	private Visualization getVisualizationToAdd() {
 		return MainWindow.getInstance().getCharts().get(boxChart1.getSelectedIndex());
 	}
@@ -77,7 +66,7 @@ public class TimeSeriesEditorWindow extends InternalFrame {
 	private void addTimeSeries() {
 		if (boxesNull())
 			return;
-		TimeSeriesData tsToAdd = getTimeSeriesToAdd();
+		TimeSeriesData tsToAdd = getSelectedTimeSeries(boxChart2.getSelectedItem().toString());
 		Visualization chartToEdit = getVisualizationToAdd();
 		if (choicesMismatch(tsToAdd, chartToEdit.getTimeSeries())) {
 			JOptionPane.showMessageDialog(null, errorDateMismatch, "Error", JOptionPane.ERROR_MESSAGE);
