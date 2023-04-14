@@ -1,19 +1,16 @@
 package visuals;
 
 public class VisualizationFactory {
-	public static TimeSeriesLineVisualization createTimeSeriesLineVisualization(TimeSeriesData timeSeries) {
-		return new TimeSeriesLineVisualization(timeSeries);
-	}
 	
-	public static PlotGraphVisualization createPlotGraphVisualization(TimeSeriesData timeSeries) {
-		return new PlotGraphVisualization(timeSeries);
-	}
-	
-	public static StackedAreaVisualization createStackedAreaVisualization(TimeSeriesData timeSeries) {
-		return new StackedAreaVisualization(timeSeries);
-	}
-	
-	public static HistogramVisualization createHistogramVisualization(TimeSeriesData timeSeries) {
-		return new HistogramVisualization(timeSeries);
+	public static Visualization createVisualization(ChartType type, TimeSeriesData timeSeries) {
+		if (type == ChartType.LINE_CHART) 
+			return new TimeSeriesLineVisualization(timeSeries);
+		if (type == ChartType.PLOT_CHART) 
+			return new PlotGraphVisualization(timeSeries);
+		if (type == ChartType.STACKED_AREA_CHART)
+			return new StackedAreaVisualization(timeSeries);
+		if (type == ChartType.HISTOGRAM_CHART)
+			return new HistogramVisualization(timeSeries);
+		return null;
 	}
 }

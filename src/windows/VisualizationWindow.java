@@ -11,6 +11,7 @@ import visuals.VisualizationFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 
@@ -18,10 +19,14 @@ public class VisualizationWindow extends InternalFrame {
 	private final String title = "Visualization Options";
 	private final JLabel lblVisuals = new JLabel("Select Visualizations:");
 	private final JLabel lblSelect = new JLabel("Select a specific time series to edit its chart visualizations:");
+	// Here
 	private final JCheckBox checkLine = new JCheckBox("Line Chart");
 	private final JCheckBox checkPlot = new JCheckBox("Plot Graph");
 	private final JCheckBox checkHisto = new JCheckBox("Histogram");
 	private final JCheckBox checkStack = new JCheckBox("Stacked Area");
+	
+	private final HashMap<ChartType, JCheckBox> boxes = new HashMap<>();
+	
 	private final JComboBox<String> boxTimeSeries = new JComboBox<>();
 	private final JButton btnUpdate = new JButton("Update Visualization");
 	private final JButton btnEdit = new JButton("Edit time series charts");
@@ -40,6 +45,7 @@ public class VisualizationWindow extends InternalFrame {
 		setGUIBounds();
 		setGUIListeners();
 		addToInternalFrame();
+		populateBoxes();
 	}
 	
 	private void setGUIBounds() {
@@ -61,28 +67,35 @@ public class VisualizationWindow extends InternalFrame {
 	}
 	
 	private void addToInternalFrame() {
-		frame.getContentPane().add(lblVisuals);
 		frame.getContentPane().add(checkLine);
 		frame.getContentPane().add(checkPlot);
 		frame.getContentPane().add(checkHisto);
 		frame.getContentPane().add(checkStack);
+		frame.getContentPane().add(lblVisuals);
 		frame.getContentPane().add(lblSelect);
 		frame.getContentPane().add(boxTimeSeries);
 		frame.getContentPane().add(btnUpdate);
 		frame.getContentPane().add(btnEdit);
 	}
 	
+	private void populateBoxes() {
+		boxes.put(ChartType.LINE_CHART, checkLine);
+		boxes.put(ChartType.HISTOGRAM_CHART, checkHisto);
+		boxes.put(ChartType.PLOT_CHART, checkPlot);
+		boxes.put(ChartType.STACKED_AREA_CHART, checkStack);
+	}
+	
 	private void loadTimeSeriesSettings() {
 		ArrayList<TimeSeriesData> timeSeries = MainWindow.getInstance().getLoadedTimeSeries();
 		
 		for(TimeSeriesData ts: timeSeries) {
-			if (ts.toString().equals(boxTimeSeries.getSelectedItem().toString())) {
-				checkLine.setSelected(ts.getSetting(ChartType.LINE_CHART));
-				checkPlot.setSelected(ts.getSetting(ChartType.PLOT_CHART));
-				checkHisto.setSelected(ts.getSetting(ChartType.HISTOGRAM_CHART));
-				checkStack.setSelected(ts.getSetting(ChartType.STACKED_AREA_CHART));
-				break;
+			if (!ts.toString().equals(boxTimeSeries.getSelectedItem().toString())) {
+				continue;
 			}
+			for (ChartType type: boxes.keySet()) {
+				boxes.get(type).setSelected(ts.getSetting(type));
+			}
+			break;
 		}
 	}
 	
@@ -120,14 +133,10 @@ public class VisualizationWindow extends InternalFrame {
 	
 	private ArrayList<ChartType> getSelectedBoxes() {
 		ArrayList<ChartType> selected = new ArrayList<>();
-		if (checkLine.isSelected())
-			selected.add(ChartType.LINE_CHART);
-		if (checkPlot.isSelected())
-			selected.add(ChartType.PLOT_CHART);
-		if (checkHisto.isSelected())
-			selected.add(ChartType.HISTOGRAM_CHART);
-		if (checkStack.isSelected())
-			selected.add(ChartType.STACKED_AREA_CHART);
+		for (ChartType type: boxes.keySet()) {
+			if (boxes.get(type).isSelected())
+				selected.add(type);
+		}
 		return selected;
 	}
 	
@@ -143,27 +152,17 @@ public class VisualizationWindow extends InternalFrame {
 	}
 	
 	private void addSelectedVisualization(TimeSeriesData ts)  {
-		if (checkLine.isSelected() && !ts.getSetting(ChartType.LINE_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createTimeSeriesLineVisualization(ts));
+		for (ChartType type: boxes.keySet()) {
+			if (boxes.get(type).isSelected() && !ts.getSetting(type))
+				MainWindow.getInstance().addVisualization(VisualizationFactory.createVisualization(type, ts));
 		}
-		if (checkPlot.isSelected() && !ts.getSetting(ChartType.PLOT_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createPlotGraphVisualization(ts));
-		}
-		if (checkHisto.isSelected() && !ts.getSetting(ChartType.HISTOGRAM_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createHistogramVisualization(ts));
-		}
-		if (checkStack.isSelected() && !ts.getSetting(ChartType.STACKED_AREA_CHART)) {
-			MainWindow.getInstance().addVisualization(VisualizationFactory.createStackedAreaVisualization(ts));
-		}
-		
 		setSettings(ts);
 	}
 	
 	private void setSettings(TimeSeriesData ts) {
-		ts.setSetting(ChartType.LINE_CHART, checkLine.isSelected());
-		ts.setSetting(ChartType.PLOT_CHART, checkPlot.isSelected());
-		ts.setSetting(ChartType.HISTOGRAM_CHART, checkHisto.isSelected());
-		ts.setSetting(ChartType.STACKED_AREA_CHART, checkStack.isSelected());
+		for (ChartType type: boxes.keySet()) {
+			ts.setSetting(type, boxes.get(type).isSelected());
+		}
 	}
 	
 	private void openInternalWindow(InternalFrame iFrame) {
